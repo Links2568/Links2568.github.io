@@ -5,5 +5,6 @@ gem "kramdown-parser-gfm"
 gem "webrick"
 
 group :jekyll_plugins do
+  gem "jekyll-remote-theme"
   gem "jekyll-seo-tag"
 end
