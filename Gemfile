@@ -1,10 +1,8 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 4.3"
-gem "kramdown-parser-gfm"
-gem "webrick"
+gem "jekyll", "~> 3.9"
+gem "minimal-light", "~> 0.1"
 
 group :jekyll_plugins do
-  gem "jekyll-remote-theme"
   gem "jekyll-seo-tag"
 end
