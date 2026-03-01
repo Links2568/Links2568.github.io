@@ -1,28 +1,28 @@
 # Basic Information 
-title: Your Name
-position: Ph.D. Student
-affiliation: Your Affiliation
-email: yourname (at) example.edu
+title: Zuchen Li
+position: Undergraduate Student
+affiliation: University of Michigan, Ann Arbor
+email: zuchenli (at) umich.edu
 
 # Search Engine Optimization (SEO)
 # The following information is used to improve the website traffic from search engines, e.g., Google.
-keywords: minimal light
-description: The Minimal Light is a simple and elegant jekyll theme for academic personal homepage.
-canonical: https://minimal-light-theme.yliu.me/
+keywords: Zuchen Li, Data Science, Statistics, University of Michigan
+description: Zuchen Li's academic personal homepage. Undergraduate student in Honors Data Science & Statistics at the University of Michigan.
+canonical: https://links2568.github.io/
 
-# Links 
+# Links
 # If you don't need one of them, you may delete the corresponding line.
 google_scholar: https://scholar.google.com/
-cv_link: assets/files/curriculum_vitae.pdf
+cv_link: assets/files/CV_ZuchenLi_Feb28.pdf
 github_link: https://github.com/
-linkedin: https://www.linkedin.com/
-twitter: https://twitter.com/
+linkedin: https://www.linkedin.com/in/zuchenli/
+instagram: https://www.instagram.com/
 
 # Images (e.g., your profile picture and your website's favicon) 
 # "favicon" and "favicon_dark" are used for the light and dark modes, respectively. 
-avatar: ./assets/img/avatar.png
-favicon: ./assets/img/favicon.png
-favicon_dark: ./assets/img/favicon-dark.png
+avatar: ./assets/img/icon/myself.png
+favicon: ./assets/img/icon/favicon_L_48.png
+favicon_dark: ./assets/img/icon/favicon_L_48.png
 
 # Footnote
 # You may use the option to disable the footnote, "Powered by Jekyll and Minimal Light theme."
