@@ -21,11 +21,6 @@ I am an undergraduate student at the **University of Michigan, Ann Arbor**, majo
 - **Lab of Atmospheric and Earth System Sciences**, Nanjing University — Summer Research Intern, May – Aug 2024
 - **E2-E Lab**, UIUC — Undergraduate Research Assistant, Aug 2023 – May 2024
 
-## Honors & Awards
-
-- Outstanding Research Paper Award (top 1.875% over 800+), IMMC Greater China Round, Apr 2022
-- Finalists Research Paper Award (top 8.75% Internationally), IMMC International Round, Mar 2022
-- Intellectual Promise Gold Scholarship, Beijing National Day School, Jul 2022
 
 ## Interests & Activities
 
