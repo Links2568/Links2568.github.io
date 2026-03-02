@@ -15,9 +15,9 @@ I am an undergraduate student at the **University of Michigan, Ann Arbor**, majo
 
 ## Experience
 
-- **Generative AI for Music and Audio** (Advisor: Prof. Herman Dong), UMich — Research Assistant, Oct 2025 – Present
-- **Ambient Intelligence Lab** (Advisor: Prof. Ke Sun), UMich — Research Assistant, Oct 2025 – Present
-- **Energy Distance Dimension Reduction** (Advisor: Prof. Kerby Shedden), UMich — URPS, Jan 2025 – Present
+- **Generative AI for Music and Audio**, UMich — Research Assistant, Oct 2025 – Present
+- **Ambient Intelligence Lab**, UMich — Research Assistant, Oct 2025 – Present
+- **Energy Distance Dimension Reduction**, UMich — URPS, Jan 2025 – Present
 - **Lab of Atmospheric and Earth System Sciences**, Nanjing University — Summer Research Intern, May – Aug 2024
 - **E2-E Lab**, UIUC — Undergraduate Research Assistant, Aug 2023 – May 2024
 
