@@ -4,7 +4,7 @@
     <title>Gallery | {{ site.title }}</title>
     <meta name="description" content="Photography gallery by {{ site.title }}">
     {% include cyber-head.html %}
-    <link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/gallery.css' | relative_url }}?v={{ site.time | date: '%s' }}">
   </head>
   <body>
     {% include statusbar.html path="/gallery" %}

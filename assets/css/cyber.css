@@ -417,6 +417,118 @@ kbd {
   white-space: nowrap;
 }
 
+/* ---------- boot sequence ---------- */
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+:root[data-boot] #boot {
+  display: flex;
+}
+
+/* safety: if JS dies after the inline gate ran, everything appears anyway */
+:root[data-boot="pending"] #boot {
+  animation: boot-vanish 0.4s ease 4.2s forwards;
+}
+
+.boot-inner {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--dim);
+  width: min(23rem, 84vw);
+}
+
+.boot-inner .boot-line {
+  margin: 0 0 0.6rem;
+}
+
+.boot-inner .u {
+  color: var(--bright);
+  font-weight: 500;
+}
+
+.boot-inner .p {
+  color: var(--accent);
+}
+
+.boot-bar {
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.boot-pct {
+  color: var(--bright);
+  margin-left: 0.7rem;
+}
+
+#boot.boot-exit {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* content hidden while boot runs, then rises in — 4s delay is the no-JS safety net */
+:root[data-boot] .statusbar,
+:root[data-boot] .hero > *,
+:root[data-boot] .content,
+:root[data-boot] .site-footer {
+  opacity: 0;
+  animation: rise 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 4s forwards;
+}
+
+:root[data-boot="done"] .statusbar {
+  animation-delay: 0.05s;
+}
+
+:root[data-boot="done"] .hero > :nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+:root[data-boot="done"] .hero > :nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+:root[data-boot="done"] .hero > :nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+:root[data-boot="done"] .hero > :nth-child(4) {
+  animation-delay: 0.36s;
+}
+
+:root[data-boot="done"] .content {
+  animation-delay: 0.44s;
+}
+
+:root[data-boot="done"] .site-footer {
+  animation-delay: 0.6s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes boot-vanish {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* ---------- footer ---------- */
 .site-footer {
   margin-top: 4.5rem;
@@ -475,5 +587,18 @@ kbd {
 
   * {
     transition: none !important;
+  }
+
+  /* no boot sequence, no hidden content */
+  #boot {
+    display: none !important;
+  }
+
+  :root[data-boot] .statusbar,
+  :root[data-boot] .hero > *,
+  :root[data-boot] .content,
+  :root[data-boot] .site-footer {
+    opacity: 1;
+    animation: none;
   }
 }

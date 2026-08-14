@@ -10,8 +10,30 @@
     <link rel="canonical" href="{{ site.canonical }}"/>
     {% endif %}
     {% include cyber-head.html %}
+    <script>
+      /* boot-sequence gate: skip for reduced motion and repeat visits this session */
+      (function () {
+        try {
+          if (
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+            !sessionStorage.getItem("booted")
+          ) {
+            document.documentElement.setAttribute("data-boot", "pending");
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
+    {% assign user_handle = site.email | split: " (at) " | first | default: "guest" %}
+    <div id="boot" aria-hidden="true">
+      <div class="boot-inner">
+        <p class="boot-line"><span class="u">{{ user_handle }}@umich</span>:<span class="p">~</span>$ ./init --profile</p>
+        <p class="boot-line boot-bar"><span id="boot-blocks">░░░░░░░░░░░░░░░░░░░░░░░░</span><span class="boot-pct" id="boot-pct">0%</span></p>
+        <p class="boot-line" id="boot-msg">&nbsp;</p>
+      </div>
+    </div>
+
     <canvas id="field" aria-hidden="true"></canvas>
 
     {% include statusbar.html path="" %}

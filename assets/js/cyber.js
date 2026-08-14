@@ -56,8 +56,71 @@
       });
     }
 
+    initBoot();
     initField();
   });
+
+  /* ---------- boot sequence ----------
+     Terminal-style opening: progress bar counts to 100, then the page
+     rises in section by section. Runs once per session; the inline gate
+     in <head> skips it for reduced-motion users and repeat visits. */
+  function initBoot() {
+    if (root.getAttribute("data-boot") !== "pending") return;
+    var boot = document.getElementById("boot");
+    if (!boot) {
+      root.removeAttribute("data-boot");
+      return;
+    }
+
+    var blocksEl = document.getElementById("boot-blocks");
+    var pctEl = document.getElementById("boot-pct");
+    var msgEl = document.getElementById("boot-msg");
+    var TOTAL = 24;
+    var pct = 0;
+    var msgs = [
+      [0, "loading modules…"],
+      [40, "compiling wind field…"],
+      [78, "calibrating sensors…"],
+      [100, "signal acquired ✓"]
+    ];
+
+    function render() {
+      var filled = Math.round((pct / 100) * TOTAL);
+      blocksEl.textContent =
+        new Array(filled + 1).join("▓") + new Array(TOTAL - filled + 1).join("░");
+      pctEl.textContent = pct + "%";
+      for (var i = msgs.length - 1; i >= 0; i--) {
+        if (pct >= msgs[i][0]) {
+          msgEl.textContent = msgs[i][1];
+          break;
+        }
+      }
+    }
+
+    function step() {
+      pct = Math.min(100, pct + 2 + Math.floor(Math.random() * 9));
+      render();
+      if (pct < 100) {
+        setTimeout(step, 20 + Math.random() * 55);
+      } else {
+        setTimeout(finish, 300);
+      }
+    }
+
+    function finish() {
+      try {
+        sessionStorage.setItem("booted", "1");
+      } catch (e) {}
+      root.setAttribute("data-boot", "done");
+      boot.classList.add("boot-exit");
+      setTimeout(function () {
+        boot.style.display = "none";
+      }, 500);
+    }
+
+    render();
+    setTimeout(step, 180);
+  }
 
   /* ---------- ambient wind field ----------
      A quiet flow of particles following a layered-sine wind field —
