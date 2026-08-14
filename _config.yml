@@ -4,6 +4,9 @@ position: Undergraduate Student
 affiliation: University of Michigan, Ann Arbor
 email: zuchenli (at) umich.edu
 
+# Status line shown under your name (delete the line to hide it)
+status_line: signal acquired · aiming for a PhD in HCI / AI
+
 # Search Engine Optimization (SEO)
 # The following information is used to improve the website traffic from search engines, e.g., Google.
 keywords: Zuchen Li, Data Science, Statistics, University of Michigan

@@ -1,0 +1,173 @@
+/* gallery.css — photo grid on top of cyber.css tokens.
+   The page stays near-monochrome; the photographs supply the color. */
+
+.gallery-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6.5rem clamp(1rem, 3vw, 1.5rem) 2rem;
+}
+
+/* --- header --- */
+.gallery-header {
+  margin-bottom: 2.2rem;
+}
+
+.gallery-header h1 {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--bright);
+  margin: 0 0 0.4rem;
+}
+
+.gallery-header .path-prefix {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.gallery-header p {
+  color: var(--dim);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* --- masonry grid --- */
+.masonry {
+  column-count: 3;
+  column-gap: 14px;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 14px;
+  overflow: hidden;
+  cursor: zoom-in;
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  transition: border-color 0.2s ease;
+}
+
+.masonry-item:hover {
+  border-color: var(--accent);
+}
+
+.masonry-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.masonry-item:hover img {
+  transform: scale(1.02);
+  filter: brightness(0.94);
+}
+
+.masonry-item .caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 12px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.62));
+  color: #fff;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.masonry-item:hover .caption {
+  opacity: 1;
+}
+
+/* --- empty state --- */
+.gallery-empty {
+  column-span: all;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--dim);
+  border: 1px dashed var(--line);
+  padding: 1.4rem 1.6rem;
+  line-height: 2;
+}
+
+/* --- lightbox --- */
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(4, 7, 10, 0.94);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
+}
+
+.lightbox-overlay.active {
+  display: flex;
+}
+
+.lightbox-overlay img {
+  max-width: 90vw;
+  max-height: 88vh;
+  object-fit: contain;
+  box-shadow: 0 8px 40px var(--shadow);
+  cursor: default;
+}
+
+.lightbox-caption {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #cfd8df;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  text-align: center;
+  max-width: 80vw;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 16px;
+  right: 24px;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
+}
+
+/* --- responsive --- */
+@media screen and (max-width: 900px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .masonry {
+    column-count: 1;
+  }
+
+  .gallery-page {
+    padding-top: 5.5rem;
+  }
+}
