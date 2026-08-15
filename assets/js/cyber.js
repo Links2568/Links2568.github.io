@@ -98,12 +98,12 @@
     }
 
     function step() {
-      pct = Math.min(100, pct + 2 + Math.floor(Math.random() * 9));
+      pct = Math.min(100, pct + 4 + Math.floor(Math.random() * 11));
       render();
       if (pct < 100) {
-        setTimeout(step, 20 + Math.random() * 55);
+        setTimeout(step, 14 + Math.random() * 38);
       } else {
-        setTimeout(finish, 300);
+        setTimeout(finish, 220);
       }
     }
 
@@ -119,7 +119,7 @@
     }
 
     render();
-    setTimeout(step, 180);
+    setTimeout(step, 120);
   }
 
   /* ---------- ambient wind field ----------
