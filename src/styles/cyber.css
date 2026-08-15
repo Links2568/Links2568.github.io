@@ -43,8 +43,10 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--bg);
-  /* Firefox scrollbar */
+  /* NOTE: html must stay background-less. The body background propagates
+     to the root and paints beneath the z-index:-1 #field canvas; giving
+     html its own background breaks that propagation and the body's
+     background then covers the canvas entirely. */
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--accent) 32%, var(--bg-elev)) var(--bg);
 }
