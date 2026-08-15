@@ -1,0 +1,157 @@
+---
+import { SITE } from "../consts";
+import Statusbar from "../components/Statusbar.astro";
+import "../styles/cyber.css";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string; // "" | "/projects" | "/gallery" | "/projects/slug"
+  navPath?: string; // which nav item to highlight; defaults to path
+  boot?: boolean; // terminal boot sequence (homepage only)
+  field?: boolean; // wind-field canvas (homepage only)
+  wrap?: boolean; // wrap <slot/> in the narrow .wrap column
+}
+
+const { title, description, path, navPath = path, boot = false, field = false, wrap = true } = Astro.props;
+const canonical = new URL(path === "" ? "/" : `${path}/`, Astro.site);
+const ogImage = new URL(SITE.avatar, Astro.site);
+const isHome = path === "";
+const email = SITE.email.replace(" (at) ", "@");
+---
+
+<!doctype html>
+<html lang="en-US" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {isHome && <meta name="keywords" content={SITE.keywords} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={SITE.favicon} type="image/png" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {
+      isHome && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: SITE.title,
+            url: `${Astro.site}`,
+            image: `${ogImage}`,
+            email: `mailto:${email}`,
+            jobTitle: SITE.position,
+            affiliation: {
+              "@type": "CollegeOrUniversity",
+              name: SITE.affiliation,
+              sameAs: SITE.affiliationUrl,
+            },
+            alumniOf: {
+              "@type": "CollegeOrUniversity",
+              name: "University of Illinois Urbana-Champaign",
+              sameAs: "https://illinois.edu",
+            },
+            knowsAbout: [
+              "Generative AI",
+              "Human-Computer Interaction",
+              "Privacy-Aware Machine Learning",
+              "Statistical Machine Learning",
+              "Climate Science",
+              "Photography",
+            ],
+            sameAs: [SITE.links.github, SITE.links.instagram, SITE.links.linkedin],
+          })}
+        />
+      )
+    }
+
+    <script is:inline>
+      /* set theme before first paint to avoid flash */
+      (function () {
+        var t;
+        try {
+          t = localStorage.getItem("theme");
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+      })();
+    </script>
+
+    <script is:inline data-boot-page={boot ? "1" : "0"}>
+      /* boot-sequence gate: skip for reduced motion and repeat visits this session */
+      (function () {
+        try {
+          if (document.currentScript.dataset.bootPage !== "1") return;
+          if (
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+            !sessionStorage.getItem("booted")
+          ) {
+            document.documentElement.setAttribute("data-boot", "pending");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
+    />
+  </head>
+  <body>
+    {
+      boot && (
+        <div id="boot" aria-hidden="true">
+          <div class="boot-inner">
+            <p class="boot-line">
+              <span class="u">{SITE.handle}@umich</span>:<span class="p">~</span>$ ./init --profile
+            </p>
+            <p class="boot-line boot-bar">
+              <span id="boot-blocks">░░░░░░░░░░░░░░░░░░░░░░░░</span>
+              <span class="boot-pct" id="boot-pct">0%</span>
+            </p>
+            <p class="boot-line" id="boot-msg">&nbsp;</p>
+          </div>
+        </div>
+      )
+    }
+
+    {field && <canvas id="field" aria-hidden="true"></canvas>}
+
+    <Statusbar path={navPath} />
+
+    {
+      wrap ? (
+        <main class="wrap">
+          <slot />
+          <footer class="site-footer">
+            <span>— EOF — last build {new Date().toISOString().slice(0, 10).replaceAll("-", ".")}</span>
+            <span>powered by <a href="https://astro.build" rel="noopener">astro</a></span>
+          </footer>
+        </main>
+      ) : (
+        <>
+          <slot />
+        </>
+      )
+    }
+
+    <script>
+      import "../scripts/cyber.js";
+    </script>
+  </body>
+</html>

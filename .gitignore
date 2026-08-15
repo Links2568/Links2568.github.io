@@ -6,3 +6,6 @@ Gemfile.lock
 .jekyll-cache
 git-update.sh
 .claude/
+node_modules
+dist
+.astro

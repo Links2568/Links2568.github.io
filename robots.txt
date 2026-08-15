@@ -1,6 +1,0 @@
-# All crawlers welcome, including AI crawlers
-# (GPTBot, ClaudeBot, Google-Extended, CCBot, PerplexityBot, etc.)
-User-agent: *
-Allow: /
-
-Sitemap: https://lzclink.com/sitemap.xml

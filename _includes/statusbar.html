@@ -1,9 +1,0 @@
-{% assign user_handle = site.email | split: " (at) " | first | default: "guest" %}
-<header class="statusbar">
-  <span class="prompt"><b>{{ user_handle }}@umich</b>:<span class="path">~{{ include.path }}</span>$</span>
-  <nav class="statusbar-right" aria-label="Site">
-    <a href="{{ '/' | relative_url }}" {% if include.path == "" %}aria-current="page"{% endif %}>~/home</a>
-    <a href="{{ '/gallery/' | relative_url }}" {% if include.path == "/gallery" %}aria-current="page"{% endif %}>~/gallery</a>
-    <button class="theme-toggle" type="button">theme: dark</button>
-  </nav>
-</header>

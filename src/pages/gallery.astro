@@ -1,0 +1,80 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../consts";
+import "../styles/gallery.css";
+---
+
+<Base
+  title={`Gallery | ${SITE.title}`}
+  description={`Photography by ${SITE.title} — photojournalism for the Michigan Daily, weather, and street photography.`}
+  path="/gallery"
+  wrap={false}
+>
+  <main class="gallery-page">
+    <div class="gallery-header">
+      <h1><span class="path-prefix">~/</span>gallery</h1>
+      <p>signals collected through a viewfinder — Michigan Daily &amp; elsewhere.</p>
+    </div>
+
+    <div class="masonry">
+      <!--
+        How to add photos:
+        1. Place your image in public/assets/img/gallery/
+        2. Add an entry below:
+        <div class="masonry-item">
+          <img src="/assets/img/gallery/your-photo.jpg" alt="Description" loading="lazy" />
+          <div class="caption">Optional caption text</div>
+        </div>
+      -->
+      <!-- Delete this empty-state block once real photos are added -->
+      <p class="gallery-empty">
+        $ ls ~/gallery<br />0 items — film still developing. check back soon.
+      </p>
+    </div>
+
+    <footer class="site-footer">
+      <span>— EOF — last build {new Date().toISOString().slice(0, 10).replaceAll("-", ".")}</span>
+      <span>powered by <a href="https://astro.build" rel="noopener">astro</a></span>
+    </footer>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById("lightbox")!;
+    const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
+    const lbCaption = document.getElementById("lightbox-caption")!;
+    const closeBtn = overlay.querySelector(".lightbox-close")!;
+
+    document.querySelectorAll(".masonry-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const img = item.querySelector("img");
+        const caption = item.querySelector(".caption");
+        if (!img) return;
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lbCaption.textContent = caption ? caption.textContent : "";
+        overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    function closeLightbox() {
+      overlay.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeLightbox();
+    });
+    closeBtn.addEventListener("click", closeLightbox);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+  </script>
+</Base>
