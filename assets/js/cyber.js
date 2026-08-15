@@ -142,43 +142,67 @@
     /* two ambient pressure systems, positions as fractions of the viewport;
        k > 0 spins one way, k < 0 the other (a low and a high) */
     var systems = [
-      { fx: 0.24, fy: 0.3, fr: 0.3, k: 1.0, drift: 0.05 },
-      { fx: 0.76, fy: 0.7, fr: 0.34, k: -0.85, drift: 0.037 }
+      { fx: 0.11, fy: 0.24, fr: 0.3, k: 1.0, drift: 0.05 },
+      { fx: 0.88, fy: 0.72, fr: 0.34, k: -0.85, drift: 0.037 }
     ];
 
     function accentColor() {
       return getComputedStyle(root).getPropertyValue("--accent").trim();
     }
+    function dimColor() {
+      return getComputedStyle(root).getPropertyValue("--dim").trim();
+    }
+
+    function jetAxisY(x, time) {
+      return H * (0.42 + 0.09 * Math.sin(time * 0.06 + x * 0.0014));
+    }
+
+    function sysCenter(s, time) {
+      return {
+        x: (s.fx + 0.06 * Math.sin(time * s.drift)) * W,
+        y: (s.fy + 0.05 * Math.cos(time * s.drift * 1.3)) * H,
+        R: s.fr * Math.min(W, H)
+      };
+    }
+
+    /* surface pressure (hPa) at a point — drives the isobars and HUD.
+       systems[0] spins clockwise on screen = high; systems[1] = low */
+    function pressure(x, y, time) {
+      var p = 1012 - ((y / H) - 0.5) * 6;
+      var hi = sysCenter(systems[0], time);
+      var lo = sysCenter(systems[1], time);
+      p += 12 * Math.exp(-((x - hi.x) * (x - hi.x) + (y - hi.y) * (y - hi.y)) / (hi.R * hi.R));
+      p -= 16 * Math.exp(-((x - lo.x) * (x - lo.x) + (y - lo.y) * (y - lo.y)) / (lo.R * lo.R));
+      return p;
+    }
 
     /* wind velocity (px/step) at a point */
     function vel(x, y, time) {
       // jet stream: meandering band of strong eastward flow
-      var jetY = H * (0.42 + 0.09 * Math.sin(time * 0.06 + x * 0.0014));
+      var jetY = jetAxisY(x, time);
       var band = Math.exp(-Math.pow((y - jetY) / (H * 0.17), 2));
       var u = 0.3 + 1.15 * band;
       var v = 0.4 * Math.sin(x * 0.0028 - time * 0.11) * (0.25 + band);
 
       // pressure systems: Gaussian vortices drifting slowly
       for (var i = 0; i < systems.length; i++) {
-        var s = systems[i];
-        var cx = (s.fx + 0.06 * Math.sin(time * s.drift)) * W;
-        var cy = (s.fy + 0.05 * Math.cos(time * s.drift * 1.3)) * H;
-        var R = s.fr * Math.min(W, H);
-        var dx = x - cx;
-        var dy = y - cy;
-        var g = Math.exp(-(dx * dx + dy * dy) / (R * R));
-        u += (-dy / R) * s.k * 1.15 * g;
-        v += (dx / R) * s.k * 1.15 * g;
+        var c = sysCenter(systems[i], time);
+        var dx = x - c.x;
+        var dy = y - c.y;
+        var g = Math.exp(-(dx * dx + dy * dy) / (c.R * c.R));
+        u += (-dy / c.R) * systems[i].k * 1.15 * g;
+        v += (dx / c.R) * systems[i].k * 1.15 * g;
       }
 
-      // cursor: low-pressure system — cyclonic swirl with slight inflow
+      // cursor: low-pressure system — cyclonic (counterclockwise) swirl
+      // with slight inflow, as a Northern Hemisphere low should be
       if (pointer.power > 0.02) {
         var pr = 150;
         var pdx = x - pointer.x;
         var pdy = y - pointer.y;
         var pg = Math.exp(-(pdx * pdx + pdy * pdy) / (pr * pr)) * pointer.power;
-        u += ((-pdy - pdx * 0.35) / pr) * 2.8 * pg;
-        v += ((pdx - pdy * 0.35) / pr) * 2.8 * pg;
+        u += ((pdy - pdx * 0.35) / pr) * 2.8 * pg;
+        v += ((-pdx - pdy * 0.35) / pr) * 2.8 * pg;
       }
 
       // gust rings from clicks: radial outward push on an expanding front
@@ -240,6 +264,138 @@
     }
 
     var TRAIL = 12;
+    var ISO_LEVELS = [1000, 1004, 1008, 1012, 1016, 1020];
+
+    /* isobars via marching squares over the pressure field */
+    function drawIsobars(time) {
+      var nx = 56;
+      var ny = 32;
+      var gw = W / nx;
+      var gh = H / ny;
+      var grid = [];
+      for (var iy = 0; iy <= ny; iy++) {
+        for (var ix = 0; ix <= nx; ix++) {
+          grid[iy * (nx + 1) + ix] = pressure(ix * gw, iy * gh, time);
+        }
+      }
+
+      ctx.strokeStyle = accentColor();
+      ctx.globalAlpha = 0.06;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+
+      function f(a, b, L) {
+        return (L - a) / (b - a);
+      }
+
+      for (var li = 0; li < ISO_LEVELS.length; li++) {
+        var L = ISO_LEVELS[li];
+        for (var cy = 0; cy < ny; cy++) {
+          for (var cx = 0; cx < nx; cx++) {
+            var tl = grid[cy * (nx + 1) + cx];
+            var tr = grid[cy * (nx + 1) + cx + 1];
+            var br = grid[(cy + 1) * (nx + 1) + cx + 1];
+            var bl = grid[(cy + 1) * (nx + 1) + cx];
+            var idx = (tl > L ? 8 : 0) | (tr > L ? 4 : 0) | (br > L ? 2 : 0) | (bl > L ? 1 : 0);
+            if (idx === 0 || idx === 15) continue;
+            var x0 = cx * gw;
+            var y0 = cy * gh;
+            var top = [x0 + gw * f(tl, tr, L), y0];
+            var rgt = [x0 + gw, y0 + gh * f(tr, br, L)];
+            var bot = [x0 + gw * f(bl, br, L), y0 + gh];
+            var lft = [x0, y0 + gh * f(tl, bl, L)];
+            var segs;
+            switch (idx) {
+              case 1: case 14: segs = [lft, bot]; break;
+              case 2: case 13: segs = [bot, rgt]; break;
+              case 3: case 12: segs = [lft, rgt]; break;
+              case 4: case 11: segs = [top, rgt]; break;
+              case 6: case 9: segs = [top, bot]; break;
+              case 7: case 8: segs = [lft, top]; break;
+              case 5: segs = [lft, top, bot, rgt]; break;
+              case 10: segs = [lft, bot, top, rgt]; break;
+            }
+            for (var si = 0; si < segs.length; si += 2) {
+              ctx.moveTo(segs[si][0], segs[si][1]);
+              ctx.lineTo(segs[si + 1][0], segs[si + 1][1]);
+            }
+          }
+        }
+      }
+      ctx.stroke();
+    }
+
+    /* jet axis, isobars, and pressure-center markers */
+    function drawSynoptic(time) {
+      drawIsobars(time);
+
+      // jet axis: the Rossby-wave meander made visible
+      ctx.strokeStyle = accentColor();
+      ctx.globalAlpha = 0.08;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 9]);
+      ctx.beginPath();
+      for (var x = 0; x <= W; x += 20) {
+        var y = jetAxisY(x, time);
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // pressure centers: L (accent) and H (dim), with central pressure
+      var lo = sysCenter(systems[1], time);
+      var hi = sysCenter(systems[0], time);
+      ctx.textAlign = "center";
+      ctx.fillStyle = accentColor();
+      ctx.globalAlpha = 0.5;
+      ctx.font = '600 15px "IBM Plex Mono", ui-monospace, monospace';
+      ctx.fillText("L", lo.x, lo.y);
+      ctx.globalAlpha = 0.35;
+      ctx.font = '10px "IBM Plex Mono", ui-monospace, monospace';
+      ctx.fillText("996", lo.x, lo.y + 14);
+      ctx.fillStyle = dimColor();
+      ctx.globalAlpha = 0.45;
+      ctx.font = '600 15px "IBM Plex Mono", ui-monospace, monospace';
+      ctx.fillText("H", hi.x, hi.y);
+      ctx.globalAlpha = 0.3;
+      ctx.font = '10px "IBM Plex Mono", ui-monospace, monospace';
+      ctx.fillText("1024", hi.x, hi.y + 14);
+    }
+
+    /* live station readout at the cursor: wind direction/speed + pressure */
+    function drawHUD(time) {
+      if (pointer.power < 0.25 || pointer.x < 0 || pointer.x > W || pointer.y < 0 || pointer.y > H) return;
+      var w = vel(pointer.x, pointer.y, time);
+      var spd = Math.sqrt(w.u * w.u + w.v * w.v);
+      var kt = Math.round(spd * 18);
+      var deg = Math.round((Math.atan2(w.u, -w.v) * 180 / Math.PI + 360) % 360);
+      var hpa = Math.round(pressure(pointer.x, pointer.y, time));
+      var a = Math.min(1, pointer.power);
+
+      ctx.strokeStyle = accentColor();
+      ctx.globalAlpha = 0.28 * a;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 5]);
+      ctx.beginPath();
+      ctx.arc(pointer.x, pointer.y, 26, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      var label = ("00" + deg).slice(-3) + "° / " + kt + " kt · " + hpa + " hPa";
+      ctx.font = '10px "IBM Plex Mono", ui-monospace, monospace';
+      ctx.textAlign = "left";
+      ctx.fillStyle = accentColor();
+      ctx.globalAlpha = 0.7 * a;
+      var tx = pointer.x + 36;
+      var ty = pointer.y - 12;
+      if (tx > W - 170) {
+        ctx.textAlign = "right";
+        tx = pointer.x - 36;
+      }
+      if (ty < 20) ty = pointer.y + 24;
+      ctx.fillText(label, tx, ty);
+    }
 
     function step() {
       // full clear every frame — trails are drawn explicitly, so no
@@ -248,6 +404,8 @@
 
       t += 0.016;
       pointer.power *= 0.97;
+
+      drawSynoptic(t);
 
       for (var j = gusts.length - 1; j >= 0; j--) {
         gusts[j].age += 0.016;
@@ -273,11 +431,12 @@
         }
       }
 
-      // draw trails in 4 alpha bands: tail faint → head bright
+      // draw trails in 4 bands: tail faint and thin → head bright and wide
       ctx.strokeStyle = accentColor();
-      ctx.lineWidth = 0.8;
+      var widths = [0.6, 0.7, 0.85, 1.05];
       for (var b = 0; b < 4; b++) {
-        ctx.globalAlpha = 0.05 + 0.12 * (b / 3);
+        ctx.globalAlpha = 0.05 + 0.15 * (b / 3);
+        ctx.lineWidth = widths[b];
         ctx.beginPath();
         for (var k = 0; k < particles.length; k++) {
           var tr = particles[k].trail;
@@ -291,12 +450,15 @@
         ctx.stroke();
       }
 
+      drawHUD(t);
+
       raf = requestAnimationFrame(step);
     }
 
-    /* static streamlines for reduced-motion users: no cursor, no gusts */
+    /* static chart for reduced-motion users: no cursor, no gusts */
     function drawStatic() {
       ctx.clearRect(0, 0, W, H);
+      drawSynoptic(0);
       ctx.globalAlpha = 0.09;
       ctx.strokeStyle = accentColor();
       ctx.lineWidth = 0.7;
