@@ -9,9 +9,22 @@ status_line: signal acquired · aiming for a PhD in HCI / AI
 
 # Search Engine Optimization (SEO)
 # The following information is used to improve the website traffic from search engines, e.g., Google.
+url: https://lzclink.com
 keywords: Zuchen Li, Data Science, Statistics, University of Michigan
-description: Zuchen Li's academic personal homepage. Undergraduate student in Honors Data Science & Statistics at the University of Michigan.
-canonical: https://links2568.github.io/
+description: Zuchen Li's academic personal homepage. Undergraduate student in Honors Data Science & Statistics at the University of Michigan, aiming for a PhD in HCI / AI.
+canonical: https://lzclink.com/
+
+# Jekyll plugins (all on the GitHub Pages allowlist)
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Default social-preview image for jekyll-seo-tag (og:image / twitter:image)
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/icon/myself.png
 
 # Links
 # If you don't need one of them, you may delete the corresponding line.

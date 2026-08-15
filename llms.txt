@@ -1,0 +1,32 @@
+# Zuchen Li
+
+> Undergraduate student at the University of Michigan, Ann Arbor, majoring in Honors Data Science & Statistics with a minor in History. Aiming for a PhD in HCI / AI. Previously studied Statistics & Computer Science at the University of Illinois Urbana-Champaign.
+
+Personal homepage: https://lzclink.com/
+
+## Research interests
+
+- Generative AI: music and audio generation, human-GenAI interaction
+- Privacy & Security: geolocation attack/defense with diffusion models and VLMs
+- Statistical Machine Learning: dimension reduction, Bayesian methods, wearable data analysis
+- Climate Science: aerosol-cloud interactions, statistical modeling
+
+## Research experience
+
+- Generative AI for Music and Audio, University of Michigan — Research Assistant (Oct 2025 – present): universal optical music recognition framework; real-time human-GenAI interaction for controllable music generation.
+- Ambient Intelligence Lab, University of Michigan — Research Assistant (Oct 2025 – present): privacy-driven geolocation attack/defense with diffusion models and VLMs; IoT sensing with Moiré-pattern optical sensors.
+- Energy Distance Dimension Reduction, University of Michigan — URPS (Jan 2025 – present): sufficient dimension reduction on multilevel wearable data; SDR algorithms re-implemented in JAX (7,000× speedup).
+- Lab of Atmospheric and Earth System Sciences, Nanjing University — Summer Research Intern (May – Aug 2024): statistical ML for aerosol-cloud interactions.
+- E2-E Lab, UIUC — Undergraduate Research Assistant (Aug 2023 – May 2024): airflow experiments, PIV data processing, CFD simulation.
+
+## Beyond research
+
+- Michigan Daily: news reporter, photographer, videographer
+- Meteorology enthusiast (ISTORM at UIUC, storm chasing) and History minor
+
+## Links
+
+- GitHub: https://github.com/Links2568
+- LinkedIn: https://www.linkedin.com/in/zuchenli/
+- Photography: https://lzclink.com/gallery/
+- Email: zuchenli (at) umich.edu

@@ -2,13 +2,44 @@
 <html lang="{{ site.lang | default: 'en-US' }}" data-theme="dark">
   <head>
     <title>{{ site.title }} | {{ site.affiliation }}</title>
-    <meta name="description" content="{{ site.description }}">
     {% if site.keywords %}
     <meta name="keywords" content="{{ site.keywords }}">
     {% endif %}
-    {% if site.canonical %}
-    <link rel="canonical" href="{{ site.canonical }}"/>
-    {% endif %}
+    {% seo title=false %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{ site.title }}",
+      "url": "{{ site.url }}/",
+      "image": "{{ site.url }}/assets/img/icon/myself.png",
+      "email": "mailto:{{ site.email | replace: ' (at) ', '@' }}",
+      "jobTitle": "{{ site.position }}",
+      "affiliation": {
+        "@type": "CollegeOrUniversity",
+        "name": "{{ site.affiliation }}",
+        "sameAs": "https://umich.edu"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Illinois Urbana-Champaign",
+        "sameAs": "https://illinois.edu"
+      },
+      "knowsAbout": [
+        "Generative AI",
+        "Human-Computer Interaction",
+        "Privacy-Aware Machine Learning",
+        "Statistical Machine Learning",
+        "Climate Science",
+        "Photography"
+      ],
+      "sameAs": [
+        {% if site.github_link %}"{{ site.github_link }}",{% endif %}
+        {% if site.instagram %}"{{ site.instagram }}",{% endif %}
+        "{{ site.linkedin }}"
+      ]
+    }
+    </script>
     {% include cyber-head.html %}
     <script>
       /* boot-sequence gate: skip for reduced motion and repeat visits this session */

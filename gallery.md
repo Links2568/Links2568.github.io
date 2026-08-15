@@ -1,6 +1,8 @@
 ---
 layout: gallery
 permalink: /gallery/
+title: Gallery
+description: Photography by Zuchen Li — photojournalism for the Michigan Daily, weather, and street photography.
 gallery_title: gallery
 gallery_description: signals collected through a viewfinder — Michigan Daily &amp; elsewhere.
 ---
