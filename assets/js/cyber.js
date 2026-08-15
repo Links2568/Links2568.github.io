@@ -123,8 +123,12 @@
   }
 
   /* ---------- ambient wind field ----------
-     A quiet flow of particles following a layered-sine wind field —
-     a nod to weather charts. Very low opacity by design. */
+     An atmospheric circulation model in miniature:
+     - a meandering jet stream carries particles west → east
+     - two slow-drifting pressure systems add cyclonic curvature
+     - the cursor is a moving low-pressure system (cyclonic inflow)
+     - a click fires a downburst: an expanding gust ring
+     Very low opacity by design. */
   function initField() {
     var canvas = document.getElementById("field");
     if (!canvas) return;
@@ -132,6 +136,15 @@
     var ctx = canvas.getContext("2d");
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     var dpr, W, H, particles, raf, t;
+    var pointer = { x: -1e4, y: -1e4, power: 0 };
+    var gusts = [];
+
+    /* two ambient pressure systems, positions as fractions of the viewport;
+       k > 0 spins one way, k < 0 the other (a low and a high) */
+    var systems = [
+      { fx: 0.24, fy: 0.3, fr: 0.3, k: 1.0, drift: 0.05 },
+      { fx: 0.76, fy: 0.7, fr: 0.34, k: -0.85, drift: 0.037 }
+    ];
 
     function accentColor() {
       return getComputedStyle(root).getPropertyValue("--accent").trim();
@@ -140,13 +153,56 @@
       return getComputedStyle(root).getPropertyValue("--bg").trim();
     }
 
-    function angle(x, y, time) {
-      return (
-        (Math.sin(x * 0.0016 + time * 0.11) +
-          Math.cos(y * 0.0013 - time * 0.07) +
-          Math.sin((x + y) * 0.0007)) *
-        Math.PI * 0.75
-      );
+    /* wind velocity (px/step) at a point */
+    function vel(x, y, time) {
+      // jet stream: meandering band of strong eastward flow
+      var jetY = H * (0.42 + 0.09 * Math.sin(time * 0.06 + x * 0.0014));
+      var band = Math.exp(-Math.pow((y - jetY) / (H * 0.17), 2));
+      var u = 0.3 + 1.15 * band;
+      var v = 0.4 * Math.sin(x * 0.0028 - time * 0.11) * (0.25 + band);
+
+      // pressure systems: Gaussian vortices drifting slowly
+      for (var i = 0; i < systems.length; i++) {
+        var s = systems[i];
+        var cx = (s.fx + 0.06 * Math.sin(time * s.drift)) * W;
+        var cy = (s.fy + 0.05 * Math.cos(time * s.drift * 1.3)) * H;
+        var R = s.fr * Math.min(W, H);
+        var dx = x - cx;
+        var dy = y - cy;
+        var g = Math.exp(-(dx * dx + dy * dy) / (R * R));
+        u += (-dy / R) * s.k * 1.15 * g;
+        v += (dx / R) * s.k * 1.15 * g;
+      }
+
+      // cursor: low-pressure system — cyclonic swirl with slight inflow
+      if (pointer.power > 0.02) {
+        var pr = 150;
+        var pdx = x - pointer.x;
+        var pdy = y - pointer.y;
+        var pg = Math.exp(-(pdx * pdx + pdy * pdy) / (pr * pr)) * pointer.power;
+        u += ((-pdy - pdx * 0.35) / pr) * 2.8 * pg;
+        v += ((pdx - pdy * 0.35) / pr) * 2.8 * pg;
+      }
+
+      // gust rings from clicks: radial outward push on an expanding front
+      for (var j = 0; j < gusts.length; j++) {
+        var gu = gusts[j];
+        var gdx = x - gu.x;
+        var gdy = y - gu.y;
+        var d = Math.sqrt(gdx * gdx + gdy * gdy) || 1;
+        var front = gu.age * 260;
+        var ring = Math.exp(-Math.pow((d - front) / 55, 2)) * (1 - gu.age) * 3.2;
+        u += (gdx / d) * ring;
+        v += (gdy / d) * ring;
+      }
+
+      // cap the magnitude so vortex cores never go wild
+      var m = Math.sqrt(u * u + v * v);
+      if (m > 3) {
+        u = (u / m) * 3;
+        v = (v / m) * 3;
+      }
+      return { u: u, v: v };
     }
 
     function resize() {
@@ -161,15 +217,27 @@
       if (reduceMotion.matches) drawStatic();
     }
 
+    /* enter from the western boundary, like a wind chart */
+    function spawn(p, anywhere) {
+      if (anywhere || Math.random() < 0.25) {
+        p.x = Math.random() * W;
+        p.y = Math.random() * H;
+      } else {
+        p.x = -4;
+        p.y = Math.random() * H;
+      }
+      p.life = 200 + Math.random() * 400;
+    }
+
+    var baseCount = 0;
+
     function seed() {
-      var n = Math.max(50, Math.min(130, Math.round((W * H) / 26000)));
+      baseCount = Math.max(45, Math.min(110, Math.round((W * H) / 30000)));
       particles = [];
-      for (var i = 0; i < n; i++) {
-        particles.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          life: 60 + Math.random() * 240
-        });
+      for (var i = 0; i < baseCount; i++) {
+        var p = {};
+        spawn(p, true);
+        particles.push(p);
       }
       t = Math.random() * 100;
     }
@@ -180,28 +248,28 @@
       ctx.fillRect(0, 0, W, H);
     }
 
-    function respawn(p) {
-      p.x = Math.random() * W;
-      p.y = Math.random() * H;
-      p.life = 60 + Math.random() * 240;
-    }
-
     function step() {
       // translucent veil of bg → trails fade slowly
-      ctx.globalAlpha = 0.03;
+      ctx.globalAlpha = 0.035;
       ctx.fillStyle = bgColor();
       ctx.fillRect(0, 0, W, H);
 
-      ctx.globalAlpha = 0.2;
+      ctx.globalAlpha = 0.17;
       ctx.strokeStyle = accentColor();
       ctx.lineWidth = 0.8;
       t += 0.016;
+      pointer.power *= 0.97;
+
+      for (var j = gusts.length - 1; j >= 0; j--) {
+        gusts[j].age += 0.016;
+        if (gusts[j].age >= 1) gusts.splice(j, 1);
+      }
 
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
-        var a = angle(p.x, p.y, t);
-        var nx = p.x + Math.cos(a) * 1.3;
-        var ny = p.y + Math.sin(a) * 1.3;
+        var w = vel(p.x, p.y, t);
+        var nx = p.x + w.u * 1.4;
+        var ny = p.y + w.v * 1.4;
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(nx, ny);
@@ -209,28 +277,35 @@
         p.x = nx;
         p.y = ny;
         p.life -= 1;
-        if (p.life <= 0 || p.x < -10 || p.x > W + 10 || p.y < -10 || p.y > H + 10) {
-          respawn(p);
+        if (p.life <= 0 || p.x < -12 || p.x > W + 12 || p.y < -12 || p.y > H + 12) {
+          if (particles.length > baseCount) {
+            particles.splice(i, 1);
+            i--;
+          } else {
+            spawn(p, false);
+          }
         }
       }
       raf = requestAnimationFrame(step);
     }
 
-    /* one static frame of streamlines for reduced-motion users */
+    /* static streamlines for reduced-motion users: no cursor, no gusts */
     function drawStatic() {
       paintBase();
-      ctx.globalAlpha = 0.1;
+      ctx.globalAlpha = 0.09;
       ctx.strokeStyle = accentColor();
-      ctx.lineWidth = 0.6;
-      for (var i = 0; i < 42; i++) {
-        var x = Math.random() * W;
-        var y = Math.random() * H;
+      ctx.lineWidth = 0.7;
+      var rows = 26;
+      for (var i = 0; i < rows; i++) {
+        var x = 0;
+        var y = (i + 0.5) * (H / rows);
         ctx.beginPath();
         ctx.moveTo(x, y);
-        for (var s = 0; s < 140; s++) {
-          var a = angle(x, y, 0);
-          x += Math.cos(a) * 1.4;
-          y += Math.sin(a) * 1.4;
+        for (var s = 0; s < 320; s++) {
+          var w = vel(x, y, 0);
+          x += w.u * 2;
+          y += w.v * 2;
+          if (x > W || y < 0 || y > H) break;
           ctx.lineTo(x, y);
         }
         ctx.stroke();
@@ -247,10 +322,49 @@
     }
 
     window.addEventListener("resize", resize);
+    window.addEventListener(
+      "mousemove",
+      function (e) {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        pointer.power = 1;
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "touchmove",
+      function (e) {
+        if (e.touches.length) {
+          pointer.x = e.touches[0].clientX;
+          pointer.y = e.touches[0].clientY;
+          pointer.power = 1;
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "click",
+      function (e) {
+        if (reduceMotion.matches) return;
+        gusts.push({ x: e.clientX, y: e.clientY, age: 0 });
+        if (gusts.length > 4) gusts.shift();
+        // kick up tracer particles so the gust is visible even in calm regions
+        for (var i = 0; i < 16; i++) {
+          particles.push({
+            x: e.clientX + (Math.random() - 0.5) * 10,
+            y: e.clientY + (Math.random() - 0.5) * 10,
+            life: 50 + Math.random() * 50
+          });
+        }
+      },
+      { passive: true }
+    );
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
         cancelAnimationFrame(raf);
       } else {
+        // if the page loaded in a background tab, the canvas sized to 0×0
+        if (canvas.clientWidth !== W || canvas.clientHeight !== H) resize();
         start();
       }
     });
