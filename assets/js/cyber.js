@@ -149,9 +149,6 @@
     function accentColor() {
       return getComputedStyle(root).getPropertyValue("--accent").trim();
     }
-    function bgColor() {
-      return getComputedStyle(root).getPropertyValue("--bg").trim();
-    }
 
     /* wind velocity (px/step) at a point */
     function vel(x, y, time) {
@@ -213,7 +210,6 @@
       canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       seed();
-      paintBase();
       if (reduceMotion.matches) drawStatic();
     }
 
@@ -227,6 +223,7 @@
         p.y = Math.random() * H;
       }
       p.life = 200 + Math.random() * 400;
+      p.trail = [];
     }
 
     var baseCount = 0;
@@ -242,21 +239,13 @@
       t = Math.random() * 100;
     }
 
-    function paintBase() {
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = bgColor();
-      ctx.fillRect(0, 0, W, H);
-    }
+    var TRAIL = 12;
 
     function step() {
-      // translucent veil of bg → trails fade slowly
-      ctx.globalAlpha = 0.035;
-      ctx.fillStyle = bgColor();
-      ctx.fillRect(0, 0, W, H);
+      // full clear every frame — trails are drawn explicitly, so no
+      // accumulation and no 8-bit rounding ghosts
+      ctx.clearRect(0, 0, W, H);
 
-      ctx.globalAlpha = 0.17;
-      ctx.strokeStyle = accentColor();
-      ctx.lineWidth = 0.8;
       t += 0.016;
       pointer.power *= 0.97;
 
@@ -265,17 +254,14 @@
         if (gusts[j].age >= 1) gusts.splice(j, 1);
       }
 
+      // advance particles, recording a short position history
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
+        p.trail.push({ x: p.x, y: p.y });
+        if (p.trail.length > TRAIL) p.trail.shift();
         var w = vel(p.x, p.y, t);
-        var nx = p.x + w.u * 1.4;
-        var ny = p.y + w.v * 1.4;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(nx, ny);
-        ctx.stroke();
-        p.x = nx;
-        p.y = ny;
+        p.x += w.u * 1.4;
+        p.y += w.v * 1.4;
         p.life -= 1;
         if (p.life <= 0 || p.x < -12 || p.x > W + 12 || p.y < -12 || p.y > H + 12) {
           if (particles.length > baseCount) {
@@ -286,12 +272,31 @@
           }
         }
       }
+
+      // draw trails in 4 alpha bands: tail faint → head bright
+      ctx.strokeStyle = accentColor();
+      ctx.lineWidth = 0.8;
+      for (var b = 0; b < 4; b++) {
+        ctx.globalAlpha = 0.05 + 0.12 * (b / 3);
+        ctx.beginPath();
+        for (var k = 0; k < particles.length; k++) {
+          var tr = particles[k].trail;
+          var lo = Math.floor((tr.length - 1) * (b / 4));
+          var hi = Math.floor((tr.length - 1) * ((b + 1) / 4));
+          for (var s = lo; s < hi; s++) {
+            ctx.moveTo(tr[s].x, tr[s].y);
+            ctx.lineTo(tr[s + 1].x, tr[s + 1].y);
+          }
+        }
+        ctx.stroke();
+      }
+
       raf = requestAnimationFrame(step);
     }
 
     /* static streamlines for reduced-motion users: no cursor, no gusts */
     function drawStatic() {
-      paintBase();
+      ctx.clearRect(0, 0, W, H);
       ctx.globalAlpha = 0.09;
       ctx.strokeStyle = accentColor();
       ctx.lineWidth = 0.7;
@@ -353,7 +358,8 @@
           particles.push({
             x: e.clientX + (Math.random() - 0.5) * 10,
             y: e.clientY + (Math.random() - 0.5) * 10,
-            life: 50 + Math.random() * 50
+            life: 50 + Math.random() * 50,
+            trail: []
           });
         }
       },
@@ -369,7 +375,6 @@
       }
     });
     document.addEventListener("themechange", function () {
-      paintBase();
       if (reduceMotion.matches) drawStatic();
     });
     if (reduceMotion.addEventListener) {
