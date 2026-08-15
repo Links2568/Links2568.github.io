@@ -363,38 +363,23 @@
       ctx.fillText("1024", hi.x, hi.y + 14);
     }
 
-    /* live station readout at the cursor: wind direction/speed + pressure */
-    function drawHUD(time) {
-      if (pointer.power < 0.25 || pointer.x < 0 || pointer.x > W || pointer.y < 0 || pointer.y > H) return;
-      var w = vel(pointer.x, pointer.y, time);
-      var spd = Math.sqrt(w.u * w.u + w.v * w.v);
-      var kt = Math.round(spd * 18);
-      var deg = Math.round((Math.atan2(w.u, -w.v) * 180 / Math.PI + 360) % 360);
-      var hpa = Math.round(pressure(pointer.x, pointer.y, time));
+    /* spinning dust rings that ride the tornado cursor — the funnel is
+       the CSS cursor image (tip at the hotspot), these make it spin */
+    function drawCursorVortex(time) {
+      if (pointer.power < 0.05 || pointer.x < 0 || pointer.x > W || pointer.y < 0 || pointer.y > H) return;
       var a = Math.min(1, pointer.power);
-
       ctx.strokeStyle = accentColor();
-      ctx.globalAlpha = 0.28 * a;
       ctx.lineWidth = 1;
-      ctx.setLineDash([3, 5]);
-      ctx.beginPath();
-      ctx.arc(pointer.x, pointer.y, 26, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      var label = ("00" + deg).slice(-3) + "° / " + kt + " kt · " + hpa + " hPa";
-      ctx.font = '10px "IBM Plex Mono", ui-monospace, monospace';
-      ctx.textAlign = "left";
-      ctx.fillStyle = accentColor();
-      ctx.globalAlpha = 0.7 * a;
-      var tx = pointer.x + 36;
-      var ty = pointer.y - 12;
-      if (tx > W - 170) {
-        ctx.textAlign = "right";
-        tx = pointer.x - 36;
+      for (var i = 0; i < 3; i++) {
+        var cx = pointer.x + 1.5 + i * 3;
+        var cy = pointer.y - 3 - i * 7.5;
+        var rx = 3.5 + i * 4.5;
+        var start = time * (7 - i * 1.4) + i * 2.1;
+        ctx.globalAlpha = (0.35 - i * 0.07) * a;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, rx * 0.42, 0, start, start + 2.1);
+        ctx.stroke();
       }
-      if (ty < 20) ty = pointer.y + 24;
-      ctx.fillText(label, tx, ty);
     }
 
     function step() {
@@ -450,7 +435,7 @@
         ctx.stroke();
       }
 
-      drawHUD(t);
+      drawCursorVortex(t);
 
       raf = requestAnimationFrame(step);
     }

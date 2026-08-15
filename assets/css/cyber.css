@@ -54,6 +54,12 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   transition: background 0.25s ease, color 0.25s ease;
+  /* tornado cursor: funnel tip = hotspot, i.e. where the twister touches down */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cg stroke='%230b0f14' stroke-width='3.6'%3E%3Cpath d='M3 4C9 2 19 2 25 4C19 6 9 6 3 4Z'/%3E%3Cpath d='M6 9C11 7.6 18 7.6 22 9'/%3E%3Cpath d='M8 14C12 12.9 16 12.9 19 14'/%3E%3Cpath d='M8.5 19C11 18.2 13.5 18.2 15 19'/%3E%3Cpath d='M9.5 22.5L8 25'/%3E%3C/g%3E%3Cg stroke='%235ce1ff' stroke-width='1.6'%3E%3Cpath d='M3 4C9 2 19 2 25 4C19 6 9 6 3 4Z'/%3E%3Cpath d='M6 9C11 7.6 18 7.6 22 9'/%3E%3Cpath d='M8 14C12 12.9 16 12.9 19 14'/%3E%3Cpath d='M8.5 19C11 18.2 13.5 18.2 15 19'/%3E%3Cpath d='M9.5 22.5L8 25'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 8 25, auto;
+}
+
+:root[data-theme="light"] body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cg stroke='%23fafcfd' stroke-width='3.6'%3E%3Cpath d='M3 4C9 2 19 2 25 4C19 6 9 6 3 4Z'/%3E%3Cpath d='M6 9C11 7.6 18 7.6 22 9'/%3E%3Cpath d='M8 14C12 12.9 16 12.9 19 14'/%3E%3Cpath d='M8.5 19C11 18.2 13.5 18.2 15 19'/%3E%3Cpath d='M9.5 22.5L8 25'/%3E%3C/g%3E%3Cg stroke='%230076c7' stroke-width='1.6'%3E%3Cpath d='M3 4C9 2 19 2 25 4C19 6 9 6 3 4Z'/%3E%3Cpath d='M6 9C11 7.6 18 7.6 22 9'/%3E%3Cpath d='M8 14C12 12.9 16 12.9 19 14'/%3E%3Cpath d='M8.5 19C11 18.2 13.5 18.2 15 19'/%3E%3Cpath d='M9.5 22.5L8 25'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 8 25, auto;
 }
 
 ::selection {
