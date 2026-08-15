@@ -150,8 +150,8 @@ const email = SITE.email.replace(" (at) ", "@");
       )
     }
 
-    <script>
-      import "../scripts/cyber.js";
-    </script>
+    <!-- stable path (not content-hashed): stale cached HTML during the
+         10-minute GitHub Pages cache window must still resolve this -->
+    <script is:inline src="/scripts/cyber.js" defer></script>
   </body>
 </html>
