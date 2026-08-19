@@ -1,32 +1,51 @@
-# Zuchen Li
+# Zuchen Li (李祖臣)
 
-> Undergraduate student at the University of Michigan, Ann Arbor, majoring in Honors Data Science & Statistics with a minor in History. Aiming for a PhD in HCI / AI. Previously studied Statistics & Computer Science at the University of Illinois Urbana-Champaign.
+> Undergraduate at the University of Michigan, Ann Arbor, majoring in Statistics & Computer Science with a minor in History. Aiming for a PhD in HCI / AI. Previously studied Statistics & Computer Science at the University of Illinois Urbana-Champaign (minor in Meteorology).
 
 Personal homepage: https://lzclink.com/
 
 ## Research interests
 
-- Generative AI: music and audio generation, human-GenAI interaction
-- Privacy & Security: geolocation attack/defense with diffusion models and VLMs
-- Statistical Machine Learning: dimension reduction, Bayesian methods, wearable data analysis
-- Climate Science: aerosol-cloud interactions, statistical modeling
+- Human–AI Interaction: real-time human–GenAI co-creation, gesture-driven interfaces, GUI-agent robustness
+- Context-Aware Intelligent Systems: contextualized live visual instruction bridging generative foundation models and real-world task execution
+- Ubiquitous Sensing: camera-based Moiré-encoded sensing, multimodal respiratory sensing, visual-privacy defenses against VLM inference
+- AI4Science: statistical ML for aerosol–cloud interactions, dimension reduction for clinical wearable data
 
 ## Research experience
 
-- Generative AI for Music and Audio, University of Michigan — Research Assistant (Oct 2025 – present): universal optical music recognition framework; real-time human-GenAI interaction for controllable music generation.
-- Ambient Intelligence Lab, University of Michigan — Research Assistant (Oct 2025 – present): privacy-driven geolocation attack/defense with diffusion models and VLMs; IoT sensing with Moiré-pattern optical sensors.
-- Energy Distance Dimension Reduction, University of Michigan — URPS (Jan 2025 – present): sufficient dimension reduction on multilevel wearable data; SDR algorithms re-implemented in JAX (7,000× speedup).
-- Lab of Atmospheric and Earth System Sciences, Nanjing University — Summer Research Intern (May – Aug 2024): statistical ML for aerosol-cloud interactions.
-- E2-E Lab, UIUC — Undergraduate Research Assistant (Aug 2023 – May 2024): airflow experiments, PIV data processing, CFD simulation.
+- HAIL Lab, University of Michigan — Research Assistant, advised by Prof. Anhong Guo (May 2026 – present): contextualized live visual instruction; mixed-reality systems that reason over live workspaces and generate spatially situated guidance.
+- Ambient Intelligence Lab, University of Michigan — Research Assistant, advised by Prof. Ke Sun (Oct 2025 – present): agentic visual-privacy framework against VLM inference; camera-based Moiré fabrication sensing; RespiraFrame eyeglass-based respiratory sensing (with Prof. Junyi Zhu).
+- Generative AI for Music and Audio, University of Michigan — Research Assistant, advised by Prof. Herman Dong (Sept 2025 – present): real-time human–GenAI co-creation for controllable music generation; gesture-driven interaction techniques.
+- Energy Distance Dimension Reduction, University of Michigan — URPS Selected Researcher, advised by Prof. Kerby Shedden (Jan – May 2025): engression and sufficient dimension reduction for multilevel wearable data; JAX GPU re-implementation with ~7,000× speedup.
+- Lab of Atmospheric and Earth System Sciences, Nanjing University — Summer Research Intern, advised by Prof. Minghuai Wang (May – Aug 2024): statistical ML for aerosol–cloud interactions.
+- E2-E Lab, UIUC — Undergraduate Research Assistant (Aug 2023 – May 2024): airflow experiments, PIV processing (OpenCV/OpenPIV), CFD simulation (ANSYS Fluent).
+
+## Selected projects
+
+- MagicBaton: gesture-based human–AI music interaction — dual-IMU smart conducting baton, real-time edge gesture recognition, jerk-based beat/BPM estimation, MIDI + Magenta MusicRNN; public dataset of ~934 recordings across 8 gesture classes. https://lzclink.com/projects/magicbaton/
+- Multimodal FSM for Adaptive Skill Guidance: VLM + YAMNet audio fused with a 12-state machine for real-time hand-washing guidance; Qwen3-VL and Gemini backends. https://lzclink.com/projects/adaptive-skill-guidance/
+- How Fragile Are GUI Agents?: controlled perturbation benchmark across five interface-evolution categories, built on VisualWebArena. https://lzclink.com/projects/gui-agent-fragility/
+- Bayesian MCMC for Ebola outbreak data: data-augmentation MCMC for partially observed, censored epidemic records. https://lzclink.com/projects/ebola-mcmc/
+
+## Honors
+
+- UROP Summer Engineering Fellowship, University of Michigan (2026)
+- University Honors, University of Michigan (2024–2026)
+- Outstanding Research Paper Award, IMMC Greater China Round — top 1.875% of 800+ teams (2022)
+- Finalist Research Paper Award, IMMC International Round (2022)
 
 ## Beyond research
 
-- Michigan Daily: news reporter, photographer, videographer
+- The Michigan Daily: student reporter, photographer & videographer (Aug 2025 – Jul 2026)
+- Waseda University summer intern (2025): postwar Japanese literature and historical memory
 - Meteorology enthusiast (ISTORM at UIUC, storm chasing) and History minor
 
-## Links
+## Site map
 
+- Projects: https://lzclink.com/projects/
+- Blog: https://lzclink.com/blog/ (RSS: https://lzclink.com/rss.xml)
+- Photography: https://lzclink.com/gallery/
+- CV: https://lzclink.com/assets/files/CV_ZuchenLi_2026.pdf
 - GitHub: https://github.com/Links2568
 - LinkedIn: https://www.linkedin.com/in/zuchenli/
-- Photography: https://lzclink.com/gallery/
 - Email: zuchenli (at) umich.edu

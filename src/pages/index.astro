@@ -19,7 +19,11 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
     <p class="prompt-line">whoami</p>
     <div class="hero-top">
       <div>
-        <h1>{SITE.title}<span class="cursor" aria-hidden="true"></span></h1>
+        <h1>
+          {SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span><span
+            class="cursor"
+            aria-hidden="true"></span>
+        </h1>
         <p class="role">
           {SITE.position} · <a href={SITE.affiliationUrl} rel="noopener">{SITE.affiliation}</a>
         </p>
@@ -44,25 +48,32 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
   <div class="content">
     <h2>about</h2>
     <p>
-      I am an undergraduate student at the <strong>University of Michigan, Ann Arbor</strong>,
-      majoring in <strong>Honors Data Science &amp; Statistics</strong> with a minor in
-      <strong>History</strong>. Previously, I studied Statistics &amp; Computer Science at the
-      University of Illinois Urbana-Champaign. My research interests span generative AI,
-      privacy-aware machine learning, and human-computer interaction.
+      I am an undergraduate at the <strong>University of Michigan, Ann Arbor</strong>, majoring in
+      <strong>Statistics &amp; Computer Science</strong> with a minor in <strong>History</strong>.
+      Previously, I studied Statistics &amp; Computer Science at the University of Illinois
+      Urbana-Champaign, with a minor in Meteorology. I build and study systems where humans and AI
+      meet — from real-time co-creation with generative models to sensing systems that understand
+      their physical context.
     </p>
 
     <h2>research</h2>
     <ul>
-      <li><strong>Generative AI:</strong> music and audio generation, human-GenAI interaction</li>
       <li>
-        <strong>Privacy &amp; Security:</strong> geolocation attack/defense with diffusion models
-        and VLMs
+        <strong>Human–AI Interaction:</strong> real-time human–GenAI co-creation, gesture-driven
+        interfaces for controllable music generation, GUI-agent robustness
       </li>
       <li>
-        <strong>Statistical Machine Learning:</strong> dimension reduction, Bayesian methods,
-        wearable data analysis
+        <strong>Context-Aware Intelligent Systems:</strong> contextualized live visual instruction
+        that bridges generative foundation models and real-world task execution
       </li>
-      <li><strong>Climate Science:</strong> aerosol-cloud interactions, statistical modeling</li>
+      <li>
+        <strong>Ubiquitous Sensing:</strong> camera-based Moiré-encoded sensing, multimodal
+        respiratory sensing, agentic visual-privacy defenses against VLM inference
+      </li>
+      <li>
+        <strong>AI4Science:</strong> statistical machine learning for aerosol–cloud interactions,
+        dimension reduction for clinical wearable data
+      </li>
     </ul>
 
     <h2>projects</h2>
@@ -84,55 +95,88 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
     <h2>experience</h2>
     <ul>
       <li>
-        <strong>Generative AI for Music and Audio</strong>, UMich — Research Assistant
-        <code>2025.10 → now</code>
-        <br />Building a universal optical music recognition framework for visually complex
-        notations; exploring real-time human–GenAI interaction for controllable music generation.
+        <strong>HAIL Lab</strong>, UMich — Research Assistant, advised by Prof. Anhong Guo
+        <code>2026.05 → now</code>
+        <br />Developing a framework for contextualized live visual instruction that bridges
+        generative foundation models and real-world task execution — mixed-reality systems that
+        reason over live workspaces and generate timely, spatially situated visual guidance.
       </li>
       <li>
-        <strong>Ambient Intelligence Lab</strong>, UMich — Research Assistant
-        <code>2025.10 → now</code>
-        <br />Developing privacy-driven geolocation attack and defense frameworks using diffusion
-        models and VLMs; designing intelligent IoT sensing systems with Moiré-pattern optical
-        sensors.
+        <strong>Ambient Intelligence Lab</strong>, UMich — Research Assistant, advised by Prof. Ke
+        Sun <code>2025.10 → now</code>
+        <br />Agentic visual-privacy framework that discovers and edits the weak compositional cues
+        VLMs exploit; camera-based fabrication sensing that amplifies Moiré-encoded motion into
+        physiological signals; RespiraFrame, an eyeglass-based multimodal respiratory sensing
+        system (with Prof. Junyi Zhu).
       </li>
       <li>
-        <strong>Energy Distance Dimension Reduction</strong>, UMich — URPS
-        <code>2025.01 → now</code>
-        <br />Applying sufficient dimension reduction to multilevel wearable data from bone marrow
-        transplant patients; re-implementing SDR algorithms in JAX with 7,000× speedup.
+        <strong>Generative AI for Music and Audio</strong>, UMich — Research Assistant, advised by
+        Prof. Herman Dong <code>2025.09 → now</code>
+        <br />Real-time human–GenAI co-creation for controllable music generation — interaction
+        mechanisms that preserve user agency and expressive control, and gesture-driven techniques
+        connecting embodied input to live musical output.
+      </li>
+      <li>
+        <strong>Energy Distance Dimension Reduction</strong>, UMich — URPS Selected Researcher,
+        advised by Prof. Kerby Shedden <code>2025.01 → 2025.05</code>
+        <br />Engression and sufficient dimension reduction for multilevel wearable data from bone
+        marrow transplant patients; re-implemented SDR algorithms in JAX with GPU acceleration for
+        a ~7,000× speedup.
+      </li>
+      <li>
+        <strong>Waseda University</strong>, Tokyo — Summer Intern <code>2025.06 → 2025.08</code>
+        <br />Researched postwar Japanese literature and history — literary works in relation to
+        historical memory, identity, and social transformation.
       </li>
       <li>
         <strong>Lab of Atmospheric and Earth System Sciences</strong>, Nanjing University — Summer
-        Research Intern <code>2024.05 → 2024.08</code>
-        <br />Applied statistical machine learning to study aerosol-cloud interactions and improved
-        simulations of aerosol optical properties and climate effects.
+        Research Intern, advised by Prof. Minghuai Wang <code>2024.05 → 2024.08</code>
+        <br />Statistical machine learning for integrating real-world sensor observations with
+        simulated atmospheric data — inference and prediction of aerosol–cloud interactions at
+        larger spatial and temporal scales.
       </li>
       <li>
         <strong>E2-E Lab</strong>, UIUC — Undergraduate Research Assistant
         <code>2023.08 → 2024.05</code>
-        <br />Conducted airflow experiments with PIV data processing and CFD simulations to analyze
-        particle–airflow interactions in complex 3D geometries.
+        <br />Airflow experiments with PIV flow-field reconstruction (Python, OpenCV, OpenPIV) and
+        CFD simulations in ANSYS Fluent, analyzing particle–airflow interactions in complex 3D
+        geometries.
+      </li>
+    </ul>
+
+    <h2>awards</h2>
+    <ul>
+      <li>
+        <strong>UROP Summer Engineering Fellowship</strong>, University of Michigan <code>2026</code>
+      </li>
+      <li><strong>University Honors</strong>, University of Michigan <code>2024 → 2026</code></li>
+      <li>
+        <strong>Outstanding Research Paper Award</strong>, IMMC Greater China Round — top 1.875% of
+        800+ teams <code>2022</code>
+      </li>
+      <li>
+        <strong>Finalist Research Paper Award</strong>, IMMC International Round <code>2022</code>
       </li>
     </ul>
 
     <h2>etc</h2>
     <ul>
       <li>
-        <strong>Michigan Daily:</strong> News reporter, photographer, and videographer — producing
-        multimedia content including short-form videos and digital features.
+        <strong>The Michigan Daily:</strong> student reporter, photographer &amp; videographer
+        <code>2025.08 → 2026.07</code> — campus and local news through interviews, field reporting,
+        photography, and video. Some frames end up in the <a href="/gallery/">gallery</a>.
       </li>
       <li>
-        <strong>ISTORM (UIUC):</strong> Member of the Illinois Student Organization of Meteorology,
-        the student chapter of the American Meteorological Society, focused on severe and hazardous
-        weather forecasting.
+        <strong>ISTORM (UIUC):</strong> member of the Illinois Student Organization of Meteorology,
+        the student chapter of the American Meteorological Society — severe and hazardous weather
+        forecasting. The background of this page is a small tribute.
       </li>
       <li>
-        <strong>History:</strong> Passionate about history with a minor in the subject, exploring
-        how past events shape our understanding of the present.
+        <strong>History:</strong> minor in the subject — how past events shape our understanding of
+        the present, from postwar Japan outward.
       </li>
       <li>
-        <strong>Meteorology:</strong> A lifelong fascination with weather and atmospheric science,
+        <strong>Meteorology:</strong> a lifelong fascination with weather and atmospheric science,
         from storm chasing to climate modeling.
       </li>
     </ul>

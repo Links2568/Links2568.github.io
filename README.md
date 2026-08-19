@@ -22,5 +22,14 @@ see the how-to comment in `optical-music-recognition.md`.
 
 ## Add gallery photos
 
-Put images in `public/assets/img/gallery/` and add `masonry-item` entries in
-`src/pages/gallery.astro`.
+1. Drop the image (full resolution is fine) into `src/assets/gallery/`.
+2. Add an entry to `src/data/photos.ts` — alt text required; caption, location,
+   date, and series optional. Astro generates responsive WebP at build time.
+
+Series filters appear automatically once photos span 2+ series.
+
+## Write a blog post
+
+Create `src/content/blog/<slug>.md` with frontmatter (`title`, `description`,
+`date`, optional `tags`), write Markdown. The index, RSS feed (`/rss.xml`),
+reading time, and prev/next links are generated automatically.

@@ -51,6 +51,7 @@ const email = SITE.email.replace(" (at) ", "@");
             "@context": "https://schema.org",
             "@type": "Person",
             name: SITE.title,
+            alternateName: SITE.zhName,
             url: `${Astro.site}`,
             image: `${ogImage}`,
             email: `mailto:${email}`,
@@ -66,9 +67,11 @@ const email = SITE.email.replace(" (at) ", "@");
               sameAs: "https://illinois.edu",
             },
             knowsAbout: [
+              "Human-AI Interaction",
+              "Context-Aware Intelligent Systems",
+              "Ubiquitous Sensing",
+              "AI4Science",
               "Generative AI",
-              "Human-Computer Interaction",
-              "Privacy-Aware Machine Learning",
               "Statistical Machine Learning",
               "Climate Science",
               "Photography",
@@ -111,6 +114,16 @@ const email = SITE.email.replace(" (at) ", "@");
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
     />
+    {
+      /* calligraphy face for the Chinese name — subset to its three glyphs */
+      isHome && (
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&text=%E6%9D%8E%E7%A5%96%E8%87%A3&display=swap"
+        />
+      )
+    }
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.title} — blog`} href="/rss.xml" />
   </head>
   <body>
     {

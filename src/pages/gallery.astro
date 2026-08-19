@@ -1,7 +1,50 @@
 ---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import Base from "../layouts/Base.astro";
 import { SITE } from "../consts";
+import { photos } from "../data/photos";
 import "../styles/gallery.css";
+
+const sources = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
+  { eager: true }
+);
+
+type Item = {
+  alt: string;
+  caption: string;
+  meta: string;
+  series: string;
+  ar: number;
+  grid: { src: string; srcSet: { attribute: string } };
+  full: { src: string };
+};
+
+const items: Item[] = [];
+for (const ph of photos) {
+  const mod = sources[`../assets/gallery/${ph.file}`];
+  if (!mod) {
+    console.warn(`[gallery] ${ph.file} listed in photos.ts but missing from src/assets/gallery/`);
+    continue;
+  }
+  const img = mod.default;
+  const grid = await getImage({ src: img, widths: [480, 900, 1400], format: "webp" });
+  const full = await getImage({ src: img, width: Math.min(2200, img.width), format: "webp" });
+  items.push({
+    alt: ph.alt,
+    caption: ph.caption ?? "",
+    meta: [ph.location, ph.date].filter(Boolean).join(" · "),
+    series: ph.series ?? "",
+    ar: img.width / img.height,
+    grid,
+    full,
+  });
+}
+
+const seriesList = [...new Set(items.map((it) => it.series).filter(Boolean))];
+const showFilter = seriesList.length > 1;
+const pad2 = (n: number) => String(n).padStart(2, "0");
 ---
 
 <Base
@@ -14,67 +57,170 @@ import "../styles/gallery.css";
     <div class="gallery-header">
       <h1><span class="path-prefix">~/</span>gallery</h1>
       <p>signals collected through a viewfinder — Michigan Daily &amp; elsewhere.</p>
+      {
+        showFilter && (
+          <nav class="gallery-filter" aria-label="Filter by series">
+            <button class="filter-btn active" data-series="">
+              all
+            </button>
+            {seriesList.map((s) => (
+              <button class="filter-btn" data-series={s}>
+                {s}
+              </button>
+            ))}
+          </nav>
+        )
+      }
     </div>
 
-    <div class="masonry">
-      <!--
-        How to add photos:
-        1. Place your image in public/assets/img/gallery/
-        2. Add an entry below:
-        <div class="masonry-item">
-          <img src="/assets/img/gallery/your-photo.jpg" alt="Description" loading="lazy" />
-          <div class="caption">Optional caption text</div>
+    {
+      items.length === 0 ? (
+        <p class="gallery-empty">
+          $ ls ~/gallery
+          <br />0 items — film still developing. check back soon.
+        </p>
+      ) : (
+        <div class="justified" id="justified">
+          {items.map((it, i) => (
+            <figure
+              class="jphoto"
+              style={`--ar: ${it.ar.toFixed(4)}`}
+              data-index={i}
+              data-series={it.series}
+              data-full={it.full.src}
+              data-caption={it.caption}
+              data-meta={it.meta}
+              data-alt={it.alt}
+              tabindex="0"
+              role="button"
+              aria-label={`Open photo: ${it.alt}`}
+            >
+              <img
+                src={it.grid.src}
+                srcset={it.grid.srcSet.attribute}
+                sizes="(max-width: 760px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                alt={it.alt}
+                loading={i < 4 ? "eager" : "lazy"}
+                decoding="async"
+              />
+              <figcaption class="jcap">
+                <span class="jcap-idx">[{pad2(i + 1)}]</span>
+                <span class="jcap-text">{it.caption || it.alt}</span>
+                {it.meta && <span class="jcap-meta">{it.meta}</span>}
+              </figcaption>
+            </figure>
+          ))}
         </div>
-      -->
-      <!-- Delete this empty-state block once real photos are added -->
-      <p class="gallery-empty">
-        $ ls ~/gallery<br />0 items — film still developing. check back soon.
-      </p>
-    </div>
+      )
+    }
 
     <footer class="site-footer">
-      <span>— EOF — last build {new Date().toISOString().slice(0, 10).replaceAll("-", ".")}</span>
+      <span>— EOF — {items.length} frames</span>
       <span>powered by <a href="https://astro.build" rel="noopener">astro</a></span>
     </footer>
   </main>
 
   <!-- Lightbox -->
-  <div class="lightbox-overlay" id="lightbox">
+  <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
     <button class="lightbox-close" aria-label="Close">&times;</button>
-    <img id="lightbox-img" src="" alt="" />
-    <div class="lightbox-caption" id="lightbox-caption"></div>
+    <button class="lightbox-arrow lightbox-prev" aria-label="Previous photo">&larr;</button>
+    <button class="lightbox-arrow lightbox-next" aria-label="Next photo">&rarr;</button>
+    <figure class="lightbox-stage">
+      <img id="lightbox-img" src="" alt="" />
+      <figcaption class="lightbox-bar">
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+        <span class="lightbox-caption" id="lightbox-caption"></span>
+        <span class="lightbox-meta" id="lightbox-meta"></span>
+      </figcaption>
+    </figure>
   </div>
 
   <script>
+    /* ---- collect photo data from the grid ---- */
+    const figures = Array.from(document.querySelectorAll<HTMLElement>(".jphoto"));
     const overlay = document.getElementById("lightbox")!;
     const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
+    const lbCounter = document.getElementById("lightbox-counter")!;
     const lbCaption = document.getElementById("lightbox-caption")!;
-    const closeBtn = overlay.querySelector(".lightbox-close")!;
+    const lbMeta = document.getElementById("lightbox-meta")!;
+    let visible: HTMLElement[] = figures.slice();
+    let current = -1;
 
-    document.querySelectorAll(".masonry-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        const img = item.querySelector("img");
-        const caption = item.querySelector(".caption");
-        if (!img) return;
-        lbImg.src = img.src;
-        lbImg.alt = img.alt;
-        lbCaption.textContent = caption ? caption.textContent : "";
-        overlay.classList.add("active");
-        document.body.style.overflow = "hidden";
+    const pad2 = (n: number) => String(n).padStart(2, "0");
+
+    function show(idx: number) {
+      if (visible.length === 0) return;
+      current = (idx + visible.length) % visible.length;
+      const f = visible[current];
+      lbImg.src = f.dataset.full || "";
+      lbImg.alt = f.dataset.alt || "";
+      lbCaption.textContent = f.dataset.caption || f.dataset.alt || "";
+      lbMeta.textContent = f.dataset.meta || "";
+      lbCounter.textContent = pad2(current + 1) + " / " + pad2(visible.length);
+      overlay.classList.add("active");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      /* preload neighbors */
+      [current + 1, current - 1].forEach((n) => {
+        const g = visible[(n + visible.length) % visible.length];
+        if (g && g.dataset.full) new Image().src = g.dataset.full;
+      });
+    }
+
+    function close() {
+      overlay.classList.remove("active");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      current = -1;
+    }
+
+    figures.forEach((f) => {
+      f.addEventListener("click", () => show(visible.indexOf(f)));
+      f.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          show(visible.indexOf(f));
+        }
       });
     });
 
-    function closeLightbox() {
-      overlay.classList.remove("active");
-      document.body.style.overflow = "";
-    }
-
     overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeLightbox();
+      if (e.target === overlay) close();
     });
-    closeBtn.addEventListener("click", closeLightbox);
+    overlay.querySelector(".lightbox-close")!.addEventListener("click", close);
+    overlay.querySelector(".lightbox-prev")!.addEventListener("click", () => show(current - 1));
+    overlay.querySelector(".lightbox-next")!.addEventListener("click", () => show(current + 1));
+
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeLightbox();
+      if (!overlay.classList.contains("active")) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") show(current - 1);
+      else if (e.key === "ArrowRight") show(current + 1);
+    });
+
+    /* basic swipe */
+    let touchX = 0;
+    overlay.addEventListener("touchstart", (e) => (touchX = e.touches[0].clientX), { passive: true });
+    overlay.addEventListener(
+      "touchend",
+      (e) => {
+        const dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+      },
+      { passive: true }
+    );
+
+    /* ---- series filter ---- */
+    document.querySelectorAll<HTMLButtonElement>(".filter-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const s = btn.dataset.series || "";
+        figures.forEach((f) => {
+          f.style.display = !s || f.dataset.series === s ? "" : "none";
+        });
+        visible = figures.filter((f) => !s || f.dataset.series === s);
+      });
     });
   </script>
 </Base>

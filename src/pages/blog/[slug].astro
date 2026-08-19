@@ -1,0 +1,58 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { SITE } from "../../consts";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[i - 1] ?? null, older: posts[i + 1] ?? null },
+  }));
+}
+
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+
+const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 220));
+const date = d.date.toISOString().slice(0, 10).replaceAll("-", ".");
+---
+
+<Base
+  title={`${d.title} | ${SITE.title}`}
+  description={d.description}
+  path={`/blog/${post.id}`}
+  navPath="/blog"
+>
+  <article class="content post-page">
+    <p class="crumb"><a href="/blog/">~/blog</a>/{post.id}</p>
+    <h1 class="post-title" style={`view-transition-name: post-${post.id}`}>{d.title}</h1>
+    <p class="post-meta">
+      <time datetime={d.date.toISOString().slice(0, 10)}>{date}</time>
+      <span class="meta-sep">·</span>
+      {minutes} min read
+      {d.tags.length > 0 && <span class="meta-sep">·</span>}
+      {d.tags.map((t) => <span class="tag">[{t}]</span>)}
+    </p>
+    <div class="post-body">
+      <Content />
+    </div>
+    {
+      (older || newer) && (
+        <nav class="post-nav" aria-label="Adjacent posts">
+          <span>{older && <a href={`/blog/${older.id}/`}>← {older.data.title}</a>}</span>
+          <span>{newer && <a href={`/blog/${newer.id}/`}>{newer.data.title} →</a>}</span>
+        </nav>
+      )
+    }
+    <p class="post-reply">
+      $ <a href={`mailto:${SITE.email.replace(" (at) ", "@")}?subject=re: ${d.title}`}>
+        mail -s "re: {d.title}"
+      </a>
+    </p>
+  </article>
+</Base>

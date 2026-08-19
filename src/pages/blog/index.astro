@@ -1,0 +1,69 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { SITE } from "../../consts";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const byYear = new Map<number, typeof posts>();
+for (const p of posts) {
+  const y = p.data.date.getUTCFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const groups = [...byYear.entries()]
+  .sort((a, b) => b[0] - a[0])
+  .map(([year, entries]) => ({ year, entries }));
+
+const mmdd = (d: Date) =>
+  `${String(d.getUTCMonth() + 1).padStart(2, "0")}.${String(d.getUTCDate()).padStart(2, "0")}`;
+---
+
+<Base
+  title={`Blog | ${SITE.title}`}
+  description={`Notes by ${SITE.title} — research, code, weather, and the occasional build log.`}
+  path="/blog"
+>
+  <div class="content blog-index">
+    <h2>blog</h2>
+    <p class="blog-sub">
+      occasional notes on research, code, and weather ·
+      <a href="/rss.xml">rss</a>
+    </p>
+
+    {
+      posts.length === 0 && (
+        <p class="blog-empty">$ ls ~/blog — 0 posts, drafts compiling. check back soon.</p>
+      )
+    }
+
+    {
+      groups.map((g) => (
+        <section class="blog-year-group">
+          <h3 class="blog-year">{g.year + "/"}</h3>
+          <ul class="post-list">
+            {g.entries.map((p) => (
+              <li class="post-row">
+                <time class="post-date" datetime={p.data.date.toISOString().slice(0, 10)}>
+                  {mmdd(p.data.date)}
+                </time>
+                <div>
+                  <a
+                    class="post-link"
+                    href={`/blog/${p.id}/`}
+                    style={`view-transition-name: post-${p.id}`}
+                  >
+                    {p.data.title}
+                  </a>
+                  <p class="post-desc">{p.data.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Base>

@@ -2,7 +2,7 @@
 import { SITE } from "../consts";
 
 interface Props {
-  path: string; // "" | "/projects" | "/gallery"
+  path: string; // "" | "/projects" | "/blog" | "/gallery"
 }
 
 const { path } = Astro.props;
@@ -13,6 +13,7 @@ const { path } = Astro.props;
   <nav class="statusbar-right" aria-label="Site">
     <a href="/" aria-current={path === "" ? "page" : undefined}>~/home</a>
     <a href="/projects/" aria-current={path === "/projects" ? "page" : undefined}>~/projects</a>
+    <a href="/blog/" aria-current={path === "/blog" ? "page" : undefined}>~/blog</a>
     <a href="/gallery/" aria-current={path === "/gallery" ? "page" : undefined}>~/gallery</a>
     <button class="theme-toggle" type="button">theme: dark</button>
   </nav>
