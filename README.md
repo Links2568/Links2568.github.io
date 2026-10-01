@@ -2,8 +2,8 @@
 
 Personal homepage of Zuchen Li — built with [Astro](https://astro.build), deployed to GitHub Pages.
 
-Quiet-terminal design system: IBM Plex Mono/Sans, dark-first with a light theme toggle, and an
-interactive synoptic-chart background (jet stream, pressure systems, isobars, tornado cursor).
+Plain academic design: IBM Plex Mono for headings, IBM Plex Sans for prose, light-first with a
+dark theme toggle. No animations.
 
 ## Develop
 

@@ -20,14 +20,14 @@ const d = project.data;
   navPath="/projects"
 >
   <article class="content project-page">
-    <p class="crumb"><a href="/projects/">~/projects</a>/{project.id}</p>
+    <p class="crumb"><a href="/projects/">projects</a> / {project.id}</p>
     <h1 class="project-title">{d.title}</h1>
     <p class="project-meta">
       <code>{d.period}</code>
       {d.role && <span class="meta-item">{d.role}</span>}
       {d.org && <span class="meta-item">{d.org}</span>}
     </p>
-    <p class="project-tags">{d.tags.map((t) => <span class="tag">[{t}]</span>)}</p>
+    <p class="project-tags">{d.tags.map((t) => <span class="tag">{t}</span>)}</p>
     {
       d.links.length > 0 && (
         <nav class="tag-links project-links" aria-label="Project links">

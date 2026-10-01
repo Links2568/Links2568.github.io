@@ -5,6 +5,9 @@ date: 2026-08-19
 tags: [meta, canvas, meteorology]
 ---
 
+*Update (2026.10): the site has since been simplified — the weather map, boot screen,
+and tornado cursor are retired. This post stays up as a record of v1.*
+
 This site's background is not a particle system. It is a synoptic chart: a meandering
 jet stream, a drifting high and low (H/1024 and L/996, spinning the correct directions
 for the northern hemisphere), and isobars traced over the pressure field with marching

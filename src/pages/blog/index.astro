@@ -35,14 +35,14 @@ const mmdd = (d: Date) =>
 
     {
       posts.length === 0 && (
-        <p class="blog-empty">$ ls ~/blog — 0 posts, drafts compiling. check back soon.</p>
+        <p class="blog-empty">No posts yet — check back soon.</p>
       )
     }
 
     {
       groups.map((g) => (
         <section class="blog-year-group">
-          <h3 class="blog-year">{g.year + "/"}</h3>
+          <h3 class="blog-year">{g.year}</h3>
           <ul class="post-list">
             {g.entries.map((p) => (
               <li class="post-row">
@@ -50,11 +50,7 @@ const mmdd = (d: Date) =>
                   {mmdd(p.data.date)}
                 </time>
                 <div>
-                  <a
-                    class="post-link"
-                    href={`/blog/${p.id}/`}
-                    style={`view-transition-name: post-${p.id}`}
-                  >
+                  <a class="post-link" href={`/blog/${p.id}/`}>
                     {p.data.title}
                   </a>
                   <p class="post-desc">{p.data.description}</p>

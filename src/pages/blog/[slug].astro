@@ -29,14 +29,14 @@ const date = d.date.toISOString().slice(0, 10).replaceAll("-", ".");
   navPath="/blog"
 >
   <article class="content post-page">
-    <p class="crumb"><a href="/blog/">~/blog</a>/{post.id}</p>
-    <h1 class="post-title" style={`view-transition-name: post-${post.id}`}>{d.title}</h1>
+    <p class="crumb"><a href="/blog/">blog</a> / {post.id}</p>
+    <h1 class="post-title">{d.title}</h1>
     <p class="post-meta">
       <time datetime={d.date.toISOString().slice(0, 10)}>{date}</time>
       <span class="meta-sep">·</span>
       {minutes} min read
       {d.tags.length > 0 && <span class="meta-sep">·</span>}
-      {d.tags.map((t) => <span class="tag">[{t}]</span>)}
+      {d.tags.map((t) => <span class="tag">{t}</span>)}
     </p>
     <div class="post-body">
       <Content />
@@ -50,8 +50,8 @@ const date = d.date.toISOString().slice(0, 10).replaceAll("-", ".");
       )
     }
     <p class="post-reply">
-      $ <a href={`mailto:${SITE.email.replace(" (at) ", "@")}?subject=re: ${d.title}`}>
-        mail -s "re: {d.title}"
+      <a href={`mailto:${SITE.email.replace(" (at) ", "@")}?subject=re: ${d.title}`}>
+        Reply via email
       </a>
     </p>
   </article>

@@ -12,22 +12,15 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
   title={`${SITE.title} | ${SITE.affiliation}`}
   description={SITE.description}
   path=""
-  boot={true}
-  field={true}
 >
   <section class="hero">
-    <p class="prompt-line">whoami</p>
     <div class="hero-top">
       <div>
-        <h1>
-          {SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span><span
-            class="cursor"
-            aria-hidden="true"></span>
-        </h1>
+        <h1>{SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span></h1>
         <p class="role">
           {SITE.position} · <a href={SITE.affiliationUrl} rel="noopener">{SITE.affiliation}</a>
         </p>
-        <p class="status"><span class="dot" aria-hidden="true"></span>{SITE.statusLine}</p>
+        <p class="status">{SITE.statusLine}</p>
       </div>
       <img class="avatar" src={SITE.avatar} alt={`Portrait of ${SITE.title}`} />
     </div>
@@ -41,7 +34,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
     </nav>
 
     <button class="copy-email" type="button" data-email={SITE.email} title="Copy email address">
-      copy email — {SITE.email}
+      {SITE.email} — copy
     </button>
   </section>
 
@@ -169,7 +162,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
       <li>
         <strong>ISTORM (UIUC):</strong> member of the Illinois Student Organization of Meteorology,
         the student chapter of the American Meteorological Society — severe and hazardous weather
-        forecasting. The background of this page is a small tribute.
+        forecasting.
       </li>
       <li>
         <strong>History:</strong> minor in the subject — how past events shape our understanding of

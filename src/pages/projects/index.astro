@@ -24,10 +24,10 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
               <h3>{p.data.title}</h3>
               <p class="project-meta">
                 <code>{p.data.period}</code>
-                {p.data.status === "active" && <span class="project-live">● active</span>}
+                {p.data.status === "active" && <span class="project-live">active</span>}
               </p>
               <p class="project-tagline">{p.data.tagline}</p>
-              <p class="project-tags">{p.data.tags.map((t) => <span class="tag">[{t}]</span>)}</p>
+              <p class="project-tags">{p.data.tags.map((t) => <span class="tag">{t}</span>)}</p>
             </div>
           </a>
         ))

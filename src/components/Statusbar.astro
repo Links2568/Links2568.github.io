@@ -8,13 +8,13 @@ interface Props {
 const { path } = Astro.props;
 ---
 
-<header class="statusbar">
-  <span class="prompt"><b>{SITE.handle}@umich</b>:<span class="path">~{path}</span>$</span>
-  <nav class="statusbar-right" aria-label="Site">
-    <a href="/" aria-current={path === "" ? "page" : undefined}>~/home</a>
-    <a href="/projects/" aria-current={path === "/projects" ? "page" : undefined}>~/projects</a>
-    <a href="/blog/" aria-current={path === "/blog" ? "page" : undefined}>~/blog</a>
-    <a href="/gallery/" aria-current={path === "/gallery" ? "page" : undefined}>~/gallery</a>
-    <button class="theme-toggle" type="button">theme: dark</button>
+<header class="topnav">
+  <a class="brand" href="/">{SITE.title}</a>
+  <nav aria-label="Site">
+    <a href="/" aria-current={path === "" ? "page" : undefined}>home</a>
+    <a href="/projects/" aria-current={path === "/projects" ? "page" : undefined}>projects</a>
+    <a href="/blog/" aria-current={path === "/blog" ? "page" : undefined}>blog</a>
+    <a href="/gallery/" aria-current={path === "/gallery" ? "page" : undefined}>gallery</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle color theme">dark</button>
   </nav>
 </header>

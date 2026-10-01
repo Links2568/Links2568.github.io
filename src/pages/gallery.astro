@@ -44,7 +44,6 @@ for (const ph of photos) {
 
 const seriesList = [...new Set(items.map((it) => it.series).filter(Boolean))];
 const showFilter = seriesList.length > 1;
-const pad2 = (n: number) => String(n).padStart(2, "0");
 ---
 
 <Base
@@ -55,8 +54,8 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 >
   <main class="gallery-page">
     <div class="gallery-header">
-      <h1><span class="path-prefix">~/</span>gallery</h1>
-      <p>signals collected through a viewfinder — Michigan Daily &amp; elsewhere.</p>
+      <h1>gallery</h1>
+      <p>Photographs — the Michigan Daily &amp; elsewhere.</p>
       {
         showFilter && (
           <nav class="gallery-filter" aria-label="Filter by series">
@@ -75,10 +74,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 
     {
       items.length === 0 ? (
-        <p class="gallery-empty">
-          $ ls ~/gallery
-          <br />0 items — film still developing. check back soon.
-        </p>
+        <p class="gallery-empty">No photos yet — check back soon.</p>
       ) : (
         <div class="justified" id="justified">
           {items.map((it, i) => (
@@ -104,7 +100,6 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
                 decoding="async"
               />
               <figcaption class="jcap">
-                <span class="jcap-idx">[{pad2(i + 1)}]</span>
                 <span class="jcap-text">{it.caption || it.alt}</span>
                 {it.meta && <span class="jcap-meta">{it.meta}</span>}
               </figcaption>
@@ -115,8 +110,8 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
     }
 
     <footer class="site-footer">
-      <span>— EOF — {items.length} frames</span>
-      <span>powered by <a href="https://astro.build" rel="noopener">astro</a></span>
+      <span>{items.length} photographs</span>
+      <span>built with <a href="https://astro.build" rel="noopener">astro</a></span>
     </footer>
   </main>
 
@@ -146,8 +141,6 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
     let visible: HTMLElement[] = figures.slice();
     let current = -1;
 
-    const pad2 = (n: number) => String(n).padStart(2, "0");
-
     function show(idx: number) {
       if (visible.length === 0) return;
       current = (idx + visible.length) % visible.length;
@@ -156,7 +149,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
       lbImg.alt = f.dataset.alt || "";
       lbCaption.textContent = f.dataset.caption || f.dataset.alt || "";
       lbMeta.textContent = f.dataset.meta || "";
-      lbCounter.textContent = pad2(current + 1) + " / " + pad2(visible.length);
+      lbCounter.textContent = current + 1 + " / " + visible.length;
       overlay.classList.add("active");
       overlay.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
