@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { SITE } from "../../consts";
+import { asset } from "../../lib/asset";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => !data.draft);
@@ -104,7 +105,7 @@ const authorParts = (d.authors ?? "")
             <p class="unlock-status" id="unlock-status" aria-live="polite" />
           </div>
           <div class="project-body" id="unlocked" hidden />
-          <script is:inline src="/scripts/unlock.js" defer />
+          <script is:inline src={asset("/scripts/unlock.js")} defer />
         </>
       ) : (
         <>

@@ -1,5 +1,6 @@
 ---
 import { SITE } from "../consts";
+import { asset } from "../lib/asset";
 import Statusbar from "../components/Statusbar.astro";
 import "../styles/cyber.css";
 
@@ -131,7 +132,7 @@ const email = SITE.email.replace(" (at) ", "@");
 
     <!-- stable path (not content-hashed): stale cached HTML during the
          10-minute GitHub Pages cache window must still resolve this -->
-    <script is:inline src="/scripts/cyber.js" defer></script>
+    <script is:inline src={asset("/scripts/cyber.js")} defer></script>
 
     <!-- GoatCounter analytics — cookieless, skips localhost by default -->
     <script

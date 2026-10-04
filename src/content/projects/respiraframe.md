@@ -10,35 +10,33 @@ order: 4
 kind: research
 fullTitle: "RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics"
 venue: CHI 2027 · under review
-cover: /projects/respiraframe/cover.webp
-thumb: /projects/respiraframe/thumb.webp
 abstract: "RespiraFrame is an eyeglass frame that monitors respiration through two complementary channels: a bone-conduction microphone beside the nose that hears breathing through the face rather than the air, and electrical impedance tomography from eight soft dry electrodes on the nose pads and temples. A two-branch network fused with attention recognizes five abnormal respiratory events and distinguishes nasal vs. oral, deep vs. shallow breathing, and breath holding — 92.5% for abnormal events in a 19-participant lab study, under 3 points of change at 80 dB of noise, and 87.6% over 30 hours of in-the-wild wear."
-links:
-  - { label: interactive talk, url: /projects/respiraframe/talk/index.html }
+cover: /projects/respiraframe/chi-cover.webp
+thumb: /projects/respiraframe/chi-thumb.webp
+links: []
 hero:
-  src: /projects/respiraframe/loop.mp4
-  poster: /projects/respiraframe/loop.webp
+  src: /projects/respiraframe/chi-loop.mp4
+  poster: /projects/respiraframe/chi-loop.webp
   width: 1280
-  height: 1192
+  height: 720
 videos:
-  - label: 30-second teaser
-    src: /projects/respiraframe/teaser.mp4
-    poster: /projects/respiraframe/poster-teaser.webp
-    duration: "0:30"
-  - label: Narrated demo
+  - label: CHI video — narrated demo
     src: /projects/respiraframe/demo.mp4
-    poster: /projects/respiraframe/poster-demo.webp
+    poster: /projects/respiraframe/chi-poster.webp
     duration: "4:50"
     captions:
       - { lang: en, label: English, src: /projects/respiraframe/demo.en.vtt }
       - { lang: zh, label: 中文, src: /projects/respiraframe/demo.zh.vtt }
 gallery:
-  - { src: /projects/respiraframe/product-hero.webp, alt: "The RespiraFrame eyeglass frame.", width: 1600, height: 900 }
-  - { src: /projects/respiraframe/xray-bone-conduction.webp, alt: "Channel 1: a bone-conduction microphone beside the nose captures breathing vibrations through the face.", width: 1600, height: 900 }
-  - { src: /projects/respiraframe/xray-eit.webp, alt: "Channel 2: eight soft dry electrodes on the nose pads and temples perform electrical impedance tomography.", width: 1600, height: 900 }
-  - { src: /projects/respiraframe/montage-nasal-oral.webp, alt: "Distinguishing nasal from oral breathing.", width: 1600, height: 900 }
-  - { src: /projects/respiraframe/film-network.webp, alt: "A two-branch network fused with multi-head attention.", width: 1600, height: 900 }
-  - { src: /projects/respiraframe/film-19-participants.webp, alt: "Lab study with 19 participants.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-bone-conduction.webp, alt: "Sense 1: a bone-conduction microphone embedded beside the nose pad.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-noise.webp, alt: "Under 40–80 dB airborne noise, the bone-conduction channel stays clean while a conventional microphone does not.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-eit.webp, alt: "Sense 2: electrical impedance tomography with eight soft dry electrodes.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-eit-channels.webp, alt: "EIT channels during deep breathing (real data).", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-recognition.webp, alt: "Five abnormal respiratory events and three breathing-pattern tasks.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-lab-study.webp, alt: "Lab study: 19 participants, 10,480 samples.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-bystander.webp, alt: "Only 2.7% of a nearby person's events were attributed to the wearer.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-in-the-wild.webp, alt: "In the wild: 10 participants, 30 hours across office, cafeteria, and outdoors.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-live-demo.webp, alt: "Real-time demo: nasal vs. oral breathing, even with a hair dryer blowing nearby.", width: 1600, height: 900 }
 ---
 
 Our breathing says a lot about our health. Coughs, sneezes and sniffs, and whether we breathe

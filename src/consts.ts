@@ -1,3 +1,5 @@
+import { asset } from "./lib/asset";
+
 export const SITE = {
   title: "Zuchen Li",
   zhName: "李祖臣",
@@ -21,7 +23,7 @@ export const SITE = {
   favicon: "/assets/img/icon/favicon_L_48.png",
   links: {
     scholar: "https://scholar.google.com/",
-    cv: "/assets/files/CV_ZuchenLi_2026.pdf",
+    cv: asset("/assets/files/CV_ZuchenLi_2026.pdf"),
     github: "https://github.com/Links2568",
     linkedin: "https://www.linkedin.com/in/zuchenli/",
     instagram: "https://www.instagram.com/linkslzc",
