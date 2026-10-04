@@ -1,4 +1,4 @@
-/* lzclink.com — site script: theme toggle, copy email, abstract expanders. */
+/* lzclink.com — site script: theme toggle, copy email, abstract expanders, hover loops. */
 (function () {
   "use strict";
 
@@ -56,10 +56,57 @@
     });
   }
 
+  /* ---------- hover-to-play loops on [data-loop] thumbnails ----------
+     The video is created on first hover (nothing downloads until then) and
+     only fades in once frames are actually playing, so there is no black flash. */
+  function initHoverLoops() {
+    var canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!canHover || reduced) return;
+    document.querySelectorAll("[data-loop]").forEach(function (el) {
+      var src = el.getAttribute("data-loop");
+      if (!src) return;
+      var video = null;
+      el.addEventListener("mouseenter", function () {
+        if (!video) {
+          video = document.createElement("video");
+          video.className = "hover-loop";
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute("playsinline", "");
+          video.setAttribute("aria-hidden", "true");
+          video.preload = "auto";
+          video.src = src;
+          video.addEventListener("playing", function () {
+            video.classList.add("ready");
+          });
+          /* Chrome can abort a play() issued before any data has buffered
+             (power-saving for video-only media); retry once data is ready */
+          video.addEventListener("canplay", function () {
+            if (el.classList.contains("is-looping") && video.paused) start();
+          });
+          el.appendChild(video);
+        }
+        el.classList.add("is-looping");
+        start();
+      });
+      function start() {
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      el.addEventListener("mouseleave", function () {
+        el.classList.remove("is-looping");
+        if (video) video.pause();
+      });
+    });
+  }
+
   function init() {
     initTheme();
     initCopyEmail();
     initAbstracts();
+    initHoverLoops();
   }
 
   if (document.readyState === "loading") {

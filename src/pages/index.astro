@@ -22,17 +22,18 @@ const authorParts = (s?: string) =>
   description={SITE.description}
   path=""
 >
+  <div class="home">
+    <aside class="home-side">
+      <img class="avatar" src={SITE.avatar} alt={`Portrait of ${SITE.title}`} width="480" height="480" />
+    </aside>
+
+    <div class="home-main">
   <section class="hero">
-    <div class="hero-top">
-      <div>
-        <h1>{SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span></h1>
-        <p class="role">
-          {SITE.position} · <a href={SITE.affiliationUrl} rel="noopener">{SITE.affiliation}</a>
-        </p>
-        <p class="status">{SITE.statusLine}</p>
-      </div>
-      <img class="avatar" src={SITE.avatar} alt={`Portrait of ${SITE.title}`} />
-    </div>
+    <h1>{SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span></h1>
+    <p class="role">
+      {SITE.position} · <a href={SITE.affiliationUrl} rel="noopener">{SITE.affiliation}</a>
+    </p>
+    <p class="status">{SITE.statusLine}</p>
 
     <nav class="tag-links" aria-label="Profiles">
       <a href={SITE.links.scholar} rel="noopener">scholar</a>
@@ -72,7 +73,7 @@ const authorParts = (s?: string) =>
           const authors = authorParts(d.authors);
           return (
             <article class="pub">
-              <a class="pub-thumb" href={href} tabindex="-1" aria-hidden="true">
+              <a class="pub-thumb" href={href} tabindex="-1" aria-hidden="true" data-loop={d.hero?.src}>
                 {d.thumb ? (
                   <img src={d.thumb} alt="" width="640" height="360" loading={i < 2 ? "eager" : "lazy"} decoding="async" />
                 ) : (
@@ -259,5 +260,7 @@ const authorParts = (s?: string) =>
         weather forecasting.
       </li>
     </ul>
+  </div>
+    </div>
   </div>
 </Base>

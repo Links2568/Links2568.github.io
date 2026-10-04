@@ -24,7 +24,7 @@ const groups = [
           <h2>{g.heading}</h2>
           <div class="project-grid">
             {g.items.map((p) => (
-              <a class="project-card" href={`/projects/${p.id}/`}>
+              <a class="project-card" href={`/projects/${p.id}/`} data-loop={p.data.hero?.src}>
                 {p.data.protected ? (
                   <div class="project-cover-locked pub-thumb-redacted">
                     <span class="redact" />
