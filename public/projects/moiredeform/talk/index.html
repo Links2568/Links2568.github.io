@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reader="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MoiréDeform · interactive talk</title>
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="dist/deck.css">
+</head>
+<body>
+<div id="stage">
+<canvas id="scene" aria-hidden="true"></canvas>
+<svg id="hud" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+
+<main id="slides" data-slot="7">
+
+<!-- 1 · Title (P1). Names as text: no author photos were supplied (B13). -->
+<section class="slide" id="title" data-shots="hero" data-chrome="off" data-title="Title" data-duration="15">
+  <p class="block eyebrow r" style="left:120px; top:196px">ACM MobiCom 2026 · Demo · Austin, TX</p>
+  <h1 class="block display r" style="left:112px; top:270px"><span class="grad">MoiréDeform</span></h1>
+  <p class="block lead r" style="left:120px; top:462px; width:820px; color:var(--ink)">Towards fine-grained deformation sensing through everyday moiré</p>
+  <p class="block body r md-names" style="left:120px; top:620px; width:860px">Linzhen Zhu* · Zuchen Li* · Weihao Jin<br>Hyunmin Park · Alanson Sample · Ke Sun</p>
+  <p class="block fine r" style="left:120px; top:724px">* Equal contribution · University of Michigan</p>
+  <div class="block r" style="left:120px; top:840px; height:76px; display:flex; gap:56px; align-items:center">
+    <span class="lockup" style="height:76px"><img src="assets/logos/umich-cse.svg" alt="Computer Science and Engineering, University of Michigan"></span>
+    <span class="lockup" style="height:76px; font-size:24px"><img src="assets/logos/ami-lab.svg" alt=""><span class="wordmark"><b>Ambient Intelligence Lab</b><span>AMI Lab</span></span></span>
+  </div>
+  <aside class="notes">Hi everyone. This is MoiréDeform: towards fine-grained deformation sensing through everyday moiré, from the weave of an ordinary chair.</aside>
+</section>
+
+<!-- 2 · Statement opening (A1); the consequence (A13): the belt we strap on
+     the person for our own reference. The bulge is drawn deeper than it is. -->
+<section class="slide" id="deform" data-shots="deform deformBreath" data-title="We deform what holds us" data-step-durations="15 18">
+  <p class="block eyebrow r" style="left:120px; top:106px">Everyday deformation</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:760px">We deform what holds us.</h2>
+  <p class="block lead" data-step="0" data-until="0" style="left:120px; top:356px; width:640px">Sitting, leaning, breathing: each one bends the mesh.</p>
+  <p class="block lead" data-step="1" style="left:120px; top:356px; width:660px">The small ones, like a breath, are hard to observe without instrumenting the surface or the user.</p>
+  <figure class="block real" data-step="1" style="left:120px; top:560px; width:400px; height:262px">
+    <video muted playsinline loop data-autoplay src="assets/media/md-belt.mp4"></video>
+    <figcaption>Real · belt reference</figcaption>
+  </figure>
+  <p class="block fine r" data-fine data-delay="1.3" style="left:1610px; top:322px">Dent drawn exaggerated</p>
+  <aside class="notes">Every time we sit, lean or breathe, we bend the surfaces that hold us. Those deformations carry our posture, and even our breathing. [Step 2] But the small ones, like a breath, are hard to observe, unless you instrument the surface or the user: the way we strap a chest belt on, just to get our reference.</aside>
+</section>
+
+<!-- 3 · The phenomenon (A12, P6): a real moiré on the screen itself. -->
+<section class="slide" id="moire" data-leave="1.2" data-shots="moireLines moireSub" data-title="What is a moiré?" data-step-durations="15 15">
+  <p class="block eyebrow r" style="left:120px; top:106px">The phenomenon</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:900px">What is a moiré?</h2>
+  <canvas class="block r" data-widget="gratings" data-hand style="left:120px; top:330px"></canvas>
+  <div class="block" data-step="0" data-until="0" data-delay="0.7" style="left:1220px; top:372px; width:520px">
+    <p class="lead" style="margin:0; color:var(--ink)">Everyday · two fine patterns, slightly different</p>
+    <dl class="readouts" style="margin-top:34px">
+      <div><dt>Top layer slides</dt><dd data-readout="slideIn">—</dd></div>
+      <div><dt>Bands slide</dt><dd data-readout="slideOut" style="color:var(--accent)">—</dd></div>
+    </dl>
+  </div>
+  <div class="block" data-step="1" data-delay="0.7" style="left:1220px; top:372px; width:520px">
+    <p class="lead" style="margin:0; color:var(--ink)">Ours · one pattern, before and after, subtracted</p>
+  </div>
+  <p class="block small md-panel" data-step="1" data-on-picture style="left:120px; top:762px; width:320px">Before</p>
+  <p class="block small md-panel" data-step="1" data-on-picture style="left:480px; top:762px; width:320px">After a press</p>
+  <p class="block small md-panel" data-step="1" data-on-picture style="left:840px; top:762px; width:320px; color:var(--accent)">After − before</p>
+  <aside class="notes">Moiré can help. Take two fine patterns with slightly different periods: slide one by a hair, and the bands sweep many times as far. (Move across the gratings.) [Step 2] Our version uses one pattern at two moments: before and after a press. Subtract them, and fringes appear where the lines moved. (Move over the middle panel.)</aside>
+</section>
+
+<!-- 4 · The insight (P7): the camera's window beside the rig, a lens on the
+     threads; real evidence in a corner, then over the window (E2). -->
+<section class="slide" id="insight" data-shots="insight insightReal" data-title="Let the weave be the grating" data-step-durations="22 15">
+  <p class="block eyebrow r" style="left:120px; top:106px">Our insight</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:760px">Let the weave be <span class="grad">the grating</span>.</h2>
+  <p class="block small r md-winlabel" data-until="0" style="left:120px; top:346px">Camera view · live − reference · simulated</p>
+  <p class="block stat-lite" data-step="0" data-until="0" style="left:120px; top:884px"><b>Weave</b> · shifts a little</p>
+  <p class="block stat-lite" data-step="0" data-until="0" style="left:470px; top:884px"><b style="color:var(--accent)">Fringes</b> · shift further</p>
+  <figure class="block real" data-step="0" data-until="0" style="left:1560px; top:96px; width:240px; height:150px">
+    <video muted playsinline loop data-autoplay src="assets/media/md-diffview.mp4"></video>
+    <figcaption>Real · difference view</figcaption>
+  </figure>
+  <figure class="block real-cover rect" data-cover="window" data-step="1" data-until="1" data-hold="0.3">
+    <video muted playsinline loop data-autoplay data-track="seated" src="assets/media/md-diffview.mp4"></video>
+    <figcaption>Real · difference view · seated user</figcaption>
+  </figure>
+  <aside class="notes">So we let the weave itself be the grating. A camera behind the chair keeps one frame of the empty backrest, and compares every live frame with it. The weave shifts only a little; the fringes shift further. [Step 2] This is the real difference view from our camera, with a person seated and breathing.</aside>
+</section>
+
+<!-- 5 · The system (P8): labels in two groups, then the field of view. -->
+<section class="slide" id="system" data-shots="system systemView" data-title="One clip-on camera" data-step-durations="20 15">
+  <p class="block eyebrow r" style="left:120px; top:106px">The system</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:720px">One clip-on camera. Nothing on you.</h2>
+  <div class="callout left r" data-until="0" data-anchor="module" data-side="left" data-x="1000"><b>Clip-on camera</b><span style="color:var(--ink-2); font-weight:600">monochrome<br>1280 × 800 · 30 FPS</span></div>
+  <div class="callout" data-step="1" data-anchor="meshEdge" data-side="right" data-x="1700" data-dy="-90"><b>Mesh chair</b><span>unmodified</span></div>
+  <p class="block lead" data-step="1" style="left:120px; top:400px; width:760px">It sees only the chair back: the user is never in frame.</p>
+  <figure class="block real r" style="left:120px; top:560px; width:236px; height:315px" data-delay="0.6">
+    <img src="assets/img/fig-chair.webp" alt="The real prototype: a mesh office chair with the camera module clipped behind its backrest">
+    <figcaption>Real · prototype</figcaption>
+  </figure>
+  <p class="block fine r" data-fine data-delay="0.6" style="left:120px; top:954px">Photos: the paper's Fig. 1</p>
+  <figure class="block real r" data-until="0" style="left:412px; top:560px; width:208px; height:288px" data-delay="0.7">
+    <img src="assets/img/fig-module.webp" alt="Close-up from the paper's Fig. 1: the camera on a red 3D-printed arm clipped to the chair frame behind the backrest">
+    <figcaption>Real · the module</figcaption>
+  </figure>
+  <aside class="notes">The hardware is one low-cost monochrome camera on a clip, behind an unmodified mesh chair: 1280 by 800 pixels, at 30 frames a second, with a laptop processing the video. No markers, and no added gratings. [Step 2] And it only sees the chair back: the person sitting in the chair is never in frame.</aside>
+</section>
+
+<!-- 6 · The principle (P11): one framing, a tab bar, one concept per step. -->
+<section class="slide" id="principle" data-shots="pRef pLive pSub" data-title="How it works" data-step-durations="18 18 25">
+  <nav class="block tabs r" data-tabs="Reference · Live · Subtract" style="left:120px; top:28px"></nav>
+  <p class="block eyebrow r" style="left:120px; top:89px">How it works</p>
+  <h2 class="block h1" data-step="0" data-until="0" style="left:120px; top:150px; width:900px">One frame of the empty chair.</h2>
+  <h2 class="block h1" data-step="1" data-until="1" style="left:120px; top:150px; width:900px">Each live frame looks the same.</h2>
+  <h2 class="block h1" data-step="2" style="left:120px; top:150px; width:900px">Subtract, and the press appears.</h2>
+  <p class="block small md-winlabel" data-step="0" data-until="1" style="left:120px; top:350px">Camera view · raw · simulated</p>
+  <p class="block small md-winlabel" data-step="2" data-delay="0.9" style="left:120px; top:350px">Camera view · live − reference · simulated</p>
+  <p class="block small" data-step="0" data-until="0" style="left:120px; top:852px; width:704px"><b style="color:var(--interf)">Violet</b> · the reference: what subtraction removes</p>
+  <p class="block small" data-step="1" data-until="1" style="left:120px; top:852px; width:704px">The raw live frame: the weave looks almost unchanged</p>
+  <p class="block small" data-step="2" style="left:120px; top:852px; width:704px"><b style="color:var(--accent)">Gold</b> · what moved: the fringes</p>
+  <aside class="notes">Here is what the camera does. First, one reference frame of the empty chair. [Step 2] Then each live frame. In the raw frame, the weave looks almost the same, even under a press. (Move over the backrest to press it.) [Step 3] Subtract the reference, and the press shows up as fringes around where it pushes. (Scroll to press deeper.)</aside>
+</section>
+
+<!-- 7 · Coarse: lean to steer. Stages come in one per click (B20). -->
+<section class="slide" id="lean" data-shots="lean leanCursor leanReal" data-title="Lean to steer" data-step-durations="20 18 18">
+  <p class="block eyebrow r" style="left:120px; top:106px">Coarse · posture</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:760px">Lean to steer.</h2>
+  <p class="block small md-winlabel" data-step="0" data-until="1" style="left:120px; top:318px">Envelope + centroid · simulated</p>
+  <svg class="block" data-widget="joystick" data-step="1" data-until="1" style="left:730px; top:360px"></svg>
+  <p class="block small" data-step="1" data-until="1" style="left:730px; top:676px; width:300px; text-align:center">2D cursor · simulated</p>
+  <ol class="block md-strip" data-step="0" data-until="1" style="left:120px; top:772px">
+    <li data-dim-from="1">Envelope</li><li data-dim-from="1">Centroid</li><li class="md-later" data-step="1" data-until="1">− neutral</li><li class="md-later" data-step="1" data-until="1">2D cursor</li>
+  </ol>
+  <figure class="block real" data-step="2" style="left:120px; top:330px; width:860px; height:480px">
+    <video muted playsinline loop data-autoplay src="assets/media/md-joy.mp4"></video>
+    <figcaption>Real · leaning drives the joystick</figcaption>
+  </figure>
+  <aside class="notes">Larger deformations become input. We take the pattern's envelope in the mesh's frequency band; its weighted centroid marks where you lean. (Move over the backrest to lean.) [Step 2] Normalize it to the sensing region, subtract your calibrated neutral pose, and you have a continuous 2D cursor. [Step 3] In the demo, leaning alone drives the on-screen joystick; visitors will steer it along guided paths.</aside>
+</section>
+
+<!-- 8 · Fine: breathing. The paper's reason first (§2): a breath barely
+     moves the whole-field centroid. -->
+<section class="slide" id="breath" data-shots="breath breathReal breathReal" data-title="A breath shifts the fringes" data-step-durations="24 22 18">
+  <p class="block eyebrow r" style="left:120px; top:106px">Fine · breathing</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:820px">A breath shifts the fringes.</h2>
+  <p class="block lead" data-step="0" data-until="0" style="left:120px; top:362px; width:820px">It may barely move the whole-field centroid, so the fringes' subpixel shift is tracked in a central band.</p>
+  <p class="block small md-winlabel" data-step="0" data-until="0" style="left:120px; top:530px">Camera view · live − reference · simulated</p>
+  <svg class="block" data-widget="trace" data-step="0" data-until="0" style="left:668px; top:582px"></svg>
+  <p class="block small" data-step="0" data-until="0" style="left:668px; top:530px; width:560px">Fringe shift · illustration · assumed breathing</p>
+  <ol class="block md-strip" data-step="0" data-until="0" style="left:120px; top:884px">
+    <li>CLAHE</li><li>Amplify</li><li>Phase correlation</li><li>Band-pass</li>
+  </ol>
+  <p class="block lead" data-step="1" data-until="1" style="left:120px; top:362px; width:760px">A small 1D CNN turns 15 s windows of the fringe shift into the breathing waveform.</p>
+  <ol class="block md-strip" data-step="1" data-until="1" style="left:120px; top:884px">
+    <li>Fringe shift</li><li>1D CNN</li><li>Waveform</li>
+  </ol>
+  <figure class="block real" data-step="1" data-until="1" data-hold="0.3" style="left:1000px; top:344px; width:780px; height:577px">
+    <video muted playsinline loop data-autoplay src="assets/media/md-cnn.mp4"></video>
+    <figcaption>Real · CNN waveform (green) · chest belt (grey)</figcaption>
+  </figure>
+  <p class="block lead" data-step="2" style="left:120px; top:362px; width:760px">When the signal's amplitude before the CNN falls well below the user's calibrated breathing level, the output is suppressed.</p>
+  <ol class="block md-strip" data-step="2" style="left:120px; top:884px">
+    <li>Amplitude</li><li>Gate</li><li>Output suppressed</li>
+  </ol>
+  <figure class="block real" data-step="2" style="left:1000px; top:344px; width:780px; height:577px">
+    <video muted playsinline loop data-autoplay src="assets/media/md-hold.mp4"></video>
+    <figcaption>Real · breath held: the output gated flat</figcaption>
+  </figure>
+  <aside class="notes">Breathing is smaller: it may barely move the whole-field centroid. So the fine path tracks the moiré pattern's subpixel shift in a central band: contrast equalization, temporal band-pass amplification, phase correlation, then a causal band-pass filter. [Step 2] A lightweight 1D CNN turns 15-second windows of that signal into a breathing waveform: here in green, live, against a chest belt worn only for comparison. [Step 3] When the signal's amplitude before the CNN falls well below the user's calibrated breathing level, the system suppresses the CNN's output, so a held breath stays flat.</aside>
+</section>
+
+<!-- 9 · Results (P13): one sentence; the chart of the metric the claim is
+     about; the subject in the corner. -->
+<section class="slide" id="results" data-shots="icon icon" data-title="Results" data-step-durations="22 20">
+  <p class="block eyebrow r" style="left:120px; top:106px">Results</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:1240px"><span class="grad">Less rate error</span> than a marker.</h2>
+  <div class="block stat r" data-dim-from="1" style="left:120px; top:330px">
+    <span class="value">0.71<small style="color:var(--prior)"> vs 2.07</small></span>
+    <span class="label">breaths/min · rate error vs chest belt</span>
+    <p class="cond" style="margin-top:8px; width:700px">Raw moiré vs marker · same camera · 3 sessions</p>
+  </div>
+  <svg class="block r" data-chart="rate" data-delay="0.5" style="left:940px; top:372px"></svg>
+  <div class="block stat" data-step="1" style="left:120px; top:610px">
+    <span class="value">0.72<small> ± 0.45</small></span>
+    <span class="label">breaths/min · vs chest belt</span>
+    <p class="cond" style="margin-top:8px">Session-level rate · 5 users · 100 min</p>
+  </div>
+  <div class="block stat" data-step="1" style="left:590px; top:610px">
+    <span class="value">0.69</span>
+    <span class="label">waveform correlation r</span>
+    <p class="cond" style="margin-top:8px">Leave-one-session-out</p>
+  </div>
+  <aside class="notes">Does the moiré itself help? With the same camera, on the same recordings, the raw moiré signal's breathing-rate error, averaged over three sessions, was 0.71 breaths per minute, against 2.07 for tracking a physical marker. [Step 2] Across ten sessions from five users, the session-level breathing rate was within 0.72, plus or minus 0.45, breaths per minute of the chest belt, and the waveform correlated with the belt at 0.69, leave-one-session-out.</aside>
+</section>
+
+<!-- 10 · Closing (P16). -->
+<section class="slide" id="closing" data-shots="closing" data-chrome="off" data-title="Summary" data-duration="20">
+  <ul class="block steps-list r" style="left:120px; top:180px; width:860px">
+    <li><b>01</b><span><strong>No markers</strong> · the chair's own weave</span></li>
+    <li><b>02</b><span><strong>Chair back only</strong> · the user is never in frame</span></li>
+    <li><b>03</b><span><strong>Two scales</strong> · a lean and a breath</span></li>
+    <li><b>04</b><span><strong>0.71 vs 2.07</strong> · breaths/min rate error, raw moiré vs marker</span></li>
+  </ul>
+  <p class="block display r" style="left:112px; top:600px; font-size:120px">Thank you.</p>
+  <figure class="block real r" data-delay="0.9" style="left:1620px; top:100px; width:180px; height:180px">
+    <img src="assets/img/qr.svg" alt="QR code to the paper's DOI">
+  </figure>
+  <p class="block small r" data-delay="0.9" style="left:1620px; top:300px; width:180px; text-align:center; color:var(--ink-2)">The paper</p>
+  <div class="block r" style="left:120px; top:860px; height:72px; display:flex; gap:56px; align-items:center">
+    <span class="lockup" style="height:72px"><img src="assets/logos/umich-cse.svg" alt="Computer Science and Engineering, University of Michigan"></span>
+    <span class="lockup" style="height:72px; font-size:24px"><img src="assets/logos/ami-lab.svg" alt=""><span class="wordmark"><b>Ambient Intelligence Lab</b><span>AMI Lab</span></span></span>
+  </div>
+  <aside class="notes">So: no markers, just the chair's own weave; a camera that only sees the chair back; and two scales of sensing, from a lean to a breath. Thank you.</aside>
+</section>
+
+<!-- 11 · The page that stays up for questions (A11). -->
+<section class="slide" id="end" data-shots="closing" data-chrome="off" data-title="Questions" data-duration="0">
+  <p class="block eyebrow r" style="left:120px; top:136px">ACM MobiCom 2026 · Demo · Austin, TX</p>
+  <h1 class="block display r" style="left:112px; top:216px; font-size:128px"><span class="grad">MoiréDeform</span></h1>
+  <p class="block lead r" style="left:120px; top:384px; width:820px; color:var(--ink)">Towards fine-grained deformation sensing through everyday moiré</p>
+  <p class="block body r md-names" style="left:120px; top:530px; width:860px">Linzhen Zhu* · Zuchen Li* · Weihao Jin<br>Hyunmin Park · Alanson Sample · Ke Sun</p>
+  <p class="block fine r" style="left:120px; top:634px">* Equal contribution · University of Michigan</p>
+  <p class="block display r" style="left:112px; top:704px; font-size:104px">Thank you.</p>
+  <figure class="block real r" data-delay="0.9" style="left:1620px; top:100px; width:180px; height:180px">
+    <img src="assets/img/qr.svg" alt="QR code to the paper's DOI">
+  </figure>
+  <p class="block small r" data-delay="0.9" style="left:1620px; top:300px; width:180px; text-align:center; color:var(--ink-2)">The paper</p>
+  <div class="block r" style="left:120px; top:880px; height:64px; display:flex; gap:48px; align-items:center">
+    <span class="lockup" style="height:64px"><img src="assets/logos/umich-cse.svg" alt="Computer Science and Engineering, University of Michigan"></span>
+    <span class="lockup" style="height:64px; font-size:24px"><img src="assets/logos/ami-lab.svg" alt=""><span class="wordmark"><b>Ambient Intelligence Lab</b><span>AMI Lab</span></span></span>
+  </div>
+  <aside class="notes">(Stay on this page for questions.)</aside>
+</section>
+
+</main>
+
+<div class="block chip" id="hint" style="opacity:0"><span></span></div>
+<div id="caption" aria-live="polite"><p></p></div>
+<div id="start"><p>Click to start · → next · ← back · F full screen</p></div>
+
+<footer class="chrome" id="chrome">
+  <div class="logos">
+    <span class="lockup" style="height:32px"><img src="assets/logos/umich-cse.svg" alt="University of Michigan CSE"></span>
+    <span class="lockup" style="height:32px; font-size:20px"><img src="assets/logos/ami-lab.svg" alt=""><span class="wordmark"><b>AMI Lab</b></span></span>
+  </div>
+  <span>MoiréDeform · MobiCom ’26</span>
+  <span class="num" id="counter">01 / 11</span>
+  <div class="progress"><span id="progress"></span></div>
+</footer>
+<div id="blackout"></div>
+</div>
+<script src="dist/deck.js"></script>
+</body>
+</html>

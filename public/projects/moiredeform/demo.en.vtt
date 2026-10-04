@@ -1,0 +1,153 @@
+WEBVTT
+
+00:01.350 --> 00:03.806
+Every time we sit, lean, or breathe,
+
+00:03.846 --> 00:06.576
+we gently deform the surfaces that hold us.
+
+00:06.923 --> 00:11.568
+Those tiny deformations carry signals
+about posture, and even breathing.
+
+00:11.729 --> 00:16.700
+But they are hard to see without
+instrumenting the surface, or the person.
+
+00:17.250 --> 00:19.713
+Moiré patterns can make them visible.
+
+00:19.804 --> 00:22.423
+When two fine, repeating patterns overlap,
+
+00:22.463 --> 00:26.296
+a tiny shift between them turns
+into a large, sweeping fringe.
+
+00:26.642 --> 00:30.120
+And woven surfaces, like
+the mesh of an office chair,
+
+00:30.160 --> 00:33.018
+already carry that repeating pattern.
+
+00:35.268 --> 00:38.381
+MoiréDeform turns that mesh into a sensor.
+
+00:38.542 --> 00:40.615
+A low-cost camera behind the chair
+
+00:40.655 --> 00:43.687
+records one reference frame
+of the empty backrest.
+
+00:44.034 --> 00:46.432
+Each live frame is compared against it,
+
+00:46.472 --> 00:48.754
+so the two act as virtual layers,
+
+00:48.794 --> 00:51.733
+and deformation appears as a moiré pattern.
+
+00:51.894 --> 00:56.516
+No markers, no added gratings,
+no changes to the chair.
+
+00:57.166 --> 00:59.808
+The camera sees only the back of the chair.
+
+00:59.848 --> 01:03.182
+The person sitting in it is never in frame.
+
+01:04.432 --> 01:08.416
+In the first demonstration,
+the user simply sits and breathes.
+
+01:08.507 --> 01:11.179
+Each breath presses gently into the mesh.
+
+01:11.270 --> 01:14.098
+From the moiré signal,
+a lightweight neural network
+
+01:14.138 --> 01:16.605
+reconstructs the breathing waveform live,
+
+01:16.645 --> 01:20.989
+shown here against a chest belt
+that is worn only for comparison.
+
+01:21.439 --> 01:23.199
+When the user holds their breath,
+
+01:23.239 --> 01:26.897
+the system flags the hold within
+about one and a half seconds.
+
+01:27.058 --> 01:31.402
+And when breathing resumes,
+the waveform picks right back up.
+
+01:33.452 --> 01:35.985
+Larger deformations become input.
+
+01:36.447 --> 01:41.237
+Shifting your weight left, right,
+up, or down across the backrest
+
+01:41.277 --> 01:43.253
+moves the load on the mesh.
+
+01:43.855 --> 01:46.346
+The weighted centroid of the moiré envelope
+
+01:46.386 --> 01:50.207
+turns that shift into a continuous,
+two-dimensional joystick.
+
+01:50.460 --> 01:53.938
+Here, it guides a seated back-mobility exercise,
+
+01:53.978 --> 01:56.511
+steered by posture alone.
+
+01:57.561 --> 02:02.119
+In a preliminary study with five users
+and one hundred minutes of recordings,
+
+02:02.159 --> 02:04.127
+MoiréDeform tracked breathing rate
+
+02:04.167 --> 02:08.348
+within about 0.7 breaths
+per minute of a chest belt.
+
+02:08.440 --> 02:10.966
+And with the same camera, the moiré signal
+
+02:11.006 --> 02:14.850
+was about three times more accurate
+than tracking a physical marker:
+
+02:15.104 --> 02:21.131
+0.71 versus 2.07 breaths per minute of error.
+
+02:21.981 --> 02:25.029
+The same channel could support
+stretch-break coaching,
+
+02:25.069 --> 02:27.665
+posture awareness through a long workday,
+
+02:27.705 --> 02:31.201
+hands-free input, or games you play by leaning.
+
+02:31.548 --> 02:34.742
+All of it by watching fabric, not faces.
+
+02:34.903 --> 02:37.138
+When everyday surfaces can sense,
+
+02:37.178 --> 02:40.025
+every chair becomes a private interface.

@@ -297,6 +297,29 @@ a:hover {
   white-space: pre;
 }
 
+/* ---------- publications (homepage) ---------- */
+.content .pub-list li {
+  margin-bottom: 1.1rem;
+  line-height: 1.6;
+}
+
+.pub-venue {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--signal);
+}
+
+.pub-links {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  margin-left: 0.6rem;
+}
+
+.pub-note {
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
 /* ---------- project list (homepage) ---------- */
 .project-list .project-link {
   font-weight: 600;
@@ -465,6 +488,188 @@ a:hover {
   margin-top: 0.3rem;
 }
 
+/* ---------- research project pages ---------- */
+.project-subtitle {
+  font-size: 1.02rem;
+  color: var(--text);
+  margin: -0.2rem 0 0.9rem;
+  line-height: 1.5;
+}
+
+.project-pub {
+  margin: 0 0 0.8rem;
+  font-size: 0.92rem;
+}
+
+.project-authors {
+  margin: 0;
+  color: var(--text);
+}
+
+.project-venue {
+  margin: 0.1rem 0 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--signal);
+}
+
+.project-hero {
+  margin: 1.8rem 0 0;
+}
+
+.project-hero video,
+.project-video video,
+.project-body figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #000;
+  border: 1px solid var(--line);
+}
+
+.project-video {
+  margin: 0 0 1.6rem;
+}
+
+.project-video figcaption,
+.project-gallery figcaption,
+.project-body figcaption {
+  font-size: 0.82rem;
+  color: var(--dim);
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.project-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 1rem;
+}
+
+.project-gallery figure {
+  margin: 0;
+}
+
+.project-gallery a {
+  display: block;
+  border-bottom: none;
+}
+
+.project-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+
+.content ol {
+  margin: 0 0 1rem;
+  padding-left: 1.3rem;
+}
+
+.content ol li {
+  margin-bottom: 0.6rem;
+  padding-left: 0.2rem;
+}
+
+/* project card cover for protected projects (no image to show) */
+.project-cover-locked {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-elev);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--dim);
+}
+
+.project-venue-chip {
+  color: var(--signal);
+}
+
+/* ---------- password-protected page ---------- */
+.locked {
+  margin-top: 2rem;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+}
+
+.locked-note {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.unlock-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.unlock-form input,
+.unlock-form button,
+.pvideo-load {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  color: var(--bright);
+  border-radius: 2px;
+}
+
+.unlock-form input {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.unlock-form input:focus {
+  outline: 1px solid var(--accent);
+  outline-offset: 0;
+}
+
+.unlock-form button,
+.pvideo-load {
+  cursor: pointer;
+}
+
+.unlock-form button:hover,
+.pvideo-load:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pvideo-load {
+  margin-top: 0.5rem;
+}
+
+.unlock-status {
+  margin: 0.7rem 0 0;
+  min-height: 1.2em;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--signal);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 /* ---------- blog ---------- */
 .blog-sub {
   color: var(--dim);
@@ -618,7 +823,8 @@ a:hover {
     height: 88px;
   }
 
-  .project-grid {
+  .project-grid,
+  .project-gallery {
     grid-template-columns: 1fr;
   }
 }

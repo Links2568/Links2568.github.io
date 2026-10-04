@@ -11,25 +11,57 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 const d = project.data;
+// subtitle = paper title without the repeated "Name:" prefix
+const subtitle = d.fullTitle?.startsWith(`${d.title}:`) ? d.fullTitle.slice(d.title.length + 1).trim() : d.fullTitle;
+
+// bold the site owner in the author list; keep equal-contribution marks
+const authorParts = (d.authors ?? "")
+  .split(",")
+  .map((a) => a.trim())
+  .filter(Boolean)
+  .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
 ---
 
 <Base
   title={`${d.title} | ${SITE.title}`}
-  description={d.tagline}
+  description={d.protected ? `${d.title} — password-protected project page.` : d.tagline}
   path={`/projects/${project.id}`}
   navPath="/projects"
+  noindex={d.protected}
 >
   <article class="content project-page">
     <p class="crumb"><a href="/projects/">projects</a> / {project.id}</p>
     <h1 class="project-title">{d.title}</h1>
-    <p class="project-meta">
-      <code>{d.period}</code>
-      {d.role && <span class="meta-item">{d.role}</span>}
-      {d.org && <span class="meta-item">{d.org}</span>}
-    </p>
-    <p class="project-tags">{d.tags.map((t) => <span class="tag">{t}</span>)}</p>
+    {!d.protected && subtitle && <p class="project-subtitle">{subtitle}</p>}
     {
-      d.links.length > 0 && (
+      !d.protected && (d.venue || authorParts.length > 0) && (
+        <div class="project-pub">
+          {authorParts.length > 0 && (
+            <p class="project-authors">
+              {authorParts.map((a, i) => (
+                <>
+                  {a.me ? <strong>{a.name}</strong> : a.name}
+                  {i < authorParts.length - 1 && ", "}
+                </>
+              ))}
+            </p>
+          )}
+          {d.venue && <p class="project-venue">{d.venue}</p>}
+        </div>
+      )
+    }
+    {
+      !d.protected && (
+        <p class="project-meta">
+          <code>{d.period}</code>
+          {d.role && <span class="meta-item">{d.role}</span>}
+          {d.org && <span class="meta-item">{d.org}</span>}
+        </p>
+      )
+    }
+    {!d.protected && <p class="project-tags">{d.tags.map((t) => <span class="tag">{t}</span>)}</p>}
+    {
+      !d.protected && d.links.length > 0 && (
         <nav class="tag-links project-links" aria-label="Project links">
           {d.links.map((l) => (
             <a href={l.url} rel="noopener">
@@ -39,8 +71,102 @@ const d = project.data;
         </nav>
       )
     }
-    <div class="project-body">
-      <Content />
-    </div>
+
+    {
+      d.protected ? (
+        <>
+          <div class="locked" id="locked" data-base={`/protected/${project.id}/`}>
+            <p class="locked-note">
+              This project is under review. Its write-up, demo video, and figures are encrypted —
+              enter the password to view them in your browser. For access, email{" "}
+              <span class="nowrap">{SITE.email}</span>.
+            </p>
+            <form class="unlock-form" id="unlock-form">
+              <label class="visually-hidden" for="unlock-pw">
+                Password
+              </label>
+              <input
+                id="unlock-pw"
+                type="password"
+                autocomplete="current-password"
+                placeholder="password"
+                required
+              />
+              <button type="submit">unlock</button>
+            </form>
+            <p class="unlock-status" id="unlock-status" aria-live="polite" />
+          </div>
+          <div class="project-body" id="unlocked" hidden />
+          <script is:inline src="/scripts/unlock.js" defer />
+        </>
+      ) : (
+        <>
+          {d.hero && (
+            <figure class="project-hero">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                width={d.hero.width}
+                height={d.hero.height}
+                poster={d.hero.poster}
+              >
+                <source src={d.hero.src} type="video/mp4" />
+              </video>
+            </figure>
+          )}
+
+          <div class="project-body">
+            <Content />
+          </div>
+
+          {d.videos.length > 0 && (
+            <>
+              <h2>video</h2>
+              {d.videos.map((v) => (
+                <figure class="project-video">
+                  <video
+                    controls
+                    playsinline
+                    preload="none"
+                    width={v.width}
+                    height={v.height}
+                    poster={v.poster}
+                  >
+                    <source src={v.src} type="video/mp4" />
+                    {v.captions.map((c) => (
+                      <track kind="subtitles" srclang={c.lang} label={c.label} src={c.src} />
+                    ))}
+                  </video>
+                  <figcaption>
+                    {v.label} <span class="dim">· {v.duration}</span>
+                    {v.captions.length > 0 && (
+                      <span class="dim"> · subtitles: {v.captions.map((c) => c.label).join(" / ")}</span>
+                    )}
+                  </figcaption>
+                </figure>
+              ))}
+            </>
+          )}
+
+          {d.gallery.length > 0 && (
+            <>
+              <h2>figures</h2>
+              <div class="project-gallery">
+                {d.gallery.map((g) => (
+                  <figure>
+                    <a href={g.src} target="_blank" rel="noopener">
+                      <img src={g.src} alt={g.alt} width={g.width} height={g.height} loading="lazy" decoding="async" />
+                    </a>
+                    <figcaption>{g.alt}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      )
+    }
   </article>
 </Base>

@@ -1,0 +1,216 @@
+WEBVTT
+
+00:02.350 --> 00:06.090
+Visual tutorials show us how
+something should be done.
+
+00:06.350 --> 00:08.469
+But they are usually made somewhere else,
+
+00:08.509 --> 00:12.737
+with someone else's tools,
+workspace, and point of view.
+
+00:13.550 --> 00:17.806
+So when we follow them, we do
+more than follow instructions.
+
+00:17.846 --> 00:23.188
+We first have to translate what we see
+into the physical situation in front of us.
+
+00:23.950 --> 00:27.504
+What if the tutorial started
+from your world instead?
+
+00:27.550 --> 00:29.507
+What if it could show what should happen next,
+
+00:29.547 --> 00:32.080
+right where the task is unfolding?
+
+00:35.150 --> 00:39.661
+Generative tutorials are live,
+contextualized visual instructions,
+
+00:39.701 --> 00:42.605
+generated from the learner's own environment.
+
+00:43.950 --> 00:48.526
+Generative Tutorial runs as a
+loop on a mixed-reality headset.
+
+00:48.750 --> 00:51.276
+First, it models the environment.
+
+00:51.316 --> 00:55.304
+From what the headset sees,
+it describes the objects in front of you,
+
+00:55.344 --> 00:57.784
+their states, and how they relate.
+
+00:58.250 --> 01:01.461
+Then it grounds each step
+of the task in that model:
+
+01:01.501 --> 01:06.913
+the objects involved, and what must
+already be true before the step can begin.
+
+01:07.350 --> 01:10.027
+Finally, it generates the instruction:
+
+01:10.067 --> 01:14.508
+a goal image of your own workspace after
+the step, with the changes highlighted,
+
+01:14.548 --> 01:18.474
+and a short video demonstrating
+the motion in the same scene.
+
+01:19.150 --> 01:21.246
+Richer media take longer to make.
+
+01:21.286 --> 01:24.404
+Text and spatial cues are ready in seconds;
+
+01:24.444 --> 01:28.881
+a goal image takes about fifteen,
+and a video about forty-five.
+
+01:29.350 --> 01:33.188
+So guidance for the next steps is
+made while you work on this one:
+
+01:33.228 --> 01:36.357
+from captured context where
+the headset can see it,
+
+01:36.397 --> 01:38.970
+and from predicted context where it must,
+
+01:39.010 --> 01:43.586
+an image of how your counter will
+look once the current step is done.
+
+01:43.950 --> 01:47.086
+Every instruction should
+arrive before you need it.
+
+01:48.150 --> 01:52.726
+Here is the whole loop, making a strawberry
+matcha latte, seen through the headset.
+
+01:53.350 --> 02:06.710
+[Headset] For this, you will need the matcha powder, the small sieve, the bowl, the bamboo whisk, the hot water, the milk, the strawberries, the spoon, the ice, and the tall serving glass.
+
+02:06.750 --> 02:09.510
+[Headset] Everything you need is already here.
+
+02:09.550 --> 02:12.640
+[Headset] Only the ice is
+missing. Grab it from the fridge.
+
+02:13.350 --> 02:15.342
+It found everything the recipe needs,
+
+02:15.382 --> 02:18.808
+and pointed to the one
+ingredient that was missing.
+
+02:21.150 --> 02:24.190
+[Headset] Sift the matcha over the empty bowl.
+
+02:24.550 --> 02:26.820
+Each step opens with its goal:
+
+02:26.860 --> 02:31.402
+your own counter, a few moments from
+now, with the changes highlighted.
+
+02:31.950 --> 02:36.433
+Then the motion that gets you there,
+generated in the same scene.
+
+02:43.150 --> 02:45.497
+Fine movements can be slowed down,
+
+02:46.350 --> 02:51.855
+and when a detail matters, a close-up
+is added, here from above the glass.
+
+02:53.550 --> 02:57.104
+Meanwhile, the next step
+is already being prepared.
+
+03:06.550 --> 03:09.826
+One step at a time, the latte comes together.
+
+03:13.350 --> 03:17.230
+[Headset] All workspaces done. Beautiful work.
+
+03:28.950 --> 03:32.219
+The same loop builds guidance
+from whatever is in front of you:
+
+03:32.259 --> 03:36.034
+a bouquet, red-bean mochi,
+a table set for dinner.
+
+03:37.350 --> 03:40.607
+And it reaches past tasks with one right answer,
+
+03:40.647 --> 03:45.130
+to open ones, with no fixed
+goal, only a place to start.
+
+03:52.950 --> 03:57.299
+We compared generated and pre-authored
+guidance in the same interface,
+
+03:57.339 --> 04:00.712
+with twenty-four participants
+and four everyday tasks.
+
+04:00.752 --> 04:04.028
+Everyone used both, in counterbalanced order.
+
+04:04.750 --> 04:07.961
+With generated guidance,
+task quality was higher,
+
+04:08.001 --> 04:11.072
+people confirmed finished
+steps about a second sooner,
+
+04:11.112 --> 04:15.252
+and they rated the guidance as a
+much closer match to their workspace.
+
+04:15.292 --> 04:18.428
+Total time and workload were similar.
+
+04:18.950 --> 04:21.453
+Generated guidance can also be wrong:
+
+04:21.493 --> 04:25.760
+an extra bowl, or five balls of
+dough where the text says four.
+
+04:25.800 --> 04:28.395
+Because everything else matched their table,
+
+04:28.435 --> 04:33.325
+participants had to decide what was an
+instruction, and what was an artifact.
+
+04:40.550 --> 04:43.176
+Tutorials that start from your world.
+
+04:45.950 --> 04:47.477
+Generative Tutorial.
+
+04:47.517 --> 04:52.059
+Towards live, contextualized visual
+instructions for physical tasks.

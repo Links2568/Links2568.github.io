@@ -44,6 +44,23 @@ ffmpeg -i demo.mp4 -ss 00:00:02 -frames:v 1 poster.jpg
 video starts playing before it finishes downloading. Demos longer than ~3 minutes or
 bigger than ~40MB belong on YouTube (unlisted), embedded with the `.video-embed` snippet.
 
+## Password-protected projects
+
+For work that must stay private (e.g. under double-blind review), the page body and media are
+encrypted locally with AES-256-GCM before they ever reach the public repo; visitors decrypt in the
+browser after entering the password (`public/scripts/unlock.js`). Crawlers only ever see ciphertext.
+
+1. Put plaintext in `private-media/<slug>/` (gitignored): `content.html` plus the media files it
+   references via `data-asset` / `data-poster-asset` / `data-lazy-asset` (see the VeilLens example),
+   and the password in `private-media/<slug>/.password`.
+2. Run `node scripts/encrypt-protected.mjs <slug>` → writes `public/protected/<slug>/`.
+3. Create `src/content/projects/<slug>.md` with `protected: true` and no body.
+4. Commit `public/protected/<slug>/` only.
+
+To change the password: edit `.password`, re-run step 2, commit. Old ciphertext is replaced.
+To make a project public later: delete `protected: true`, move the content into the markdown file,
+and remove `public/protected/<slug>/`.
+
 ## Add gallery photos
 
 1. Drop the image (full resolution is fine) into `src/assets/gallery/`.

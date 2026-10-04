@@ -1,6 +1,9 @@
 # All crawlers welcome, including AI crawlers
-# (GPTBot, ClaudeBot, Google-Extended, CCBot, PerplexityBot, etc.)
+# (GPTBot, ClaudeBot, Google-Extended, CCBot, PerplexityBot, etc.),
+# except password-protected project material (encrypted anyway).
 User-agent: *
 Allow: /
+Disallow: /protected/
+Disallow: /projects/veillens/
 
 Sitemap: https://lzclink.com/sitemap-index.xml

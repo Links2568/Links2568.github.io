@@ -4,7 +4,9 @@ import Base from "../layouts/Base.astro";
 import { SITE } from "../consts";
 
 const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
-  (a, b) => a.data.order - b.data.order
+  (a, b) =>
+    (a.data.kind === "research" ? 0 : 1) - (b.data.kind === "research" ? 0 : 1) ||
+    a.data.order - b.data.order
 );
 ---
 
@@ -69,6 +71,32 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
       </li>
     </ul>
 
+    <h2>publications</h2>
+    <ul class="pub-list">
+      <li>
+        <a href="/projects/moiredeform/"><strong>MoiréDeform: Towards Fine-Grained Deformation Sensing
+        through Everyday Moiré</strong></a>
+        <br />Linzhen Zhu*, <strong>Zuchen Li*</strong>, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun
+        <br /><span class="pub-venue">ACM MobiCom 2026 · Demo</span>
+        <span class="pub-links"><a href="/projects/moiredeform/">project</a> ·
+        <a href="/projects/moiredeform/talk/index.html">talk</a></span>
+      </li>
+      <li>
+        <a href="/projects/generative-tutorial/"><strong>Generative Tutorial: Towards Live Contextualized
+        Visual Instructions for Physical Tasks</strong></a>
+        <br /><span class="pub-venue">CHI 2027 · under review</span>
+        <span class="pub-links"><a href="/projects/generative-tutorial/">project</a></span>
+      </li>
+      <li>
+        <a href="/projects/respiraframe/"><strong>RespiraFrame: On-Frame Respiratory Monitoring via
+        Electrical Impedance Tomography and Bone-Conduction Acoustics</strong></a>
+        <br /><span class="pub-venue">CHI 2027 · under review</span>
+        <span class="pub-links"><a href="/projects/respiraframe/">project</a> ·
+        <a href="/projects/respiraframe/talk/index.html">talk</a></span>
+      </li>
+    </ul>
+    <p class="pub-note">* equal contribution</p>
+
     <h2>projects</h2>
     <ul class="project-list">
       {
@@ -77,7 +105,7 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
             <a class="project-link" href={`/projects/${p.id}/`}>
               <strong>{p.data.title}</strong>
             </a>{" "}
-            <code>{p.data.period}</code>
+            <code>{p.data.venue ? p.data.venue.split(" · ").slice(0, 2).join(" · ") : p.data.period}</code>
             <br />
             {p.data.tagline}
           </li>
@@ -92,15 +120,18 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
         <code>2026.05 → now</code>
         <br />Developing a framework for contextualized live visual instruction that bridges
         generative foundation models and real-world task execution — mixed-reality systems that
-        reason over live workspaces and generate timely, spatially situated visual guidance.
+        reason over live workspaces and generate timely, spatially situated visual guidance
+        (<a href="/projects/generative-tutorial/">Generative Tutorial</a>).
       </li>
       <li>
         <strong>Ambient Intelligence Lab</strong>, UMich — Research Assistant, advised by Prof. Ke
         Sun <code>2025.10 → now</code>
         <br />Agentic visual-privacy framework that discovers and edits the weak compositional cues
-        VLMs exploit; camera-based fabrication sensing that amplifies Moiré-encoded motion into
-        physiological signals; RespiraFrame, an eyeglass-based multimodal respiratory sensing
-        system (with Prof. Junyi Zhu).
+        VLMs exploit (<a href="/projects/veillens/">VeilLens</a>); camera-based fabrication sensing
+        that amplifies Moiré-encoded motion into physiological signals
+        (<a href="/projects/moiredeform/">MoiréDeform</a>);
+        <a href="/projects/respiraframe/">RespiraFrame</a>, an eyeglass-based multimodal
+        respiratory sensing system (with Prof. Junyi Zhu).
       </li>
       <li>
         <strong>Generative AI for Music and Audio</strong>, UMich — Research Assistant, advised by

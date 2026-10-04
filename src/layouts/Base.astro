@@ -9,9 +9,10 @@ interface Props {
   path: string; // "" | "/projects" | "/gallery" | "/projects/slug"
   navPath?: string; // which nav item to highlight; defaults to path
   wrap?: boolean; // wrap <slot/> in the narrow .wrap column
+  noindex?: boolean; // keep out of search engines / AI indexes
 }
 
-const { title, description, path, navPath = path, wrap = true } = Astro.props;
+const { title, description, path, navPath = path, wrap = true, noindex = false } = Astro.props;
 const canonical = new URL(path === "" ? "/" : `${path}/`, Astro.site);
 const ogImage = new URL(SITE.avatar, Astro.site);
 const isHome = path === "";
@@ -25,6 +26,7 @@ const email = SITE.email.replace(" (at) ", "@");
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
     {isHome && <meta name="keywords" content={SITE.keywords} />}
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />

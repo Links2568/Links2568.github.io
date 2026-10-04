@@ -1,0 +1,206 @@
+WEBVTT
+
+00:07.250 --> 00:09.922
+Our breathing says a lot about our health.
+
+00:10.350 --> 00:12.760
+Coughs, sneezes and sniffs,
+
+00:12.800 --> 00:16.986
+and whether we breathe through the
+nose or the mouth, deeply or shallowly,
+
+00:17.026 --> 00:20.545
+can all reflect the state
+of our respiratory system.
+
+00:21.550 --> 00:26.212
+Following these behaviors throughout the
+day could support self-monitoring and care.
+
+00:26.252 --> 00:29.609
+Yet today's options come with trade-offs.
+
+00:30.250 --> 00:33.519
+Chest belts and masks are
+accurate, but obtrusive.
+
+00:33.559 --> 00:36.712
+Earbuds can become
+uncomfortable over long periods,
+
+00:36.752 --> 00:40.445
+and their microphones also
+pick up the sounds around us.
+
+00:41.750 --> 00:43.788
+We present RespiraFrame,
+
+00:43.828 --> 00:49.066
+an eyeglass frame that senses respiration
+through two complementary channels.
+
+00:50.150 --> 00:55.393
+The first is a bone-conduction microphone,
+embedded in the frame beside the nose.
+
+00:55.433 --> 01:00.438
+It captures breathing-related vibrations
+as they travel through the face.
+
+01:01.150 --> 01:06.655
+Unlike a conventional microphone, it is
+only weakly affected by airborne noise.
+
+01:07.950 --> 01:11.114
+The second is electrical impedance tomography.
+
+01:11.154 --> 01:15.677
+Eight soft dry electrodes sit where
+glasses already touch the skin:
+
+01:15.717 --> 01:18.192
+on the nose pads and the temples.
+
+01:18.950 --> 01:22.811
+A small, safe current is injected
+between neighboring electrodes,
+
+01:22.851 --> 01:25.145
+yielding 64 measurements per cycle
+
+01:25.185 --> 01:29.052
+that follow how facial
+tissue changes as we breathe.
+
+01:29.950 --> 01:34.380
+To design the frame, we compared four
+placements for the bone-conduction sensor,
+
+01:34.420 --> 01:37.823
+and chose the one closest to the nasal airway.
+
+01:38.650 --> 01:43.962
+We also compared three mounting structures,
+and embedded the sensor inside the frame,
+
+01:44.002 --> 01:47.824
+so that the frame itself
+shields it from airborne noise.
+
+01:49.250 --> 01:52.240
+Every four seconds, both
+signals are preprocessed
+
+01:52.280 --> 01:54.690
+and encoded by a two-branch network,
+
+01:54.730 --> 01:58.424
+whose features are fused
+with multi-head attention.
+
+01:59.350 --> 02:03.942
+RespiraFrame recognizes five
+abnormal respiratory events:
+
+02:03.982 --> 02:08.691
+coughing, sneezing, sniffing,
+nose blowing and throat clearing.
+
+02:08.731 --> 02:12.035
+It also distinguishes nasal from oral breathing,
+
+02:12.075 --> 02:16.233
+deep from shallow breathing,
+and breathing from breath holding.
+
+02:17.050 --> 02:19.587
+In a lab study with 19 participants,
+
+02:19.627 --> 02:24.963
+RespiraFrame reached 92.5%
+accuracy for abnormal events,
+
+02:25.003 --> 02:30.775
+and 84.8 to 88.0% for the three breathing tasks.
+
+02:31.650 --> 02:34.408
+With background noise of up to 80 decibels,
+
+02:34.448 --> 02:38.455
+accuracy changed by less
+than 3 percentage points.
+
+02:39.350 --> 02:41.969
+When a person nearby coughed or sneezed,
+
+02:42.009 --> 02:46.759
+only 2.7% of these events
+were attributed to the wearer.
+
+02:47.650 --> 02:54.170
+Nasal and oral breathing stayed above
+93% while walking or running in place,
+
+02:54.210 --> 02:59.749
+whereas abnormal events were more affected
+by intense motion and strong wind.
+
+03:00.850 --> 03:05.837
+Ten participants then wore RespiraFrame
+in an office, a cafeteria and outdoors,
+
+03:05.877 --> 03:07.764
+for 30 hours in total.
+
+03:07.804 --> 03:12.485
+It reached 87.6% for abnormal events.
+
+03:13.850 --> 03:18.751
+In a four-week follow-up, its
+accuracy showed no systematic decline.
+
+03:19.550 --> 03:23.701
+Participants rated the glasses as
+comfortable and socially acceptable,
+
+03:23.741 --> 03:30.395
+and as a more suitable form factor for everyday
+respiratory monitoring than masks or earbuds.
+
+03:31.950 --> 03:34.947
+RespiraFrame also runs in real time.
+
+03:35.300 --> 03:37.798
+Here, it recognizes throat clearing,
+
+03:40.387 --> 03:41.318
+a sniff,
+
+03:42.248 --> 03:43.515
+and a sneeze,
+
+03:45.352 --> 03:49.231
+while a bystander's actions are
+not attributed to the wearer.
+
+03:50.399 --> 03:53.849
+It follows changes between
+nasal and oral breathing,
+
+04:03.104 --> 04:06.101
+even with a hair dryer blowing nearby.
+
+04:12.718 --> 04:14.508
+It detects breath holding,
+
+04:24.508 --> 04:27.366
+and tells deep from shallow breathing.
+
+04:32.150 --> 04:35.999
+RespiraFrame suggests that the
+glasses many of us already wear
+
+04:36.039 --> 04:40.534
+could become a comfortable, everyday
+platform for respiratory monitoring.

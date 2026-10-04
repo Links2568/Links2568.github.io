@@ -15,6 +15,41 @@ const projects = defineCollection({
     cover: z.string().optional(),
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
     draft: z.boolean().default(false),
+    // research-project fields
+    kind: z.enum(["research", "project"]).default("project"),
+    fullTitle: z.string().optional(), // paper title
+    venue: z.string().optional(),
+    authors: z.string().optional(), // "A*, B*, C" — the site owner is bolded automatically
+    // password-protected: body/media live encrypted in public/protected/<slug>/
+    protected: z.boolean().default(false),
+    hero: z
+      .object({ src: z.string(), poster: z.string(), width: z.number(), height: z.number() })
+      .optional(),
+    videos: z
+      .array(
+        z.object({
+          label: z.string(),
+          src: z.string(),
+          poster: z.string(),
+          duration: z.string(),
+          width: z.number().default(1920),
+          height: z.number().default(1080),
+          captions: z
+            .array(z.object({ lang: z.string(), label: z.string(), src: z.string() }))
+            .default([]),
+        })
+      )
+      .default([]),
+    gallery: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          width: z.number(),
+          height: z.number(),
+        })
+      )
+      .default([]),
   }),
 });
 

@@ -20,6 +20,12 @@ Personal homepage: https://lzclink.com/
 - Lab of Atmospheric and Earth System Sciences, Nanjing University — Summer Research Intern, advised by Prof. Minghuai Wang (May – Aug 2024): statistical ML for aerosol–cloud interactions.
 - E2-E Lab, UIUC — Undergraduate Research Assistant (Aug 2023 – May 2024): airflow experiments, PIV processing (OpenCV/OpenPIV), CFD simulation (ANSYS Fluent).
 
+## Publications
+
+- MoiréDeform: Towards Fine-Grained Deformation Sensing through Everyday Moiré. Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun (*equal contribution). ACM MobiCom 2026 Demo. Turns the mesh of an office chair into a sensor: a camera behind the backrest reads breathing (0.72 ± 0.45 breaths/min vs. chest belt; ~3× more accurate than marker tracking) and posture from moiré patterns. https://lzclink.com/projects/moiredeform/
+- Generative Tutorial: Towards Live Contextualized Visual Instructions for Physical Tasks. CHI 2027, under review. Mixed-reality system that generates goal images and demonstration videos from the learner's own workspace; 24-participant study. https://lzclink.com/projects/generative-tutorial/
+- RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics. CHI 2027, under review. Eyeglass frame recognizing abnormal respiratory events (92.5% lab, 87.6% in the wild). https://lzclink.com/projects/respiraframe/
+
 ## Selected projects
 
 - MagicBaton: gesture-based human–AI music interaction — dual-IMU smart conducting baton, real-time edge gesture recognition, jerk-based beat/BPM estimation, MIDI + Magenta MusicRNN; public dataset of ~934 recordings across 8 gesture classes. https://lzclink.com/projects/magicbaton/

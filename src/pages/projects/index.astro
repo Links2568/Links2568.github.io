@@ -3,35 +3,54 @@ import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { SITE } from "../../consts";
 
-const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
+const all = (await getCollection("projects", ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order
 );
+const groups = [
+  { heading: "research", items: all.filter((p) => p.data.kind === "research") },
+  { heading: "other projects", items: all.filter((p) => p.data.kind !== "research") },
+].filter((g) => g.items.length > 0);
 ---
 
 <Base
   title={`Projects | ${SITE.title}`}
-  description={`Research projects by ${SITE.title} — generative AI for music, privacy-aware machine learning, and statistical ML.`}
+  description={`Research and projects by ${SITE.title} — human–AI interaction, ubiquitous sensing, and context-aware systems.`}
   path="/projects"
 >
   <div class="content">
-    <h2>projects</h2>
-    <div class="project-grid">
-      {
-        projects.map((p) => (
-          <a class="project-card" href={`/projects/${p.id}/`}>
-            {p.data.cover && <img class="project-cover" src={p.data.cover} alt="" loading="lazy" />}
-            <div class="project-card-body">
-              <h3>{p.data.title}</h3>
-              <p class="project-meta">
-                <code>{p.data.period}</code>
-                {p.data.status === "active" && <span class="project-live">active</span>}
-              </p>
-              <p class="project-tagline">{p.data.tagline}</p>
-              <p class="project-tags">{p.data.tags.map((t) => <span class="tag">{t}</span>)}</p>
-            </div>
-          </a>
-        ))
-      }
-    </div>
+    {
+      groups.map((g) => (
+        <>
+          <h2>{g.heading}</h2>
+          <div class="project-grid">
+            {g.items.map((p) => (
+              <a class="project-card" href={`/projects/${p.id}/`}>
+                {p.data.protected ? (
+                  <div class="project-cover-locked">password-protected</div>
+                ) : (
+                  p.data.cover && <img class="project-cover" src={p.data.cover} alt="" loading="lazy" />
+                )}
+                <div class="project-card-body">
+                  <h3>{p.data.title}</h3>
+                  <p class="project-meta">
+                    <code>{p.data.period}</code>
+                    {p.data.venue && <span class="project-venue-chip">{p.data.venue.split(" · ").slice(0, 2).join(" · ")}</span>}
+                    {!p.data.venue && p.data.status === "active" && <span class="project-live">active</span>}
+                  </p>
+                  <p class="project-tagline">{p.data.tagline}</p>
+                  {p.data.tags.length > 0 && (
+                    <p class="project-tags">
+                      {p.data.tags.map((t) => (
+                        <span class="tag">{t}</span>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        </>
+      ))
+    }
   </div>
 </Base>
