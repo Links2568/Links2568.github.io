@@ -6,11 +6,13 @@ role: Experimental design & evaluation
 org: Human Centered Computing Lab, University of Michigan · with Prof. Junyi Zhu
 tags: [ubiquitous-sensing, wearables, health, multimodal, HCI]
 status: active
-order: 3
+order: 4
 kind: research
 fullTitle: "RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics"
 venue: CHI 2027 · under review
 cover: /projects/respiraframe/cover.webp
+thumb: /projects/respiraframe/thumb.webp
+abstract: "RespiraFrame is an eyeglass frame that monitors respiration through two complementary channels: a bone-conduction microphone beside the nose that hears breathing through the face rather than the air, and electrical impedance tomography from eight soft dry electrodes on the nose pads and temples. A two-branch network fused with attention recognizes five abnormal respiratory events and distinguishes nasal vs. oral, deep vs. shallow breathing, and breath holding — 92.5% for abnormal events in a 19-participant lab study, under 3 points of change at 80 dB of noise, and 87.6% over 30 hours of in-the-wild wear."
 links:
   - { label: interactive talk, url: /projects/respiraframe/talk/index.html }
 hero:

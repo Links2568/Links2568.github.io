@@ -24,7 +24,7 @@ const authorParts = (d.authors ?? "")
 
 <Base
   title={`${d.title} | ${SITE.title}`}
-  description={d.protected ? `${d.title} — password-protected project page.` : d.tagline}
+  description={d.tagline}
   path={`/projects/${project.id}`}
   navPath="/projects"
   noindex={d.protected}
@@ -75,10 +75,17 @@ const authorParts = (d.authors ?? "")
     {
       d.protected ? (
         <>
+          <p class="project-meta">
+            {d.venue && <span class="project-venue-chip">{d.venue}</span>}
+            {d.role && <span class="meta-item">{d.role}</span>}
+          </p>
+          <div class="project-body" id="public-desc">
+            <Content />
+          </div>
           <div class="locked" id="locked" data-base={`/protected/${project.id}/`}>
             <p class="locked-note">
-              This project is under review. Its write-up, demo video, and figures are encrypted —
-              enter the password to view them in your browser. For access, email{" "}
+              Reviewers and collaborators with the password can view the full write-up, demo video,
+              and figures here — decrypted in your browser. To request access, email{" "}
               <span class="nowrap">{SITE.email}</span>.
             </p>
             <form class="unlock-form" id="unlock-form">
@@ -123,7 +130,7 @@ const authorParts = (d.authors ?? "")
 
           {d.videos.length > 0 && (
             <>
-              <h2>video</h2>
+              <h2 id="video">video</h2>
               {d.videos.map((v) => (
                 <figure class="project-video">
                   <video

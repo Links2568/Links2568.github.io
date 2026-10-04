@@ -11,7 +11,7 @@ Human–AI Interaction · Context-Aware Intelligent Systems · Ubiquitous Sensin
 ## Publications
 
 - MoiréDeform: Towards Fine-Grained Deformation Sensing through Everyday Moiré. Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun (*equal contribution). ACM MobiCom 2026 Demo. https://lzclink.com/projects/moiredeform/
-- Generative Tutorial: Towards Live Contextualized Visual Instructions for Physical Tasks. Co-first author; with Profs. Anhong Guo and Xu Wang. CHI 2027, under review. https://lzclink.com/projects/generative-tutorial/
+- Generative Tutorial: Towards Live Contextualized Visual Instructions for Physical Tasks. Muzhe Wu*, Zuchen Li*, Xu Wang, Anhong Guo (*equal contribution). arXiv preprint 2609.24955 (2026); CHI 2027, under review. https://arxiv.org/abs/2609.24955 · https://lzclink.com/projects/generative-tutorial/
 - RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics. With Prof. Junyi Zhu. CHI 2027, under review. https://lzclink.com/projects/respiraframe/
 
 ## Research experience

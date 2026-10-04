@@ -26,7 +26,11 @@ const groups = [
             {g.items.map((p) => (
               <a class="project-card" href={`/projects/${p.id}/`}>
                 {p.data.protected ? (
-                  <div class="project-cover-locked">password-protected</div>
+                  <div class="project-cover-locked pub-thumb-redacted">
+                    <span class="redact" />
+                    <span class="redact short" />
+                    <span class="pub-thumb-label">under double-blind review</span>
+                  </div>
                 ) : (
                   p.data.cover && <img class="project-cover" src={p.data.cover} alt="" loading="lazy" />
                 )}

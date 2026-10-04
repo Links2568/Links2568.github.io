@@ -51,7 +51,7 @@ encrypted locally with AES-256-GCM before they ever reach the public repo; visit
 browser after entering the password (`public/scripts/unlock.js`). Crawlers only ever see ciphertext.
 
 1. Put plaintext in `private-media/<slug>/` (gitignored): `content.html` plus the media files it
-   references via `data-asset` / `data-poster-asset` / `data-lazy-asset` (see the VeilLens example),
+   references via `data-asset` / `data-poster-asset` / `data-lazy-asset` (see the existing protected project),
    and the password in `private-media/<slug>/.password`.
 2. Run `node scripts/encrypt-protected.mjs <slug>` → writes `public/protected/<slug>/`.
 3. Create `src/content/projects/<slug>.md` with `protected: true` and no body.

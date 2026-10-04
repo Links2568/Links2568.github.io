@@ -1,4 +1,4 @@
-/* lzclink.com — site script: theme toggle + copy email. Nothing else. */
+/* lzclink.com — site script: theme toggle, copy email, abstract expanders. */
 (function () {
   "use strict";
 
@@ -39,13 +39,32 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      initTheme();
-      initCopyEmail();
+  /* ---------- abstracts: "show more" only when actually clamped ---------- */
+  function initAbstracts() {
+    document.querySelectorAll(".pub-abstract").forEach(function (box) {
+      var p = box.querySelector("p");
+      if (!p || p.scrollHeight <= p.clientHeight + 2) return;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "pub-more";
+      btn.textContent = "show more";
+      btn.addEventListener("click", function () {
+        var open = box.classList.toggle("open");
+        btn.textContent = open ? "show less" : "show more";
+      });
+      box.appendChild(btn);
     });
-  } else {
+  }
+
+  function init() {
     initTheme();
     initCopyEmail();
+    initAbstracts();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
   }
 })();

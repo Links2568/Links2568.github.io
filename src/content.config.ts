@@ -20,6 +20,8 @@ const projects = defineCollection({
     fullTitle: z.string().optional(), // paper title
     venue: z.string().optional(),
     authors: z.string().optional(), // "A*, B*, C" — the site owner is bolded automatically
+    thumb: z.string().optional(), // homepage card image (16:10-ish, ~640px wide)
+    abstract: z.string().optional(), // homepage card summary
     // password-protected: body/media live encrypted in public/protected/<slug>/
     protected: z.boolean().default(false),
     hero: z

@@ -4,6 +4,6 @@
 User-agent: *
 Allow: /
 Disallow: /protected/
-Disallow: /projects/veillens/
+Disallow: /projects/mystery-ai-privacy/
 
 Sitemap: https://lzclink.com/sitemap-index.xml

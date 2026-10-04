@@ -3,11 +3,18 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import { SITE } from "../consts";
 
-const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
-  (a, b) =>
-    (a.data.kind === "research" ? 0 : 1) - (b.data.kind === "research" ? 0 : 1) ||
-    a.data.order - b.data.order
+const all = (await getCollection("projects", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
 );
+const research = all.filter((p) => p.data.kind === "research");
+const others = all.filter((p) => p.data.kind !== "research");
+
+const authorParts = (s?: string) =>
+  (s ?? "")
+    .split(",")
+    .map((a) => a.trim())
+    .filter(Boolean)
+    .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
 ---
 
 <Base
@@ -50,63 +57,79 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
       systems where humans and AI meet — from real-time co-creation with generative models to
       sensing systems that understand their physical context.
     </p>
+    <p class="interests">
+      <span class="dim">Research interests:</span> Human–AI Interaction · Context-Aware Intelligent
+      Systems · Ubiquitous Sensing · AI4Science
+    </p>
 
     <h2>research</h2>
-    <ul>
-      <li>
-        <strong>Human–AI Interaction:</strong> real-time human–GenAI co-creation, gesture-driven
-        interfaces for controllable music generation, GUI-agent robustness
-      </li>
-      <li>
-        <strong>Context-Aware Intelligent Systems:</strong> contextualized live visual instruction
-        that bridges generative foundation models and real-world task execution
-      </li>
-      <li>
-        <strong>Ubiquitous Sensing:</strong> camera-based Moiré-encoded sensing, multimodal
-        respiratory sensing, agentic visual-privacy defenses against VLM inference
-      </li>
-      <li>
-        <strong>AI4Science:</strong> statistical machine learning for aerosol–cloud interactions,
-        dimension reduction for clinical wearable data
-      </li>
-    </ul>
-
-    <h2>publications</h2>
-    <ul class="pub-list">
-      <li>
-        <a href="/projects/moiredeform/"><strong>MoiréDeform: Towards Fine-Grained Deformation Sensing
-        through Everyday Moiré</strong></a>
-        <br />Linzhen Zhu*, <strong>Zuchen Li*</strong>, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun
-        <br /><span class="pub-venue">ACM MobiCom 2026 · Demo</span>
-        <span class="pub-links"><a href="/projects/moiredeform/">project</a> ·
-        <a href="/projects/moiredeform/talk/index.html">talk</a></span>
-      </li>
-      <li>
-        <a href="/projects/generative-tutorial/"><strong>Generative Tutorial: Towards Live Contextualized
-        Visual Instructions for Physical Tasks</strong></a>
-        <br />Co-first author · with Profs. Anhong Guo and Xu Wang
-        <br /><span class="pub-venue">CHI 2027 · under review</span>
-        <span class="pub-links"><a href="/projects/generative-tutorial/">project</a></span>
-      </li>
-      <li>
-        <a href="/projects/respiraframe/"><strong>RespiraFrame: On-Frame Respiratory Monitoring via
-        Electrical Impedance Tomography and Bone-Conduction Acoustics</strong></a>
-        <br /><span class="pub-venue">CHI 2027 · under review</span>
-        <span class="pub-links"><a href="/projects/respiraframe/">project</a> ·
-        <a href="/projects/respiraframe/talk/index.html">talk</a></span>
-      </li>
-    </ul>
     <p class="pub-note">* equal contribution</p>
+    <div class="pubs">
+      {
+        research.map((p, i) => {
+          const d = p.data;
+          const href = `/projects/${p.id}/`;
+          const authors = authorParts(d.authors);
+          return (
+            <article class="pub">
+              <a class="pub-thumb" href={href} tabindex="-1" aria-hidden="true">
+                {d.thumb ? (
+                  <img src={d.thumb} alt="" width="640" height="360" loading={i < 2 ? "eager" : "lazy"} decoding="async" />
+                ) : (
+                  <span class="pub-thumb-redacted">
+                    <span class="redact" />
+                    <span class="redact short" />
+                    <span class="pub-thumb-label">under double-blind review</span>
+                  </span>
+                )}
+              </a>
+              <div class="pub-text">
+                {d.venue && <p class="pub-venue">{d.venue}</p>}
+                <h3 class="pub-title">
+                  <a href={href}>{d.fullTitle ?? d.title}</a>
+                </h3>
+                {authors.length > 0 ? (
+                  <p class="pub-authors">
+                    {authors.map((a, j) => (
+                      <>
+                        {a.me ? <strong>{a.name}</strong> : a.name}
+                        {j < authors.length - 1 && ", "}
+                      </>
+                    ))}
+                  </p>
+                ) : (
+                  d.role && <p class="pub-authors">{d.role}</p>
+                )}
+                <p class="pub-links">
+                  <a href={href}>{d.protected ? "details" : "project"}</a>
+                  {d.links.map((l) => (
+                    <a href={l.url} rel="noopener">
+                      {l.label}
+                    </a>
+                  ))}
+                  {d.videos.length > 0 && <a href={`${href}#video`}>video</a>}
+                </p>
+                {d.abstract && (
+                  <div class="pub-abstract">
+                    <p>{d.abstract}</p>
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
 
-    <h2>projects</h2>
+    <h2>other projects</h2>
     <ul class="project-list">
       {
-        projects.map((p) => (
+        others.map((p) => (
           <li>
             <a class="project-link" href={`/projects/${p.id}/`}>
               <strong>{p.data.title}</strong>
             </a>{" "}
-            <code>{p.data.venue ? p.data.venue.split(" · ").slice(0, 2).join(" · ") : p.data.period}</code>
+            <code>{p.data.period}</code>
             <br />
             {p.data.tagline}
           </li>
@@ -149,12 +172,11 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
             three-day semi-wild study, and repeated wear over a four-week longitudinal study.
           </li>
           <li>
-            <a href="/projects/veillens/"><strong>VeilLens</strong></a>
-            <span class="dim">(co-first author; with Prof. Ke Sun)</span>: developed an agentic
-            visual privacy framework that autonomously discovers, localizes, and selectively edits
-            weak compositional cues exploited by VLMs, supporting granular user control and
-            iterative verification of residual privacy leakage across identity, geolocation,
-            affiliation, and social-relationship risks.
+            <a href="/projects/mystery-ai-privacy/"><strong>A Mysterious AI Security &amp; Privacy
+            Project</strong></a> <span class="dim">(co-first author; under double-blind review)</span>:
+            studies hidden privacy risks in visual AI — what today's models can infer from everyday
+            photos — and builds tools that help people see and control what leaks before they share.
+            Details withheld until the review is over.
           </li>
         </ul>
       </li>

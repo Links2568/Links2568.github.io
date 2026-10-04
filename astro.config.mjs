@@ -6,7 +6,7 @@ export default defineConfig({
   site: "https://lzclink.com",
   integrations: [
     // password-protected pages stay out of the sitemap (they are also noindex)
-    sitemap({ filter: (page) => !page.includes("/projects/veillens/") }),
+    sitemap({ filter: (page) => !page.includes("/projects/mystery-ai-privacy/") }),
   ],
   build: {
     // Inline all CSS into the HTML: GitHub Pages caches HTML for 10 min

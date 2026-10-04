@@ -144,6 +144,13 @@
         out.innerHTML = new TextDecoder().decode(plain);
         out.hidden = false;
         root.hidden = true;
+        var pub = document.getElementById("public-desc");
+        if (pub) pub.hidden = true;
+        var real = out.querySelector("[data-real-title]");
+        var h1 = document.querySelector(".project-title");
+        if (real && h1) h1.textContent = real.dataset.realTitle;
+        var meta = h1 && h1.parentElement.querySelector(":scope > .project-meta");
+        if (meta) meta.hidden = true;
         try {
           sessionStorage.setItem(storeKey, pw);
         } catch (e) {}
