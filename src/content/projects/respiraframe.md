@@ -2,7 +2,8 @@
 title: RespiraFrame
 tagline: An eyeglass frame that monitors respiration through bone-conduction acoustics and electrical impedance tomography.
 period: "2026"
-org: Ambient Intelligence Lab, University of Michigan · with Prof. Junyi Zhu
+role: Experimental design & evaluation
+org: Human Centered Computing Lab, University of Michigan · with Prof. Junyi Zhu
 tags: [ubiquitous-sensing, wearables, health, multimodal, HCI]
 status: active
 order: 3
@@ -68,3 +69,9 @@ breathing vs. breath holding. It runs in real time.
   abnormal events, with no systematic decline over a four-week follow-up.
 - Participants rated the glasses comfortable and socially acceptable — a more suitable everyday form
   factor than masks or earbuds.
+
+## my role
+
+I contributed to the experimental design and evaluation, designing evaluation protocols spanning
+respiratory behaviors, motion and environmental interference, a three-day semi-wild study, and
+repeated wear over a four-week longitudinal study.

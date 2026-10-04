@@ -3,7 +3,7 @@ title: MoiréDeform
 tagline: Turns the mesh of an ordinary office chair into a sensor — a camera behind the backrest reads breathing and posture from moiré patterns.
 period: "2026"
 role: Co-first author
-org: Ambient Intelligence Lab, University of Michigan
+org: Human Centered Computing Lab, University of Michigan · with Profs. Alanson Sample and Ke Sun
 tags: [ubiquitous-sensing, computer-vision, moiré, respiration, HCI]
 status: done
 order: 1
@@ -68,3 +68,10 @@ within **0.72 ± 0.45 breaths/min** of a chest belt. With the same camera, the m
 **3× more accurate** than tracking a physical marker (0.71 vs. 2.07 breaths/min error). The same
 channel could support stretch-break coaching, posture awareness, hands-free input, or games you play
 by leaning — all by watching fabric, not faces.
+
+## my role
+
+Co-first author. I developed the low-cost camera-based sensing approach that exploits naturally
+occurring woven textures as virtual moiré layers to amplify subtle surface deformation, enabling
+continuous body-lean interaction and respiratory waveform/rate sensing on an unmodified mesh chair —
+reducing respiratory-rate MAE from 2.07 to 0.71 breaths/min relative to physical-marker tracking.

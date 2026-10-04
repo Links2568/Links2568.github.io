@@ -1,50 +1,55 @@
 # Zuchen Li (李祖臣)
 
-> Undergraduate at the University of Michigan, Ann Arbor, majoring in Statistics & Computer Science with a minor in History. Aiming for a PhD in HCI / AI. Previously studied Statistics & Computer Science at the University of Illinois Urbana-Champaign (minor in Meteorology).
+> Undergraduate at the University of Michigan, Ann Arbor, triple majoring in Computer Science, Data Science, and Statistics with a minor in History (GPA 3.8/4.0). Aiming for a PhD in HCI / AI. Previously studied Statistics & Computer Science at the University of Illinois Urbana-Champaign (minor in Meteorology, GPA 4.0/4.0).
 
 Personal homepage: https://lzclink.com/
 
 ## Research interests
 
-- Human–AI Interaction: real-time human–GenAI co-creation, gesture-driven interfaces, GUI-agent robustness
-- Context-Aware Intelligent Systems: contextualized live visual instruction bridging generative foundation models and real-world task execution
-- Ubiquitous Sensing: camera-based Moiré-encoded sensing, multimodal respiratory sensing, visual-privacy defenses against VLM inference
-- AI4Science: statistical ML for aerosol–cloud interactions, dimension reduction for clinical wearable data
-
-## Research experience
-
-- HAIL Lab, University of Michigan — Research Assistant, advised by Prof. Anhong Guo (May 2026 – present): contextualized live visual instruction; mixed-reality systems that reason over live workspaces and generate spatially situated guidance.
-- Ambient Intelligence Lab, University of Michigan — Research Assistant, advised by Prof. Ke Sun (Oct 2025 – present): agentic visual-privacy framework against VLM inference; camera-based Moiré fabrication sensing; RespiraFrame eyeglass-based respiratory sensing (with Prof. Junyi Zhu).
-- Generative AI for Music and Audio, University of Michigan — Research Assistant, advised by Prof. Herman Dong (Sept 2025 – present): real-time human–GenAI co-creation for controllable music generation; gesture-driven interaction techniques.
-- Energy Distance Dimension Reduction, University of Michigan — URPS Selected Researcher, advised by Prof. Kerby Shedden (Jan – May 2025): engression and sufficient dimension reduction for multilevel wearable data; JAX GPU re-implementation with ~7,000× speedup.
-- Lab of Atmospheric and Earth System Sciences, Nanjing University — Summer Research Intern, advised by Prof. Minghuai Wang (May – Aug 2024): statistical ML for aerosol–cloud interactions.
-- E2-E Lab, UIUC — Undergraduate Research Assistant (Aug 2023 – May 2024): airflow experiments, PIV processing (OpenCV/OpenPIV), CFD simulation (ANSYS Fluent).
+Human–AI Interaction · Context-Aware Intelligent Systems · Ubiquitous Sensing · AI4Science
 
 ## Publications
 
-- MoiréDeform: Towards Fine-Grained Deformation Sensing through Everyday Moiré. Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun (*equal contribution). ACM MobiCom 2026 Demo. Turns the mesh of an office chair into a sensor: a camera behind the backrest reads breathing (0.72 ± 0.45 breaths/min vs. chest belt; ~3× more accurate than marker tracking) and posture from moiré patterns. https://lzclink.com/projects/moiredeform/
-- Generative Tutorial: Towards Live Contextualized Visual Instructions for Physical Tasks. CHI 2027, under review. Mixed-reality system that generates goal images and demonstration videos from the learner's own workspace; 24-participant study. https://lzclink.com/projects/generative-tutorial/
-- RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics. CHI 2027, under review. Eyeglass frame recognizing abnormal respiratory events (92.5% lab, 87.6% in the wild). https://lzclink.com/projects/respiraframe/
+- MoiréDeform: Towards Fine-Grained Deformation Sensing through Everyday Moiré. Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun (*equal contribution). ACM MobiCom 2026 Demo. https://lzclink.com/projects/moiredeform/
+- Generative Tutorial: Towards Live Contextualized Visual Instructions for Physical Tasks. Co-first author; with Profs. Anhong Guo and Xu Wang. CHI 2027, under review. https://lzclink.com/projects/generative-tutorial/
+- RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics. With Prof. Junyi Zhu. CHI 2027, under review. https://lzclink.com/projects/respiraframe/
+
+## Research experience
+
+- Human Centered Computing Lab, University of Michigan — Undergraduate Research Assistant (Sept 2025 – present):
+  - Generative Tutorial (co-first author; with Profs. Anhong Guo and Xu Wang): co-developed a conceptual framework and AR system for live contextualized visual instruction that grounds physical-task goals in users' workspaces and proactively generates workspace-specific goal images and demonstration videos; co-led a formative evaluation of 176 generated artifacts across 15 tasks and a 24-participant comparative study showing improved task quality, perceived workspace correspondence, and shorter step-confirmation intervals over pre-authored guidance.
+  - MoiréDeform (co-first author, ACM MobiCom '26 Demo; with Profs. Alanson Sample and Ke Sun): low-cost camera-based sensing that exploits naturally occurring woven textures as virtual moiré layers to amplify subtle surface deformation — continuous body-lean interaction and respiratory waveform/rate sensing on an unmodified mesh chair; reduced respiratory-rate MAE from 2.07 to 0.71 breaths/min relative to physical-marker tracking.
+  - RespiraFrame (with Prof. Junyi Zhu): experimental design and evaluation of an eyeglass-based multimodal respiratory sensing system (bone-conduction acoustics + electrical impedance tomography); evaluation protocols spanning respiratory behaviors, motion and environmental interference, a three-day semi-wild study, and a four-week longitudinal study.
+- Generative AI for Music and Audio, University of Michigan — Research Assistant, advised by Prof. Herman Dong (Sept 2025 – present): real-time human–GenAI co-creation for controllable music generation; gesture-driven interaction techniques.
+- Energy Distance Dimension Reduction, University of Michigan — Selected Researcher, Undergraduate Research Program in Statistics (URPS), advised by Prof. Kerby Shedden (Jan – May 2025): engression and sufficient dimension reduction for multilevel, dyadic, and longitudinal wearable data; JAX GPU re-implementation with ~7,000× speedup.
+- Lab of Atmospheric and Earth System Sciences, Nanjing University — Summer Research Intern, advised by Prof. Minghuai Wang (May – Aug 2024): statistical ML integrating sensor observations with simulated atmospheric data for aerosol–cloud interactions.
+- E2-E Lab, UIUC — Undergraduate Research Assistant (Aug 2023 – May 2024): PIV flow-field reconstruction (Python, OpenCV, OpenPIV) and CFD simulation (ANSYS Fluent).
 
 ## Selected projects
 
-- MagicBaton: gesture-based human–AI music interaction — dual-IMU smart conducting baton, real-time edge gesture recognition, jerk-based beat/BPM estimation, MIDI + Magenta MusicRNN; public dataset of ~934 recordings across 8 gesture classes. https://lzclink.com/projects/magicbaton/
-- Multimodal FSM for Adaptive Skill Guidance: VLM + YAMNet audio fused with a 12-state machine for real-time hand-washing guidance; Qwen3-VL and Gemini backends. https://lzclink.com/projects/adaptive-skill-guidance/
-- How Fragile Are GUI Agents?: controlled perturbation benchmark across five interface-evolution categories, built on VisualWebArena. https://lzclink.com/projects/gui-agent-fragility/
-- Bayesian MCMC for Ebola outbreak data: data-augmentation MCMC for partially observed, censored epidemic records. https://lzclink.com/projects/ebola-mcmc/
+- MagicBaton: gesture-based human–AI music interaction — dual-IMU smart conducting baton (12-axis motion at ~50 Hz), real-time edge gesture recognition, jerk-based beat/BPM estimation, MIDI playback, in-browser Magenta MusicRNN; public dataset of ~934 recordings across 8 gesture classes. https://lzclink.com/projects/magicbaton/
+- Multimodal Finite State Machine for Adaptive Skill Guidance: VLM visual cues + YAMNet audio fused with a 12-state machine for real-time hand-washing guidance; switchable local Qwen3-VL and Gemini backends. https://lzclink.com/projects/adaptive-skill-guidance/
+- How Fragile Are GUI Agents? A Controlled Perturbation Benchmark for Interface Evolution: five interface-evolution categories, controlled synthetic websites, VisualWebArena harness. https://lzclink.com/projects/gui-agent-fragility/
+- Bayesian MCMC Data Augmentation for Ebola Outbreak Data: partially observed, censored onset/removal data. https://lzclink.com/projects/ebola-mcmc/
 
 ## Honors
 
 - UROP Summer Engineering Fellowship, University of Michigan (2026)
 - University Honors, University of Michigan (2024–2026)
 - Outstanding Research Paper Award, IMMC Greater China Round — top 1.875% of 800+ teams (2022)
-- Finalist Research Paper Award, IMMC International Round (2022)
+- Finalist Research Paper Award, IMMC International Round — top 8.75% internationally (2022)
 
-## Beyond research
+## Additional experience
 
-- The Michigan Daily: student reporter, photographer & videographer (Aug 2025 – Jul 2026)
-- Waseda University summer intern (2025): postwar Japanese literature and historical memory
-- Meteorology enthusiast (ISTORM at UIUC, storm chasing) and History minor
+- Waseda University, Tokyo — Summer Intern (June – Aug 2025): postwar Japanese literature and history, historical memory and identity.
+- The Michigan Daily — Student Reporter, Photographer & Videographer (Aug 2025 – Jul 2026).
+- Kendo Club at the University of Michigan — Member.
+- Michigan Backpacking Club — Member.
+- Illinois Student Organization of Meteorology (ISTORM) — Student Forecaster; severe and hazardous weather forecasting.
+
+## Selected coursework
+
+EECS 545 Machine Learning · EECS 281 Data Structures and Algorithms · STATS 470 Design of Experiments · EECS 442 Computer Vision · EECS 484 Database Management Systems · STATS 571 Causal Inference · EECS 498 Machine Learning for Computational Sensing in Mobile/Wearable IoT Systems · PAT 564 Generative AI for Music and Audio · Math 451 Real Analysis
 
 ## Site map
 

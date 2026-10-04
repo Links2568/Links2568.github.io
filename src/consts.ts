@@ -7,7 +7,7 @@ export const SITE = {
   email: "zuchenli (at) umich.edu",
   handle: "zuchenli",
   description:
-    "Zuchen Li (李祖臣)'s academic personal homepage. Undergraduate in Statistics & Computer Science at the University of Michigan, working on human–AI interaction, context-aware intelligent systems, ubiquitous sensing, and AI4Science — aiming for a PhD in HCI / AI.",
+    "Zuchen Li (李祖臣)'s academic personal homepage. Undergraduate triple majoring in Computer Science, Data Science & Statistics at the University of Michigan, working on human–AI interaction, context-aware intelligent systems, ubiquitous sensing, and AI4Science — aiming for a PhD in HCI / AI.",
   keywords:
     "Zuchen Li, 李祖臣, Human-AI Interaction, HCI, Ubiquitous Sensing, Context-Aware Computing, AI4Science, Statistics, Computer Science, University of Michigan",
   statusLine: "Aiming for a PhD in HCI / AI.",
