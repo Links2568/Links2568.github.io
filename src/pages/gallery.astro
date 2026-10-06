@@ -48,14 +48,14 @@ const showFilter = seriesList.length > 1;
 
 <Base
   title={`Gallery | ${SITE.title}`}
-  description={`Photography by ${SITE.title} — photojournalism for the Michigan Daily, weather, and street photography.`}
+  description={`Photographs by ${SITE.title} — photojournalism for the Michigan Daily, weather, and street photography.`}
   path="/gallery"
   wrap={false}
 >
   <main class="gallery-page">
     <div class="gallery-header">
-      <h1>gallery</h1>
-      <p>Photographs — the Michigan Daily &amp; elsewhere.</p>
+      <h1>Photos</h1>
+      <p>Photographs from the Michigan Daily and elsewhere.</p>
       {
         showFilter && (
           <nav class="gallery-filter" aria-label="Filter by series">
@@ -74,7 +74,7 @@ const showFilter = seriesList.length > 1;
 
     {
       items.length === 0 ? (
-        <p class="gallery-empty">No photos yet — check back soon.</p>
+        <p class="gallery-empty">No photos yet.</p>
       ) : (
         <div class="justified" id="justified">
           {items.map((it, i) => (

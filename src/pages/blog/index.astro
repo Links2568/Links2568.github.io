@@ -27,22 +27,21 @@ const mmdd = (d: Date) =>
   path="/blog"
 >
   <div class="content blog-index">
-    <h2>blog</h2>
+    <h1 class="page-title">Blog</h1>
     <p class="blog-sub">
-      occasional notes on research, code, and weather ·
-      <a href="/rss.xml">rss</a>
+      Occasional notes on research, code, and weather. Subscribe via <a href="/rss.xml">RSS</a>.
     </p>
 
     {
       posts.length === 0 && (
-        <p class="blog-empty">No posts yet — check back soon.</p>
+        <p class="blog-empty">No posts yet.</p>
       )
     }
 
     {
       groups.map((g) => (
         <section class="blog-year-group">
-          <h3 class="blog-year">{g.year}</h3>
+          <h2 class="blog-year">{g.year}</h2>
           <ul class="post-list">
             {g.entries.map((p) => (
               <li class="post-row">

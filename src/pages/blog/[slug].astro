@@ -29,12 +29,12 @@ const date = d.date.toISOString().slice(0, 10).replaceAll("-", ".");
   navPath="/blog"
 >
   <article class="content post-page">
-    <p class="crumb"><a href="/blog/">blog</a> / {post.id}</p>
+    <p class="crumb"><a href="/blog/">All posts</a></p>
     <h1 class="post-title">{d.title}</h1>
     <p class="post-meta">
       <time datetime={d.date.toISOString().slice(0, 10)}>{date}</time>
       <span class="meta-sep">·</span>
-      {minutes} min read
+      <span>{minutes} min read</span>
       {d.tags.length > 0 && <span class="meta-sep">·</span>}
       {d.tags.map((t) => <span class="tag">{t}</span>)}
     </p>

@@ -1,0 +1,14 @@
+---
+/* Research-interest legend that doubles as a filter for [data-topics] items. */
+import { THEMES } from "../lib/themes";
+---
+
+<div class="theme-filter" role="group" aria-label="Filter projects by research interest">
+  {
+    THEMES.map((t) => (
+      <button type="button" class="theme-chip" data-topic={t.id} aria-pressed="false">
+        {t.label}
+      </button>
+    ))
+  }
+</div>

@@ -8,11 +8,13 @@ tags: [ubiquitous-sensing, wearables, health, multimodal, HCI]
 status: active
 order: 4
 kind: research
+themes: [sensing]
+badges: ["CHI 2027 under review"]
 fullTitle: "RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics"
 venue: CHI 2027 · under review
 abstract: "RespiraFrame is an eyeglass frame that monitors respiration through two complementary channels: a bone-conduction microphone beside the nose that hears breathing through the face rather than the air, and electrical impedance tomography from eight soft dry electrodes on the nose pads and temples. A two-branch network fused with attention recognizes five abnormal respiratory events and distinguishes nasal vs. oral, deep vs. shallow breathing, and breath holding — 92.5% for abnormal events in a 19-participant lab study, under 3 points of change at 80 dB of noise, and 87.6% over 30 hours of in-the-wild wear."
 cover: /projects/respiraframe/chi-cover.webp
-thumb: /projects/respiraframe/chi-thumb.webp
+thumb: /projects/respiraframe/chi-cover.webp
 links: []
 hero:
   src: /projects/respiraframe/chi-loop.mp4
@@ -59,7 +61,7 @@ multi-head attention, recognizing five abnormal respiratory events (coughing, sn
 nose blowing, throat clearing) and distinguishing nasal vs. oral, deep vs. shallow breathing, and
 breathing vs. breath holding. It runs in real time.
 
-## results
+## Results
 
 - Lab study, 19 participants: **92.5%** accuracy for abnormal events; **84.8–88.0%** for the three
   breathing tasks.
@@ -70,7 +72,7 @@ breathing vs. breath holding. It runs in real time.
 - Participants rated the glasses comfortable and socially acceptable — a more suitable everyday form
   factor than masks or earbuds.
 
-## my role
+## My role
 
 I contributed to the experimental design and evaluation, designing evaluation protocols spanning
 respiratory behaviors, motion and environmental interference, a three-day semi-wild study, and

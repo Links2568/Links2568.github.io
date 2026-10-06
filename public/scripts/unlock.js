@@ -102,13 +102,13 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "pvideo-load";
-      btn.textContent = "▶ " + (video.dataset.label || "play");
+      btn.textContent = video.dataset.label || "Decrypt and play";
       video.insertAdjacentElement("afterend", btn);
       btn.addEventListener("click", function () {
         btn.disabled = true;
-        btn.textContent = "decrypting…";
+        btn.textContent = "Decrypting…";
         open(video.dataset.lazyAsset, video.dataset.typeLazyAsset, function (p) {
-          btn.textContent = "decrypting… " + Math.round(p * 100) + "%";
+          btn.textContent = "Decrypting… " + Math.round(p * 100) + "%";
         })
           .then(function (url) {
             video.src = url;
@@ -117,14 +117,14 @@
           })
           .catch(function () {
             btn.disabled = false;
-            btn.textContent = "failed — retry";
+            btn.textContent = "Couldn't decrypt. Try again";
           });
       });
     });
   }
 
   function unlock(pw) {
-    status.textContent = "checking…";
+    status.textContent = "Checking…";
     return getManifest()
       .then(function (m) {
         return deriveKey(pw, m);
@@ -147,10 +147,8 @@
         var pub = document.getElementById("public-desc");
         if (pub) pub.hidden = true;
         var real = out.querySelector("[data-real-title]");
-        var h1 = document.querySelector(".project-title");
+        var h1 = document.querySelector(".paper-title");
         if (real && h1) h1.textContent = real.dataset.realTitle;
-        var meta = h1 && h1.parentElement.querySelector(":scope > .project-meta");
-        if (meta) meta.hidden = true;
         try {
           sessionStorage.setItem(storeKey, pw);
         } catch (e) {}
@@ -158,7 +156,7 @@
       })
       .catch(function (e) {
         key = null;
-        status.textContent = e.message === "wrong password" ? "wrong password." : "could not load — try again.";
+        status.textContent = e.message === "wrong password" ? "That password didn't work." : "Couldn't load the files. Check your connection and try again.";
         try {
           sessionStorage.removeItem(storeKey);
         } catch (e2) {}

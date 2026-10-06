@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { themeLabel } from "../lib/themes";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+const { project } = Astro.props;
+const d = project.data;
+---
+
+<a class="mini" href={`/projects/${project.id}/`} data-topics={d.themes.join(" ")} data-topic={d.themes[0]}>
+  <span class="mini-theme" data-topic={d.themes[0]}>{d.themes[0] && themeLabel(d.themes[0])}</span>
+  <span class="mini-title">{d.title}</span>
+  <span class="mini-text">{d.tagline}</span>
+  <span class="mini-period">{d.period}</span>
+</a>

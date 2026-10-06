@@ -7,6 +7,7 @@ org: University of Michigan
 tags: [HCI, music, gesture, embedded, generative-ai]
 status: active
 order: 1
+themes: [hai]
 # cover: /projects/magicbaton/cover.png
 links: []
 ---

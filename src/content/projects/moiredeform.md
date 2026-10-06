@@ -8,14 +8,16 @@ tags: [ubiquitous-sensing, computer-vision, moiré, respiration, HCI]
 status: done
 order: 2
 kind: research
+themes: [sensing]
+badges: ["MobiCom 2026 Demo"]
 fullTitle: "MoiréDeform: Towards Fine-Grained Deformation Sensing through Everyday Moiré"
 venue: ACM MobiCom 2026 · Demo · Austin, TX
 authors: "Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun"
 cover: /projects/moiredeform/cover.webp
-thumb: /projects/moiredeform/thumb.webp
+thumb: /projects/moiredeform/fig.webp
 abstract: "Every time we sit, lean, or breathe, we gently deform the surfaces that hold us. MoiréDeform turns the mesh of an unmodified office chair into a sensor: a low-cost camera behind the backrest compares each frame with a reference of the empty chair, so the weave acts as virtual moiré layers that amplify subtle deformation into large, visible fringes. From them, a lightweight network reconstructs the breathing waveform live, and the moiré envelope's centroid becomes a continuous lean-to-steer joystick — no markers, no wearables, and the person is never in frame. In a preliminary study (5 users, 100 minutes), respiratory-rate error fell from 2.07 to 0.71 breaths/min relative to physical-marker tracking."
 links:
-  - { label: interactive talk, url: /projects/moiredeform/talk/index.html }
+  - { label: Interactive talk, url: /projects/moiredeform/talk/index.html }
 hero:
   src: /projects/moiredeform/loop.mp4
   poster: /projects/moiredeform/loop.webp
@@ -55,7 +57,7 @@ the chair records one reference frame of the empty backrest, and each live frame
 it, so the two act as virtual layers and deformation appears as a moiré pattern. No markers, no added
 gratings, no changes to the chair — and the person sitting in it is never in frame.
 
-## what it does
+## What it does
 
 - **Breathing.** Each breath presses gently into the mesh. A lightweight neural network reconstructs
   the breathing waveform live from the moiré signal, and flags a breath hold within about 1.5 s.
@@ -63,7 +65,7 @@ gratings, no changes to the chair — and the person sitting in it is never in f
   weighted centroid of the moiré envelope becomes a continuous two-dimensional joystick — here
   steering a seated back-mobility exercise.
 
-## results
+## Results
 
 In a preliminary study with 5 users and 100 minutes of recordings, MoiréDeform tracked breathing rate
 within **0.72 ± 0.45 breaths/min** of a chest belt. With the same camera, the moiré signal was about
@@ -71,7 +73,7 @@ within **0.72 ± 0.45 breaths/min** of a chest belt. With the same camera, the m
 channel could support stretch-break coaching, posture awareness, hands-free input, or games you play
 by leaning — all by watching fabric, not faces.
 
-## my role
+## My role
 
 Co-first author. I developed the low-cost camera-based sensing approach that exploits naturally
 occurring woven textures as virtual moiré layers to amplify subtle surface deformation, enabling

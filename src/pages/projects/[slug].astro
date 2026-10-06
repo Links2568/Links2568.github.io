@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { SITE } from "../../consts";
 import { asset } from "../../lib/asset";
+import { themeLabel } from "../../lib/themes";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => !data.draft);
@@ -12,15 +13,20 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 const d = project.data;
-// subtitle = paper title without the repeated "Name:" prefix
-const subtitle = d.fullTitle?.startsWith(`${d.title}:`) ? d.fullTitle.slice(d.title.length + 1).trim() : d.fullTitle;
 
-// bold the site owner in the author list; keep equal-contribution marks
-const authorParts = (d.authors ?? "")
+// subtitle = paper title without the repeated "Name:" prefix
+const subtitle = d.fullTitle?.startsWith(`${d.title}:`)
+  ? d.fullTitle.slice(d.title.length + 1).trim()
+  : d.fullTitle;
+const authors = (d.authors ?? "")
   .split(",")
   .map((a) => a.trim())
   .filter(Boolean)
   .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
+const equal = authors.some((a) => a.name.includes("*"));
+const org = d.org?.replace(/ · /g, ", ");
+const isReview = (b: string) => /review/i.test(b);
+const firstFig = d.hero ? 2 : 1;
 ---
 
 <Base
@@ -30,57 +36,73 @@ const authorParts = (d.authors ?? "")
   navPath="/projects"
   noindex={d.protected}
 >
-  <article class="content project-page">
-    <p class="crumb"><a href="/projects/">projects</a> / {project.id}</p>
-    <h1 class="project-title">{d.title}</h1>
-    {!d.protected && subtitle && <p class="project-subtitle">{subtitle}</p>}
-    {
-      !d.protected && (d.venue || authorParts.length > 0) && (
-        <div class="project-pub">
-          {authorParts.length > 0 && (
-            <p class="project-authors">
-              {authorParts.map((a, i) => (
+  <article class="paper">
+    <p class="back"><a href="/projects/">All projects</a></p>
+
+    <header class="paper-head">
+      <p class="paper-badges">
+        {d.badges.map((b) => <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>)}
+        {
+          d.themes.map((t) => (
+            <span class="theme-tag" data-topic={t}>
+              {themeLabel(t)}
+            </span>
+          ))
+        }
+      </p>
+      <h1 class="paper-title">{d.title}</h1>
+      {!d.protected && subtitle && <p class="paper-subtitle">{subtitle}</p>}
+      {
+        !d.protected && authors.length > 0 && (
+          <>
+            <p class="paper-authors">
+              {authors.map((a, i) => (
                 <>
                   {a.me ? <strong>{a.name}</strong> : a.name}
-                  {i < authorParts.length - 1 && ", "}
+                  {i < authors.length - 1 && ", "}
                 </>
               ))}
             </p>
-          )}
-          {d.venue && <p class="project-venue">{d.venue}</p>}
-        </div>
-      )
-    }
-    {
-      !d.protected && (
-        <p class="project-meta">
-          <code>{d.period}</code>
-          {d.role && <span class="meta-item">{d.role}</span>}
-          {d.org && <span class="meta-item">{d.org}</span>}
-        </p>
-      )
-    }
-    {!d.protected && <p class="project-tags">{d.tags.map((t) => <span class="tag">{t}</span>)}</p>}
-    {
-      !d.protected && d.links.length > 0 && (
-        <nav class="tag-links project-links" aria-label="Project links">
-          {d.links.map((l) => (
-            <a href={l.url} rel="noopener">
-              {l.label}
-            </a>
-          ))}
-        </nav>
-      )
-    }
+            <p class="paper-affil">
+              University of Michigan{equal && <span class="dim"> — * equal contribution</span>}
+            </p>
+          </>
+        )
+      }
+      {
+        !d.protected && (d.role || org) && (
+          <p class="paper-role">
+            {d.role && <strong>{d.role}</strong>}{d.role && org && ", "}{org}
+          </p>
+        )
+      }
+      {
+        !d.protected && (d.videos.length > 0 || d.links.length > 0 || d.bibtex) && (
+          <nav class="paper-buttons" aria-label="Paper links">
+            {d.videos.length > 0 && (
+              <a class="btn btn-solid" href="#video">
+                Video
+              </a>
+            )}
+            {d.links.map((l) => (
+              <a class="btn" href={l.url} rel="noopener">
+                {l.label}
+              </a>
+            ))}
+            {d.bibtex && (
+              <a class="btn" href="#cite">
+                BibTeX
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </header>
 
     {
       d.protected ? (
         <>
-          <p class="project-meta">
-            {d.venue && <span class="project-venue-chip">{d.venue}</span>}
-            {d.role && <span class="meta-item">{d.role}</span>}
-          </p>
-          <div class="project-body" id="public-desc">
+          <div class="paper-body" id="public-desc">
             <Content />
           </div>
           <div class="locked" id="locked" data-base={`/protected/${project.id}/`}>
@@ -93,85 +115,81 @@ const authorParts = (d.authors ?? "")
               <label class="visually-hidden" for="unlock-pw">
                 Password
               </label>
-              <input
-                id="unlock-pw"
-                type="password"
-                autocomplete="current-password"
-                placeholder="password"
-                required
-              />
-              <button type="submit">unlock</button>
+              <input id="unlock-pw" type="password" autocomplete="current-password" placeholder="Password" required />
+              <button class="btn btn-solid" type="submit">
+                Unlock
+              </button>
             </form>
             <p class="unlock-status" id="unlock-status" aria-live="polite" />
           </div>
-          <div class="project-body" id="unlocked" hidden />
+          <div class="paper-unlocked" id="unlocked" hidden />
           <script is:inline src={asset("/scripts/unlock.js")} defer />
         </>
       ) : (
         <>
           {d.hero && (
-            <figure class="project-hero">
-              <video
-                autoplay
-                muted
-                loop
-                playsinline
-                width={d.hero.width}
-                height={d.hero.height}
-                poster={d.hero.poster}
-              >
+            <figure class="teaser">
+              <video autoplay muted loop playsinline width={d.hero.width} height={d.hero.height} poster={d.hero.poster}>
                 <source src={d.hero.src} type="video/mp4" />
               </video>
+              <figcaption>
+                <b>Figure 1.</b> {d.tagline}
+              </figcaption>
             </figure>
           )}
 
-          <div class="project-body">
+          <div class="paper-body">
             <Content />
           </div>
 
           {d.videos.length > 0 && (
-            <>
-              <h2 id="video">video</h2>
+            <section class="paper-section" id="video">
+              <h2>Video</h2>
               {d.videos.map((v) => (
-                <figure class="project-video">
-                  <video
-                    controls
-                    playsinline
-                    preload="none"
-                    width={v.width}
-                    height={v.height}
-                    poster={v.poster}
-                  >
+                <figure class="paper-video">
+                  <video controls playsinline preload="none" width={v.width} height={v.height} poster={v.poster}>
                     <source src={v.src} type="video/mp4" />
                     {v.captions.map((c) => (
                       <track kind="subtitles" srclang={c.lang} label={c.label} src={c.src} />
                     ))}
                   </video>
                   <figcaption>
-                    {v.label} <span class="dim">· {v.duration}</span>
-                    {v.captions.length > 0 && (
-                      <span class="dim"> · subtitles: {v.captions.map((c) => c.label).join(" / ")}</span>
-                    )}
+                    {v.label}, {v.duration}
+                    {v.captions.length > 0 && <span class="dim"> — subtitles in {v.captions.map((c) => c.label).join(" and ")}</span>}
                   </figcaption>
                 </figure>
               ))}
-            </>
+            </section>
           )}
 
           {d.gallery.length > 0 && (
-            <>
-              <h2>figures</h2>
-              <div class="project-gallery">
-                {d.gallery.map((g) => (
+            <section class="paper-section">
+              <h2>Figures</h2>
+              <div class="paper-figures">
+                {d.gallery.map((g, i) => (
                   <figure>
                     <a href={g.src} target="_blank" rel="noopener">
                       <img src={g.src} alt={g.alt} width={g.width} height={g.height} loading="lazy" decoding="async" />
                     </a>
-                    <figcaption>{g.alt}</figcaption>
+                    <figcaption>
+                      <b>Figure {firstFig + i}.</b> {g.alt}
+                    </figcaption>
                   </figure>
                 ))}
               </div>
-            </>
+            </section>
+          )}
+
+          {d.bibtex && (
+            <section class="paper-section" id="cite">
+              <h2>Cite</h2>
+              <div class="bibtex">
+                <pre><code>{d.bibtex.trim()}</code></pre>
+                <button class="btn copy-bib" type="button">
+                  Copy BibTeX
+                </button>
+              </div>
+            </section>
           )}
         </>
       )

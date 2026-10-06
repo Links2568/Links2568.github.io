@@ -7,6 +7,7 @@ org: University of Michigan
 tags: [HCI, VLM, multimodal, context-aware]
 status: done
 order: 2
+themes: [context]
 links: []
 ---
 

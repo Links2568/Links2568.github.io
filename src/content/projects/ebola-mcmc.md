@@ -7,6 +7,7 @@ org: University of Michigan
 tags: [Bayesian, MCMC, epidemiology, statistics]
 status: done
 order: 4
+themes: [ai4sci]
 links: []
 ---
 

@@ -1,0 +1,74 @@
+---
+/* A research project presented like a paper's teaser figure:
+   media (hover plays the loop), caption, title, authors, and paper links. */
+import type { CollectionEntry } from "astro:content";
+import { SITE } from "../consts";
+import { themeLabel } from "../lib/themes";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  eager?: boolean;
+}
+const { project, eager = false } = Astro.props;
+const d = project.data;
+const href = `/projects/${project.id}/`;
+const authors = (d.authors ?? "")
+  .split(",")
+  .map((a) => a.trim())
+  .filter(Boolean)
+  .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
+const isReview = (b: string) => /review/i.test(b);
+---
+
+<article class="fig" data-topics={d.themes.join(" ")}>
+  <a class="fig-media" href={href} tabindex="-1" aria-hidden="true" data-loop={d.hero?.src}>
+    {
+      d.thumb ? (
+        <img src={d.thumb} alt="" width="1100" height="619" loading={eager ? "eager" : "lazy"} decoding="async" />
+      ) : (
+        <span class="redacted">
+          <span class="bar" />
+          <span class="bar short" />
+          <span class="bar mid" />
+        </span>
+      )
+    }
+  </a>
+  <div class="fig-meta">
+    {d.badges.map((b) => <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>)}
+    {
+      d.themes[0] && (
+        <span class="theme-tag" data-topic={d.themes[0]}>
+          {themeLabel(d.themes[0])}
+        </span>
+      )
+    }
+  </div>
+  <h3 class="fig-title"><a href={href}>{d.title}</a></h3>
+  <p class="fig-caption">{d.tagline}</p>
+  {
+    authors.length > 0 ? (
+      <p class="fig-authors">
+        {authors.map((a, i) => (
+          <>
+            {a.me ? <strong>{a.name}</strong> : a.name}
+            {i < authors.length - 1 && ", "}
+          </>
+        ))}
+      </p>
+    ) : (
+      d.role && <p class="fig-authors">{d.role}</p>
+    )
+  }
+  <p class="fig-links">
+    <a class="btn" href={href}>{d.protected ? "About this project" : "Project page"}</a>
+    {
+      d.links.map((l) => (
+        <a class="btn" href={l.url} rel="noopener">
+          {l.label}
+        </a>
+      ))
+    }
+    {d.videos.length > 0 && <a class="btn" href={`${href}#video`}>Video</a>}
+  </p>
+</article>

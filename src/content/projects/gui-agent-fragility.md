@@ -7,6 +7,7 @@ org: University of Michigan
 tags: [GUI-agents, benchmark, LLM, evaluation]
 status: done
 order: 3
+themes: [hai]
 links: []
 ---
 

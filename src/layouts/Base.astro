@@ -98,7 +98,7 @@ const email = SITE.email.replace(" (at) ", "@");
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
     />
     {
       /* calligraphy face for the Chinese name — subset to its three glyphs */
@@ -119,8 +119,13 @@ const email = SITE.email.replace(" (at) ", "@");
         <main class="wrap">
           <slot />
           <footer class="site-footer">
-            <span>© {new Date().getFullYear()} {SITE.title} · updated {new Date().toISOString().slice(0, 10).replaceAll("-", ".")}</span>
-            <span>built with <a href="https://astro.build" rel="noopener">astro</a></span>
+            <span>© {new Date().getFullYear()} {SITE.title}. Last updated {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "America/Detroit" })}.</span>
+            <span class="footer-links">
+              <a href={SITE.links.github} rel="noopener">GitHub</a>
+              <a href={SITE.links.linkedin} rel="noopener">LinkedIn</a>
+              <a href={SITE.links.instagram} rel="noopener">Instagram</a>
+              <a href="/rss.xml">RSS</a>
+            </span>
           </footer>
         </main>
       ) : (
