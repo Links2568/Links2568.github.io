@@ -31,7 +31,6 @@
   --serif: "Libertinus Serif", "Linux Libertine O", "Linux Libertine", Georgia, serif;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --moire-ink: #00274c;
   color-scheme: light;
 }
 
@@ -51,7 +50,6 @@
   --t-context: #3ec4b2;
   --t-sensing: #f0a24f;
   --t-ai4sci: #7ccb7c;
-  --moire-ink: #b9c8de;
   color-scheme: dark;
 }
 
@@ -79,7 +77,6 @@ html {
 
 body {
   margin: 0;
-  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
@@ -246,89 +243,27 @@ a:hover {
   color: var(--ink);
 }
 
-/* ---------- exhibit: the live moiré hero (full-bleed) ---------- */
-.exhibit {
-  position: relative;
-  margin: 1.2rem calc(50% - 50vw) 0;
-  height: clamp(26rem, 66vh, 41rem);
-  overflow: hidden;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.moire-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  /* the mesh fades in right of the text (--fade-start is set by moire.js) */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent calc(var(--fade-start, 45%) - 1rem),
-    #000 calc(var(--fade-start, 45%) + 14rem)
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent calc(var(--fade-start, 45%) - 1rem),
-    #000 calc(var(--fade-start, 45%) + 14rem)
-  );
-}
-
-.exhibit-inner {
-  position: relative;
-  height: 100%;
-  max-width: var(--page);
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.exhibit-text {
-  max-width: 33rem;
-}
-
-.exhibit-label {
-  position: absolute;
-  right: 1.5rem;
-  bottom: 1.5rem;
-  max-width: 21rem;
-  margin: 0;
-  padding: 0.75rem 0.95rem;
-  font-size: 0.84rem;
-  line-height: 1.5;
-  color: var(--ink-2);
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
-  border-radius: 8px;
-  pointer-events: auto;
-}
-
 /* ---------- intro ---------- */
 .intro {
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr);
-  gap: 2.25rem;
-  align-items: center;
-  margin-top: 2.5rem;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  gap: 2.75rem;
+  align-items: start;
+  margin-top: 4rem;
 }
 
 .portrait {
-  width: 9rem;
-  height: 9rem;
+  width: 12rem;
+  height: 12rem;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: 18px;
   display: block;
 }
 
 .name {
-  font-size: clamp(2.8rem, 6vw, 4.6rem);
-  line-height: 1.02;
-  letter-spacing: -0.015em;
-  margin: 0 0 1.1rem;
+  font-size: clamp(2.4rem, 4.6vw, 3.3rem);
+  line-height: 1.05;
+  margin: 0.1rem 0 1rem;
 }
 
 .name .zh-name {
@@ -1179,44 +1114,15 @@ a:hover {
     gap: 0.5rem;
   }
 
-  .exhibit {
-    height: 34rem;
-  }
-
-  .moire-canvas {
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent calc(var(--fade-start, 45%) + 0.5rem),
-      #000 calc(var(--fade-start, 45%) + 8rem)
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent calc(var(--fade-start, 45%) + 0.5rem),
-      #000 calc(var(--fade-start, 45%) + 8rem)
-    );
-  }
-
-  .exhibit-inner {
-    justify-content: flex-start;
-    padding-top: 2.5rem;
-  }
-
-  .exhibit-label {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    max-width: none;
-  }
-
   .intro {
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.2rem;
-    margin-top: 2rem;
+    gap: 1.4rem;
+    margin-top: 2.2rem;
   }
 
   .portrait {
-    width: 7rem;
-    height: 7rem;
+    width: 8.5rem;
+    height: 8.5rem;
     border-radius: 14px;
   }
 

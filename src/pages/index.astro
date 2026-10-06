@@ -5,7 +5,6 @@ import ResearchFigure from "../components/ResearchFigure.astro";
 import MiniProject from "../components/MiniProject.astro";
 import ThemeFilter from "../components/ThemeFilter.astro";
 import { SITE } from "../consts";
-import { asset } from "../lib/asset";
 
 const all = (await getCollection("projects", ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order
@@ -15,27 +14,14 @@ const others = all.filter((p) => p.data.kind !== "research");
 ---
 
 <Base title={`${SITE.title} | ${SITE.affiliation}`} description={SITE.description} path="">
-  <section class="exhibit">
-    <canvas class="moire-canvas" aria-hidden="true"></canvas>
-    <div class="exhibit-inner">
-      <div class="exhibit-text">
-        <h1 class="name">{SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span></h1>
-        <p class="lede">
-          I build and study systems where humans and AI meet — from real-time co-creation with
-          generative models to sensing systems that understand people's physical context.
-        </p>
-      </div>
-      <p class="exhibit-label">
-        Move your cursor or finger across the mesh, and press to lean in. Two fine patterns, slightly
-        shifted, make the large fringes you see — the sensing principle behind
-        <a href="/projects/moiredeform/">MoiréDeform</a>.
-      </p>
-    </div>
-  </section>
-
   <section class="intro">
     <img class="portrait" src={SITE.avatar} alt={`Portrait of ${SITE.title}`} width="480" height="480" />
     <div class="intro-text">
+      <h1 class="name">{SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span></h1>
+      <p class="lede">
+        I build and study systems where humans and AI meet — from real-time co-creation with
+        generative models to sensing systems that understand people's physical context.
+      </p>
       <p class="bio">
         I'm an undergraduate at the <a href={SITE.affiliationUrl} rel="noopener">University of
         Michigan</a>, triple majoring in Computer Science, Data Science, and Statistics with a minor
@@ -241,5 +227,4 @@ const others = all.filter((p) => p.data.kind !== "research");
       </dd>
     </dl>
   </section>
-  <script is:inline src={asset("/scripts/moire.js")} defer></script>
 </Base>
