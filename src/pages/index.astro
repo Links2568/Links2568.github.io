@@ -1,230 +1,359 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
-import ResearchFigure from "../components/ResearchFigure.astro";
-import MiniProject from "../components/MiniProject.astro";
-import ThemeFilter from "../components/ThemeFilter.astro";
+import IndexRow from "../components/IndexRow.astro";
+import PreviewSlide from "../components/PreviewSlide.astro";
 import { SITE } from "../consts";
+import { asset } from "../lib/asset";
 
 const all = (await getCollection("projects", ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order
 );
 const research = all.filter((p) => p.data.kind === "research");
 const others = all.filter((p) => p.data.kind !== "research");
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const yearOf = (period: string) => (period.match(/\d{4}/) ?? [""])[0];
+/* show a year only on the first row of each year group */
+const withYears = <T,>(items: T[], year: (t: T) => string) =>
+  items.map((it, i) => ({ it, year: i === 0 || year(items[i - 1]) !== year(it) ? year(it) : "" }));
+
+const subtitleOf = (title: string, full?: string) =>
+  full?.startsWith(`${title}:`) ? full.slice(title.length + 1).trim() : full;
+
+const sections = [
+  { id: "research", label: "Research" },
+  { id: "projects", label: "Projects" },
+  { id: "writing", label: "Writing" },
+  { id: "news", label: "News" },
+  { id: "experience", label: "Experience" },
+  { id: "honors", label: "Honors" },
+  { id: "beyond", label: "Beyond research" },
+];
 ---
 
 <Base title={`${SITE.title} | ${SITE.affiliation}`} description={SITE.description} path="">
-  <section class="intro">
-    <img class="portrait" src={SITE.avatar} alt={`Portrait of ${SITE.title}`} width="480" height="480" />
-    <div class="intro-text">
+  <div class="home">
+    <aside class="home-side">
+      <img class="portrait" src={SITE.avatar} alt={`Portrait of ${SITE.title}`} width="480" height="480" />
       <h1 class="name">{SITE.title}<span class="zh-name" lang="zh-Hans">{SITE.zhName}</span></h1>
-      <p class="lede">
-        I build and study systems where humans and AI meet — from real-time co-creation with
-        generative models to sensing systems that understand people's physical context.
+      <p class="side-role">
+        Undergraduate researcher, University of Michigan. Applying to PhD programs in HCI / AI.
       </p>
-      <p class="bio">
-        I'm an undergraduate at the <a href={SITE.affiliationUrl} rel="noopener">University of
-        Michigan</a>, triple majoring in Computer Science, Data Science, and Statistics with a minor
-        in History, and a research assistant in the Human Centered Computing Lab. I previously
-        studied Statistics &amp; Computer Science at UIUC with a minor in Meteorology.
-        <strong>I'm applying to PhD programs in HCI / AI.</strong>
-      </p>
-      <nav class="profile-links" aria-label="Profiles">
+      <nav class="side-nav" aria-label="On this page">
+        {sections.map((sct) => <a href={`#${sct.id}`} data-spy={sct.id}>{sct.label}</a>)}
+      </nav>
+      <div class="profile-links">
         <a class="btn btn-solid" href={SITE.links.cv} rel="noopener">CV</a>
         <a class="btn" href={SITE.links.github} rel="noopener">GitHub</a>
         <a class="btn" href={SITE.links.linkedin} rel="noopener">LinkedIn</a>
         <button class="btn copy-email" type="button" data-email={SITE.email} title="Copy email address">
-          {SITE.email}
+          Copy email
         </button>
-      </nav>
+      </div>
+    </aside>
+
+    <div class="home-main">
+      <section class="statement">
+        <p class="lede">
+          I build and study systems where humans and AI meet: eyeglasses and office chairs that sense
+          <a class="kw" href="/projects/respiraframe/" data-topic="sensing" data-match="respiraframe moiredeform">breathing</a>
+          and <a class="kw" href="/projects/moiredeform/" data-topic="sensing" data-match="moiredeform">posture</a>,
+          AR guidance generated for
+          <a class="kw" href="/projects/generative-tutorial/" data-topic="context" data-match="generative-tutorial adaptive-skill-guidance">physical tasks</a>
+          in your own space,
+          <a class="kw" href="/projects/magicbaton/" data-topic="hai" data-match="magicbaton">music</a>
+          made together with generative models, and tools that reveal what AI can infer from your
+          <a class="kw" href="/projects/mystery-ai-privacy/" data-topic="hai" data-match="mystery-ai-privacy">photos</a>.
+        </p>
+        <p class="bio">
+          I'm triple majoring in Computer Science, Data Science, and Statistics (minor in History) at
+          the University of Michigan, where I'm a research assistant in the Human Centered Computing
+          Lab. I previously studied Statistics &amp; Computer Science at UIUC with a minor in Meteorology.
+        </p>
+      </section>
+
+      <div class="index">
+        <div class="index-lists">
+          <section class="index-group" id="research">
+            <h2>Research</h2>
+            <p class="note"><span class="preview-hint">Hover a row to preview it. </span>* equal contribution</p>
+            <div class="rows">
+              {
+                withYears(research, (p) => yearOf(p.data.period)).map(({ it: p, year }) => (
+                  <IndexRow
+                    id={p.id}
+                    href={`/projects/${p.id}/`}
+                    year={year}
+                    title={p.data.title}
+                    badges={p.data.badges}
+                    caption={p.data.tagline}
+                    topic={p.data.themes[0]}
+                    topics={p.data.themes}
+                    thumb={p.data.thumb}
+                    loop={p.data.hero?.src}
+                    redacted={p.data.protected && !p.data.thumb}
+                  />
+                ))
+              }
+            </div>
+          </section>
+
+          <section class="index-group" id="projects">
+            <h2>Projects</h2>
+            <div class="rows">
+              {
+                withYears(others, (p) => yearOf(p.data.period)).map(({ it: p, year }) => (
+                  <IndexRow
+                    id={p.id}
+                    href={`/projects/${p.id}/`}
+                    year={year}
+                    title={p.data.title}
+                    caption={p.data.tagline}
+                    topic={p.data.themes[0]}
+                    topics={p.data.themes}
+                  />
+                ))
+              }
+            </div>
+          </section>
+
+          <section class="index-group" id="writing">
+            <h2>Writing</h2>
+            <div class="rows">
+              {
+                withYears(posts, (p) => String(p.data.date.getUTCFullYear())).map(({ it: p, year }) => (
+                  <IndexRow id={`post-${p.id}`} href={`/blog/${p.id}/`} year={year} title={p.data.title} caption={p.data.description} />
+                ))
+              }
+            </div>
+            <p class="more-link"><a href="/blog/">All posts</a></p>
+          </section>
+        </div>
+
+        <aside class="preview" aria-label="Preview">
+          <div class="preview-frame">
+            {
+              research.map((p, i) => (
+                <PreviewSlide
+                  id={p.id}
+                  kind="Research"
+                  title={p.data.title}
+                  subtitle={p.data.protected ? undefined : subtitleOf(p.data.title, p.data.fullTitle)}
+                  caption={p.data.tagline}
+                  authors={p.data.authors}
+                  role={p.data.role}
+                  badges={p.data.badges}
+                  topic={p.data.themes[0]}
+                  thumb={p.data.thumb}
+                  loop={p.data.hero?.src}
+                  redacted={p.data.protected && !p.data.thumb}
+                  active={i === 0}
+                />
+              ))
+            }
+            {
+              others.map((p) => (
+                <PreviewSlide
+                  id={p.id}
+                  kind="Project"
+                  title={p.data.title}
+                  caption={p.data.tagline}
+                  role={[p.data.role, p.data.period].filter(Boolean).join(", ")}
+                  topic={p.data.themes[0]}
+                />
+              ))
+            }
+            {
+              posts.map((p) => (
+                <PreviewSlide
+                  id={`post-${p.id}`}
+                  kind="Blog post"
+                  title={p.data.title}
+                  caption={p.data.description}
+                  role={p.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+                />
+              ))
+            }
+          </div>
+        </aside>
+      </div>
+
+      <section class="block" id="news">
+        <h2>News</h2>
+        <dl class="timeline news">
+          <dt>Sep 2026</dt>
+          <dd>
+            <a href="/projects/generative-tutorial/">Generative Tutorial</a> is out on
+            <a href="https://arxiv.org/abs/2609.24955" rel="noopener">arXiv</a>.
+          </dd>
+          <dt>2026</dt>
+          <dd>
+            <a href="/projects/moiredeform/">MoiréDeform</a> is a demo at ACM MobiCom 2026 in Austin, TX.
+          </dd>
+          <dt>2026</dt>
+          <dd>Received the UROP Summer Engineering Fellowship at the University of Michigan.</dd>
+          <dt>Sep 2025</dt>
+          <dd>Joined the Human Centered Computing Lab at the University of Michigan.</dd>
+          <dt>Jun 2025</dt>
+          <dd>Spent the summer at Waseda University in Tokyo, researching postwar Japanese literature and history.</dd>
+        </dl>
+      </section>
+
+      <section class="block" id="experience">
+        <h2>Experience</h2>
+        <dl class="timeline">
+          <dt>Sep 2025 – now</dt>
+          <dd>
+            <p class="tl-title">Human Centered Computing Lab, University of Michigan</p>
+            <p class="tl-role">Undergraduate Research Assistant</p>
+            <ul class="tl-list">
+              <li>
+                <a href="/projects/generative-tutorial/">Generative Tutorial</a>
+                <span class="dim">(co-first author; with Profs. Anhong Guo and Xu Wang)</span> —
+                co-developed a conceptual framework and AR system for live contextualized visual
+                instruction that grounds physical-task goals in users' workspaces and proactively
+                generates workspace-specific goal images and demonstration videos by propagating
+                observed and predicted visual states across task dependencies; co-led a formative
+                evaluation of 176 generated artifacts across 15 tasks and a 24-participant comparative
+                study, showing improved task quality, perceived workspace correspondence, and shorter
+                step-confirmation intervals over pre-authored guidance.
+              </li>
+              <li>
+                <a href="/projects/moiredeform/">MoiréDeform</a>
+                <span class="dim">(co-first author, ACM MobiCom '26 Demo; with Profs. Alanson Sample and Ke Sun)</span>
+                — developed a low-cost camera-based sensing approach that exploits naturally occurring
+                woven textures as virtual moiré layers to amplify subtle surface deformation, enabling
+                continuous body-lean interaction and respiratory waveform/rate sensing on an unmodified
+                mesh chair without instrumenting the user or surface; reduced respiratory-rate MAE from
+                2.07 to 0.71 breaths/min relative to physical-marker tracking.
+              </li>
+              <li>
+                <a href="/projects/respiraframe/">RespiraFrame</a>
+                <span class="dim">(with Prof. Junyi Zhu)</span> — contributed to the experimental design
+                and evaluation of an eyeglass-based multimodal respiratory sensing system combining
+                bone-conduction acoustics and electrical impedance tomography (EIT); designed evaluation
+                protocols spanning respiratory behaviors, motion and environmental interference, a
+                three-day semi-wild study, and repeated wear over a four-week longitudinal study.
+              </li>
+              <li>
+                <a href="/projects/mystery-ai-privacy/">A Mysterious AI Security &amp; Privacy Project</a>
+                <span class="dim">(co-first author; under double-blind review)</span> — studies hidden
+                privacy risks in visual AI — what today's models can infer from everyday photos — and
+                builds tools that help people see and control what leaks before they share. Details
+                withheld until the review is over.
+              </li>
+            </ul>
+          </dd>
+
+          <dt>Sep 2025 – now</dt>
+          <dd>
+            <p class="tl-title">Generative AI for Music and Audio, University of Michigan</p>
+            <p class="tl-role">Research Assistant, advised by Prof. Herman Dong</p>
+            <p>
+              Investigating real-time human–GenAI co-creation for controllable music generation,
+              focusing on interaction mechanisms that preserve user agency, expressive control, and
+              iterative creative feedback; prototyping gesture-driven interaction techniques that
+              connect embodied user input to real-time musical control and generative model behavior.
+            </p>
+          </dd>
+
+          <dt>Jan – May 2025</dt>
+          <dd>
+            <p class="tl-title">Energy Distance Dimension Reduction, University of Michigan</p>
+            <p class="tl-role">
+              Selected Researcher, Undergraduate Research Program in Statistics (URPS), advised by Prof.
+              Kerby Shedden
+            </p>
+            <p>
+              Developed engression and sufficient dimension reduction methods for multilevel, dyadic,
+              and longitudinal wearable data from bone marrow transplant patients, addressing non-i.i.d.
+              structure not handled by existing methodology; implemented SDR algorithms in JAX with GPU
+              acceleration, achieving approximately 7,000× speedup over the original method for
+              U-statistic computation on large sensor data series.
+            </p>
+          </dd>
+
+          <dt>May – Aug 2024</dt>
+          <dd>
+            <p class="tl-title">Lab of Atmospheric and Earth System Sciences, Nanjing University</p>
+            <p class="tl-role">Summer Research Intern, advised by Prof. Minghuai Wang</p>
+            <p>
+              Studied statistical machine learning methodologies for integrating real-world sensor
+              observations with simulated atmospheric data, enabling inference and prediction of
+              aerosol–cloud interactions across larger spatial and temporal scales.
+            </p>
+          </dd>
+
+          <dt>Aug 2023 – May 2024</dt>
+          <dd>
+            <p class="tl-title">E2-E Lab, University of Illinois Urbana-Champaign</p>
+            <p class="tl-role">Undergraduate Research Assistant</p>
+            <p>
+              Conducted airflow experiments and processed PIV/camera data using Python, OpenCV, and
+              OpenPIV for flow-field reconstruction and particle tracking; performed CFD simulations in
+              ANSYS Fluent to analyze particle–airflow interactions in complex 3D geometries.
+            </p>
+          </dd>
+        </dl>
+      </section>
+
+      <section class="block" id="honors">
+        <h2>Honors &amp; awards</h2>
+        <dl class="timeline compact">
+          <dt>2026</dt>
+          <dd>UROP Summer Engineering Fellowship, University of Michigan</dd>
+          <dt>2024 – 2026</dt>
+          <dd>University Honors, University of Michigan</dd>
+          <dt>2022</dt>
+          <dd>Outstanding Research Paper Award, IMMC Greater China Round — top 1.875% of 800+ teams</dd>
+          <dt>2022</dt>
+          <dd>Finalist Research Paper Award, IMMC International Round — top 8.75% internationally</dd>
+        </dl>
+      </section>
+
+      <section class="block" id="beyond">
+        <h2>Beyond research</h2>
+        <dl class="timeline">
+          <dt>Jun – Aug 2025</dt>
+          <dd>
+            <p class="tl-title">Waseda University, Tokyo</p>
+            <p class="tl-role">Summer Intern</p>
+            <p>
+              Researched postwar Japanese literature and history, analyzing literary works in relation
+              to historical memory, identity, and social transformation in postwar Japan.
+            </p>
+          </dd>
+          <dt>Aug 2025 – Jul 2026</dt>
+          <dd>
+            <p class="tl-title">The Michigan Daily</p>
+            <p class="tl-role">Student Reporter, Photographer &amp; Videographer</p>
+            <p>
+              Produced campus and local news coverage through interviews, field reporting, photography,
+              and video. Some frames end up in the <a href="/gallery/">photo gallery</a>.
+            </p>
+          </dd>
+          <dt>Member</dt>
+          <dd>
+            <p class="tl-title">Kendo Club at the University of Michigan</p>
+            <p>Regular practice in footwork, striking technique, partner drills, and traditional Japanese swordsmanship.</p>
+          </dd>
+          <dt>Member</dt>
+          <dd>
+            <p class="tl-title">Michigan Backpacking Club</p>
+            <p>Group hiking and backpacking trips — outdoor navigation, trip planning, and teamwork.</p>
+          </dd>
+          <dt>Student Forecaster</dt>
+          <dd>
+            <p class="tl-title">Illinois Student Organization of Meteorology (ISTORM)</p>
+            <p>Student chapter of the American Meteorological Society, focused on severe and hazardous weather forecasting.</p>
+          </dd>
+        </dl>
+      </section>
+
     </div>
-  </section>
-
-  <section id="research" class="block">
-    <div class="block-head">
-      <h2>Research</h2>
-      <ThemeFilter />
-    </div>
-    <p class="note">* equal contribution</p>
-    <div class="figs">
-      {research.map((p, i) => <ResearchFigure project={p} eager={i < 2} />)}
-    </div>
-    <h3 class="sub-head">Other projects</h3>
-    <div class="minis">
-      {others.map((p) => <MiniProject project={p} />)}
-    </div>
-    <p class="filter-empty" hidden>No projects match the selected interests.</p>
-  </section>
-
-  <section class="block">
-    <h2>News</h2>
-    <dl class="timeline news">
-      <dt>Sep 2026</dt>
-      <dd>
-        <a href="/projects/generative-tutorial/">Generative Tutorial</a> is out on
-        <a href="https://arxiv.org/abs/2609.24955" rel="noopener">arXiv</a>.
-      </dd>
-      <dt>2026</dt>
-      <dd>
-        <a href="/projects/moiredeform/">MoiréDeform</a> is a demo at ACM MobiCom 2026 in Austin, TX.
-      </dd>
-      <dt>2026</dt>
-      <dd>Received the UROP Summer Engineering Fellowship at the University of Michigan.</dd>
-      <dt>Sep 2025</dt>
-      <dd>Joined the Human Centered Computing Lab at the University of Michigan.</dd>
-      <dt>Jun 2025</dt>
-      <dd>Spent the summer at Waseda University in Tokyo, researching postwar Japanese literature and history.</dd>
-    </dl>
-  </section>
-
-  <section class="block">
-    <h2>Experience</h2>
-    <dl class="timeline">
-      <dt>Sep 2025 – now</dt>
-      <dd>
-        <p class="tl-title">Human Centered Computing Lab, University of Michigan</p>
-        <p class="tl-role">Undergraduate Research Assistant</p>
-        <ul class="tl-list">
-          <li>
-            <a href="/projects/generative-tutorial/">Generative Tutorial</a>
-            <span class="dim">(co-first author; with Profs. Anhong Guo and Xu Wang)</span> —
-            co-developed a conceptual framework and AR system for live contextualized visual
-            instruction that grounds physical-task goals in users' workspaces and proactively
-            generates workspace-specific goal images and demonstration videos by propagating
-            observed and predicted visual states across task dependencies; co-led a formative
-            evaluation of 176 generated artifacts across 15 tasks and a 24-participant comparative
-            study, showing improved task quality, perceived workspace correspondence, and shorter
-            step-confirmation intervals over pre-authored guidance.
-          </li>
-          <li>
-            <a href="/projects/moiredeform/">MoiréDeform</a>
-            <span class="dim">(co-first author, ACM MobiCom '26 Demo; with Profs. Alanson Sample and Ke Sun)</span>
-            — developed a low-cost camera-based sensing approach that exploits naturally occurring
-            woven textures as virtual moiré layers to amplify subtle surface deformation, enabling
-            continuous body-lean interaction and respiratory waveform/rate sensing on an unmodified
-            mesh chair without instrumenting the user or surface; reduced respiratory-rate MAE from
-            2.07 to 0.71 breaths/min relative to physical-marker tracking.
-          </li>
-          <li>
-            <a href="/projects/respiraframe/">RespiraFrame</a>
-            <span class="dim">(with Prof. Junyi Zhu)</span> — contributed to the experimental design
-            and evaluation of an eyeglass-based multimodal respiratory sensing system combining
-            bone-conduction acoustics and electrical impedance tomography (EIT); designed evaluation
-            protocols spanning respiratory behaviors, motion and environmental interference, a
-            three-day semi-wild study, and repeated wear over a four-week longitudinal study.
-          </li>
-          <li>
-            <a href="/projects/mystery-ai-privacy/">A Mysterious AI Security &amp; Privacy Project</a>
-            <span class="dim">(co-first author; under double-blind review)</span> — studies hidden
-            privacy risks in visual AI — what today's models can infer from everyday photos — and
-            builds tools that help people see and control what leaks before they share. Details
-            withheld until the review is over.
-          </li>
-        </ul>
-      </dd>
-
-      <dt>Sep 2025 – now</dt>
-      <dd>
-        <p class="tl-title">Generative AI for Music and Audio, University of Michigan</p>
-        <p class="tl-role">Research Assistant, advised by Prof. Herman Dong</p>
-        <p>
-          Investigating real-time human–GenAI co-creation for controllable music generation,
-          focusing on interaction mechanisms that preserve user agency, expressive control, and
-          iterative creative feedback; prototyping gesture-driven interaction techniques that
-          connect embodied user input to real-time musical control and generative model behavior.
-        </p>
-      </dd>
-
-      <dt>Jan – May 2025</dt>
-      <dd>
-        <p class="tl-title">Energy Distance Dimension Reduction, University of Michigan</p>
-        <p class="tl-role">
-          Selected Researcher, Undergraduate Research Program in Statistics (URPS), advised by Prof.
-          Kerby Shedden
-        </p>
-        <p>
-          Developed engression and sufficient dimension reduction methods for multilevel, dyadic,
-          and longitudinal wearable data from bone marrow transplant patients, addressing non-i.i.d.
-          structure not handled by existing methodology; implemented SDR algorithms in JAX with GPU
-          acceleration, achieving approximately 7,000× speedup over the original method for
-          U-statistic computation on large sensor data series.
-        </p>
-      </dd>
-
-      <dt>May – Aug 2024</dt>
-      <dd>
-        <p class="tl-title">Lab of Atmospheric and Earth System Sciences, Nanjing University</p>
-        <p class="tl-role">Summer Research Intern, advised by Prof. Minghuai Wang</p>
-        <p>
-          Studied statistical machine learning methodologies for integrating real-world sensor
-          observations with simulated atmospheric data, enabling inference and prediction of
-          aerosol–cloud interactions across larger spatial and temporal scales.
-        </p>
-      </dd>
-
-      <dt>Aug 2023 – May 2024</dt>
-      <dd>
-        <p class="tl-title">E2-E Lab, University of Illinois Urbana-Champaign</p>
-        <p class="tl-role">Undergraduate Research Assistant</p>
-        <p>
-          Conducted airflow experiments and processed PIV/camera data using Python, OpenCV, and
-          OpenPIV for flow-field reconstruction and particle tracking; performed CFD simulations in
-          ANSYS Fluent to analyze particle–airflow interactions in complex 3D geometries.
-        </p>
-      </dd>
-    </dl>
-  </section>
-
-  <section class="block">
-    <h2>Honors &amp; awards</h2>
-    <dl class="timeline compact">
-      <dt>2026</dt>
-      <dd>UROP Summer Engineering Fellowship, University of Michigan</dd>
-      <dt>2024 – 2026</dt>
-      <dd>University Honors, University of Michigan</dd>
-      <dt>2022</dt>
-      <dd>Outstanding Research Paper Award, IMMC Greater China Round — top 1.875% of 800+ teams</dd>
-      <dt>2022</dt>
-      <dd>Finalist Research Paper Award, IMMC International Round — top 8.75% internationally</dd>
-    </dl>
-  </section>
-
-  <section class="block">
-    <h2>Beyond research</h2>
-    <dl class="timeline">
-      <dt>Jun – Aug 2025</dt>
-      <dd>
-        <p class="tl-title">Waseda University, Tokyo</p>
-        <p class="tl-role">Summer Intern</p>
-        <p>
-          Researched postwar Japanese literature and history, analyzing literary works in relation
-          to historical memory, identity, and social transformation in postwar Japan.
-        </p>
-      </dd>
-      <dt>Aug 2025 – Jul 2026</dt>
-      <dd>
-        <p class="tl-title">The Michigan Daily</p>
-        <p class="tl-role">Student Reporter, Photographer &amp; Videographer</p>
-        <p>
-          Produced campus and local news coverage through interviews, field reporting, photography,
-          and video. Some frames end up in the <a href="/gallery/">photo gallery</a>.
-        </p>
-      </dd>
-      <dt>Member</dt>
-      <dd>
-        <p class="tl-title">Kendo Club at the University of Michigan</p>
-        <p>Regular practice in footwork, striking technique, partner drills, and traditional Japanese swordsmanship.</p>
-      </dd>
-      <dt>Member</dt>
-      <dd>
-        <p class="tl-title">Michigan Backpacking Club</p>
-        <p>Group hiking and backpacking trips — outdoor navigation, trip planning, and teamwork.</p>
-      </dd>
-      <dt>Student Forecaster</dt>
-      <dd>
-        <p class="tl-title">Illinois Student Organization of Meteorology (ISTORM)</p>
-        <p>Student chapter of the American Meteorological Society, focused on severe and hazardous weather forecasting.</p>
-      </dd>
-    </dl>
-  </section>
+  </div>
+  <script is:inline src={asset("/scripts/home.js")} defer></script>
 </Base>

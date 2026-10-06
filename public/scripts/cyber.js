@@ -58,7 +58,8 @@
     var canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!canHover || reduced) return;
-    document.querySelectorAll("[data-loop]").forEach(function (el) {
+    /* the homepage preview panel is driven by home.js instead */
+    document.querySelectorAll("[data-loop]:not(.slide-media)").forEach(function (el) {
       var src = el.getAttribute("data-loop");
       if (!src) return;
       var video = null;

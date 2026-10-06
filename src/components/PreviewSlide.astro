@@ -1,0 +1,78 @@
+---
+/* A slide in the homepage preview panel: media on top, paper-style caption below. */
+import { SITE } from "../consts";
+import { themeLabel } from "../lib/themes";
+
+interface Props {
+  id: string;
+  title: string;
+  subtitle?: string;
+  kind: string; // "Research" | "Project" | "Blog post"
+  caption: string;
+  authors?: string;
+  role?: string;
+  badges?: string[];
+  topic?: string;
+  thumb?: string;
+  loop?: string;
+  redacted?: boolean;
+  active?: boolean;
+}
+const p = Astro.props;
+const authors = (p.authors ?? "")
+  .split(",")
+  .map((a) => a.trim())
+  .filter(Boolean)
+  .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
+const isReview = (b: string) => /review/i.test(b);
+---
+
+<figure class="slide" data-slide={p.id} data-topic={p.topic} hidden={!p.active}>
+  <div class="slide-media" data-loop={p.loop}>
+    {
+      p.thumb ? (
+        <img src={p.thumb} alt="" width="1100" height="619" loading={p.active ? "eager" : "lazy"} decoding="async" />
+      ) : p.redacted ? (
+        <span class="redacted">
+          <span class="bar" />
+          <span class="bar short" />
+          <span class="bar mid" />
+        </span>
+      ) : (
+        <span class="slide-type">
+          <span class="slide-type-kind">{p.kind}</span>
+          <span class="slide-type-title">{p.title}</span>
+        </span>
+      )
+    }
+  </div>
+  <figcaption>
+    <span class="slide-meta">
+      {(p.badges ?? []).map((b) => <span class:list={["badge", "badge-sm", { "badge-review": isReview(b) }]}>{b}</span>)}
+      {
+        p.topic && (
+          <span class="theme-tag" data-topic={p.topic}>
+            {themeLabel(p.topic)}
+          </span>
+        )
+      }
+    </span>
+    {/* the typographic card already shows the title */}
+    {(p.thumb || p.redacted) && <span class="slide-title">{p.subtitle ? `${p.title}: ${p.subtitle}` : p.title}</span>}
+    {
+      authors.length > 0 ? (
+        <span class="slide-authors">
+          {authors.map((a, i) => (
+            <>
+              {a.me ? <strong>{a.name}</strong> : a.name}
+              {i < authors.length - 1 && ", "}
+            </>
+          ))}
+        </span>
+      ) : (
+        p.role && <span class="slide-authors">{p.role}</span>
+      )
+    }
+    <span class="slide-caption">{p.caption}</span>
+  </figcaption>
+</figure>

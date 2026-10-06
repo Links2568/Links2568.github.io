@@ -1,5 +1,5 @@
 ---
-title: a synoptic chart for a homepage
+title: A synoptic chart for a homepage
 description: Why the background of this site is a live weather map — jet stream, pressure systems, isobars — and what canvas taught me the hard way.
 date: 2026-08-19
 tags: [meta, canvas, meteorology]

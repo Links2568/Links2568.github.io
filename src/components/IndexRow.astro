@@ -1,0 +1,49 @@
+---
+/* One row of the homepage index. Hovering/focusing it shows its slide in the preview panel. */
+interface Props {
+  id: string; // matches a PreviewSlide
+  href: string;
+  year?: string; // shown only on the first row of a year group
+  title: string;
+  badges?: string[];
+  caption: string;
+  topic?: string;
+  topics?: string[];
+  thumb?: string; // inline thumbnail for narrow screens (no preview panel there)
+  loop?: string;
+  redacted?: boolean;
+}
+const { id, href, year, title, badges = [], caption, topic, topics = [], thumb, loop, redacted = false } = Astro.props;
+const isReview = (b: string) => /review/i.test(b);
+---
+
+<a class="row" href={href} data-preview={id} data-topic={topic} data-topics={topics.join(" ")}>
+  <span class="row-year">{year}</span>
+  <span class="row-main">
+    <span class="row-title">{title}</span>
+    {
+      badges.length > 0 && (
+        <span class="row-badges">
+          {badges.map((b) => (
+            <span class:list={["badge", "badge-sm", { "badge-review": isReview(b) }]}>{b}</span>
+          ))}
+        </span>
+      )
+    }
+    <span class="row-caption">{caption}</span>
+  </span>
+  {
+    (thumb || redacted) && (
+      <span class="row-thumb" data-loop={loop}>
+        {thumb ? (
+          <img src={thumb} alt="" width="1100" height="619" loading="lazy" decoding="async" />
+        ) : (
+          <span class="redacted">
+            <span class="bar" />
+            <span class="bar short" />
+          </span>
+        )}
+      </span>
+    )
+  }
+</a>
