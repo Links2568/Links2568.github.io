@@ -332,16 +332,13 @@ a:hover {
   gap: 0.45rem;
 }
 
-.statement {
-  max-width: 46rem;
-}
-
 .lede {
   font-family: var(--serif);
-  font-size: 1.62rem;
-  line-height: 1.42;
+  font-size: 1.42rem;
+  line-height: 1.45;
   color: var(--ink);
-  margin: 0 0 1.1rem;
+  max-width: 50rem;
+  margin: 0;
 }
 
 /* keywords in the statement light up related rows (home.js) */
@@ -367,27 +364,97 @@ a:hover {
   margin: 0;
 }
 
-/* index: lists on the left, sticky preview on the right */
-.index {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 24rem;
-  gap: 3rem;
-  align-items: start;
-  margin-top: 4rem;
+/* research stage: a big screen driven by the list beside it */
+.stage-section {
+  margin-top: 2.8rem;
 }
 
-.index-group + .index-group {
-  margin-top: 3.5rem;
+.stage-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.stage-head h2 {
+  font-size: 1.75rem;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.stage-head .note {
+  margin: 0;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 19rem;
+  gap: 2.4rem;
+  align-items: start;
+}
+
+.stage-screen .slide-media {
+  border-radius: 12px;
+}
+
+.stage-screen .slide figcaption {
+  margin-top: 1.15rem;
+  gap: 0.45rem;
+}
+
+.stage-screen .slide-title {
+  font-size: 1.55rem;
+  line-height: 1.25;
+}
+
+.stage-screen .slide-caption {
+  font-size: 1.12rem;
+  max-width: 42rem;
+}
+
+.slide-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+
+.stage-list .row {
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0.95rem 0.6rem 1rem 1.1rem;
+}
+
+.stage-list .row::before {
+  left: 0;
+}
+
+.stage-list .row-year,
+.stage-list .row-caption,
+.stage-list .row-thumb {
+  display: none;
+}
+
+.stage-list .row-title {
+  font-size: 1.18rem;
+}
+
+.stage-list .row.is-current {
+  background-color: color-mix(in srgb, var(--tc, var(--navy)) 8%, var(--bg));
+}
+
+.stage-list .row.is-current::before {
+  opacity: 1;
+}
+
+.index-group {
+  margin-top: 4rem;
 }
 
 .index-group h2 {
   font-size: 1.75rem;
   line-height: 1.15;
   margin: 0 0 0.35rem;
-}
-
-.index .note {
-  margin-bottom: 1rem;
 }
 
 .rows {
@@ -491,11 +558,6 @@ a:hover {
 .more-link {
   margin: 0.9rem 0 0;
   font-size: 0.92rem;
-}
-
-.preview {
-  position: sticky;
-  top: 2rem;
 }
 
 .slide {
@@ -1379,13 +1441,31 @@ a:hover {
 
 /* ---------- responsive ---------- */
 @media (max-width: 1220px) {
-  .index {
+  .stage {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .preview,
-  .preview-hint {
+  .stage-screen {
     display: none;
+  }
+
+  .stage-list .row {
+    grid-template-columns: minmax(0, 1fr) 12rem;
+    padding-left: 1.1rem;
+  }
+
+  .stage-list .row-caption,
+  .stage-list .row-thumb {
+    display: block;
+  }
+
+  /* no screen to drive at this width, so no "current" row */
+  .stage-list .row.is-current:not(:hover) {
+    background-color: transparent;
+  }
+
+  .stage-list .row.is-current:not(:hover)::before {
+    opacity: 0;
   }
 
   .row {
@@ -1437,6 +1517,17 @@ a:hover {
   .name .zh-name {
     display: inline;
     margin-left: 0.3em;
+  }
+}
+
+@media (max-width: 760px) {
+  .stage-list .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.7rem;
+  }
+
+  .stage-list .row-thumb {
+    order: -1;
   }
 }
 

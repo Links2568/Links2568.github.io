@@ -1,19 +1,26 @@
-/* Homepage: index rows drive the preview panel, bio keywords highlight
-   related rows, and the side nav follows the scroll position. */
+/* Homepage: the research stage (a big screen driven by the list beside it),
+   statement keywords that light up related rows, and the scroll-spy nav. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var lists = document.querySelector(".index-lists");
+  var main = document.querySelector(".home-main");
+  var screen = document.querySelector(".stage-screen");
   var slides = {};
-  document.querySelectorAll(".slide[data-slide]").forEach(function (s) {
+  document.querySelectorAll(".stage-screen .slide[data-slide]").forEach(function (s) {
     slides[s.getAttribute("data-slide")] = s;
   });
+  var stageRows = document.querySelectorAll(".stage-list .row[data-preview]");
   var current = null;
-  document.querySelectorAll(".slide:not([hidden])").forEach(function (s) {
+  document.querySelectorAll(".stage-screen .slide:not([hidden])").forEach(function (s) {
     current = s.getAttribute("data-slide");
   });
+  var onScreen = true;
 
-  /* ---------- preview panel ---------- */
+  function stageShown() {
+    return screen && getComputedStyle(screen).display !== "none";
+  }
+
+  /* ---------- stage video ---------- */
   function videoFor(slide) {
     var media = slide.querySelector(".slide-media");
     var src = media && media.getAttribute("data-loop");
@@ -34,14 +41,14 @@
     });
     /* Chrome may abort a play() issued before data has buffered; retry once ready */
     v.addEventListener("canplay", function () {
-      if (current === slide.getAttribute("data-slide") && v.paused && v.dataset.want === "1") start(v);
+      if (current === slide.getAttribute("data-slide") && v.paused && v.dataset.want === "1") play(v);
     });
     media.appendChild(v);
     media.classList.add("is-looping");
     return v;
   }
 
-  function start(v) {
+  function play(v) {
     v.dataset.want = "1";
     var p = v.play();
     if (p && p.catch) p.catch(function () {});
@@ -55,54 +62,84 @@
     }
   }
 
-  function show(id) {
+  function playCurrent() {
+    if (reduced || !onScreen || document.hidden || !stageShown() || !current) return;
+    var v = videoFor(slides[current]);
+    if (v) play(v);
+  }
+
+  function select(id) {
     var next = slides[id];
     if (!next) return;
-    if (current && current !== id) {
-      stop(slides[current]);
-      slides[current].hidden = true;
+    if (current !== id) {
+      if (current) {
+        stop(slides[current]);
+        slides[current].hidden = true;
+      }
+      next.hidden = false;
+      current = id;
+      stageRows.forEach(function (r) {
+        r.classList.toggle("is-current", r.getAttribute("data-preview") === id);
+      });
     }
-    next.hidden = false;
-    current = id;
-    if (!reduced) {
-      var v = videoFor(next);
-      if (v) start(v);
-    }
+    playCurrent();
   }
 
-  function pauseCurrent() {
-    if (current) stop(slides[current]);
-  }
-
-  document.querySelectorAll(".row[data-preview]").forEach(function (row) {
+  /* hover intent: a short pause before switching, so sweeping across the
+     list on the way to the stage's buttons doesn't change the project */
+  var intent = null;
+  stageRows.forEach(function (row) {
     var id = row.getAttribute("data-preview");
     row.addEventListener("mouseenter", function () {
-      show(id);
+      clearTimeout(intent);
+      intent = setTimeout(function () {
+        select(id);
+      }, 90);
+    });
+    row.addEventListener("mouseleave", function () {
+      clearTimeout(intent);
     });
     row.addEventListener("focus", function () {
-      show(id);
+      select(id);
     });
   });
-  if (lists) lists.addEventListener("mouseleave", pauseCurrent);
 
-  /* ---------- bio keywords light up related rows ---------- */
+  if (screen && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      onScreen = entries[0].isIntersecting;
+      if (onScreen) playCurrent();
+      else if (current) stop(slides[current]);
+    }).observe(screen);
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      if (current) stop(slides[current]);
+    } else playCurrent();
+  });
+  playCurrent();
+
+  /* ---------- statement keywords light up related rows ---------- */
   document.querySelectorAll(".kw[data-match]").forEach(function (kw) {
     var ids = kw.getAttribute("data-match").split(" ");
     function on() {
-      if (!lists) return;
-      lists.classList.add("kw-active");
+      if (!main) return;
+      main.classList.add("kw-active");
       document.querySelectorAll(".row[data-preview]").forEach(function (row) {
         row.classList.toggle("match", ids.indexOf(row.getAttribute("data-preview")) !== -1);
       });
-      show(ids[0]);
+      for (var i = 0; i < ids.length; i++) {
+        if (slides[ids[i]]) {
+          select(ids[i]);
+          break;
+        }
+      }
     }
     function off() {
-      if (!lists) return;
-      lists.classList.remove("kw-active");
+      if (!main) return;
+      main.classList.remove("kw-active");
       document.querySelectorAll(".row.match").forEach(function (row) {
         row.classList.remove("match");
       });
-      pauseCurrent();
     }
     kw.addEventListener("mouseenter", on);
     kw.addEventListener("focus", on);

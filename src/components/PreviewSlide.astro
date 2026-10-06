@@ -17,6 +17,10 @@ interface Props {
   loop?: string;
   redacted?: boolean;
   active?: boolean;
+  href?: string; // when set, the slide shows its paper buttons (stage mode)
+  links?: { label: string; url: string }[];
+  hasVideo?: boolean;
+  protectedPage?: boolean;
 }
 const p = Astro.props;
 const authors = (p.authors ?? "")
@@ -74,5 +78,22 @@ const isReview = (b: string) => /review/i.test(b);
       )
     }
     <span class="slide-caption">{p.caption}</span>
+    {
+      p.href && (
+        <span class="slide-links">
+          <a class="btn btn-solid" href={p.href}>{p.protectedPage ? "About this project" : "Project page"}</a>
+          {(p.links ?? []).map((l) => (
+            <a class="btn" href={l.url} rel="noopener">
+              {l.label}
+            </a>
+          ))}
+          {p.hasVideo && (
+            <a class="btn" href={`${p.href}#video`}>
+              Video
+            </a>
+          )}
+        </span>
+      )
+    }
   </figcaption>
 </figure>

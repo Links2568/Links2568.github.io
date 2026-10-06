@@ -27,6 +27,7 @@ const sections = [
   { id: "research", label: "Research" },
   { id: "projects", label: "Projects" },
   { id: "writing", label: "Writing" },
+  { id: "about", label: "About" },
   { id: "news", label: "News" },
   { id: "experience", label: "Experience" },
   { id: "honors", label: "Honors" },
@@ -56,85 +57,25 @@ const sections = [
     </aside>
 
     <div class="home-main">
-      <section class="statement">
-        <p class="lede">
-          I build and study systems where humans and AI meet: eyeglasses and office chairs that sense
-          <a class="kw" href="/projects/respiraframe/" data-topic="sensing" data-match="respiraframe moiredeform">breathing</a>
-          and <a class="kw" href="/projects/moiredeform/" data-topic="sensing" data-match="moiredeform">posture</a>,
-          AR guidance generated for
-          <a class="kw" href="/projects/generative-tutorial/" data-topic="context" data-match="generative-tutorial adaptive-skill-guidance">physical tasks</a>
-          in your own space,
-          <a class="kw" href="/projects/magicbaton/" data-topic="hai" data-match="magicbaton">music</a>
-          made together with generative models, and tools that reveal what AI can infer from your
-          <a class="kw" href="/projects/mystery-ai-privacy/" data-topic="hai" data-match="mystery-ai-privacy">photos</a>.
-        </p>
-        <p class="bio">
-          I'm triple majoring in Computer Science, Data Science, and Statistics (minor in History) at
-          the University of Michigan, where I'm a research assistant in the Human Centered Computing
-          Lab. I previously studied Statistics &amp; Computer Science at UIUC with a minor in Meteorology.
-        </p>
-      </section>
+      <p class="lede">
+        I build and study systems where humans and AI meet: eyeglasses and office chairs that sense
+        <a class="kw" href="/projects/respiraframe/" data-topic="sensing" data-match="respiraframe moiredeform">breathing</a>
+        and <a class="kw" href="/projects/moiredeform/" data-topic="sensing" data-match="moiredeform">posture</a>,
+        AR guidance generated for
+        <a class="kw" href="/projects/generative-tutorial/" data-topic="context" data-match="generative-tutorial adaptive-skill-guidance">physical tasks</a>
+        in your own space,
+        <a class="kw" href="/projects/magicbaton/" data-topic="hai" data-match="magicbaton">music</a>
+        made together with generative models, and tools that reveal what AI can infer from your
+        <a class="kw" href="/projects/mystery-ai-privacy/" data-topic="hai" data-match="mystery-ai-privacy">photos</a>.
+      </p>
 
-      <div class="index">
-        <div class="index-lists">
-          <section class="index-group" id="research">
-            <h2>Research</h2>
-            <p class="note"><span class="preview-hint">Hover a row to preview it. </span>* equal contribution</p>
-            <div class="rows">
-              {
-                withYears(research, (p) => yearOf(p.data.period)).map(({ it: p, year }) => (
-                  <IndexRow
-                    id={p.id}
-                    href={`/projects/${p.id}/`}
-                    year={year}
-                    title={p.data.title}
-                    badges={p.data.badges}
-                    caption={p.data.tagline}
-                    topic={p.data.themes[0]}
-                    topics={p.data.themes}
-                    thumb={p.data.thumb}
-                    loop={p.data.hero?.src}
-                    redacted={p.data.protected && !p.data.thumb}
-                  />
-                ))
-              }
-            </div>
-          </section>
-
-          <section class="index-group" id="projects">
-            <h2>Projects</h2>
-            <div class="rows">
-              {
-                withYears(others, (p) => yearOf(p.data.period)).map(({ it: p, year }) => (
-                  <IndexRow
-                    id={p.id}
-                    href={`/projects/${p.id}/`}
-                    year={year}
-                    title={p.data.title}
-                    caption={p.data.tagline}
-                    topic={p.data.themes[0]}
-                    topics={p.data.themes}
-                  />
-                ))
-              }
-            </div>
-          </section>
-
-          <section class="index-group" id="writing">
-            <h2>Writing</h2>
-            <div class="rows">
-              {
-                withYears(posts, (p) => String(p.data.date.getUTCFullYear())).map(({ it: p, year }) => (
-                  <IndexRow id={`post-${p.id}`} href={`/blog/${p.id}/`} year={year} title={p.data.title} caption={p.data.description} />
-                ))
-              }
-            </div>
-            <p class="more-link"><a href="/blog/">All posts</a></p>
-          </section>
+      <section class="stage-section" id="research">
+        <div class="stage-head">
+          <h2>Research</h2>
+          <p class="note">* equal contribution</p>
         </div>
-
-        <aside class="preview" aria-label="Preview">
-          <div class="preview-frame">
+        <div class="stage">
+          <div class="stage-screen" aria-live="polite">
             {
               research.map((p, i) => (
                 <PreviewSlide
@@ -151,35 +92,77 @@ const sections = [
                   loop={p.data.hero?.src}
                   redacted={p.data.protected && !p.data.thumb}
                   active={i === 0}
-                />
-              ))
-            }
-            {
-              others.map((p) => (
-                <PreviewSlide
-                  id={p.id}
-                  kind="Project"
-                  title={p.data.title}
-                  caption={p.data.tagline}
-                  role={[p.data.role, p.data.period].filter(Boolean).join(", ")}
-                  topic={p.data.themes[0]}
-                />
-              ))
-            }
-            {
-              posts.map((p) => (
-                <PreviewSlide
-                  id={`post-${p.id}`}
-                  kind="Blog post"
-                  title={p.data.title}
-                  caption={p.data.description}
-                  role={p.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+                  href={`/projects/${p.id}/`}
+                  links={p.data.links}
+                  hasVideo={p.data.videos.length > 0}
+                  protectedPage={p.data.protected}
                 />
               ))
             }
           </div>
-        </aside>
-      </div>
+          <div class="rows stage-list">
+            {
+              research.map((p, i) => (
+                <IndexRow
+                  id={p.id}
+                  href={`/projects/${p.id}/`}
+                  title={p.data.title}
+                  badges={p.data.badges}
+                  caption={p.data.tagline}
+                  topic={p.data.themes[0]}
+                  topics={p.data.themes}
+                  thumb={p.data.thumb}
+                  loop={p.data.hero?.src}
+                  redacted={p.data.protected && !p.data.thumb}
+                  current={i === 0}
+                />
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="index-group" id="projects">
+        <h2>Projects</h2>
+        <div class="rows">
+          {
+            withYears(others, (p) => yearOf(p.data.period)).map(({ it: p, year }) => (
+              <IndexRow
+                id={p.id}
+                href={`/projects/${p.id}/`}
+                year={year}
+                title={p.data.title}
+                caption={p.data.tagline}
+                topic={p.data.themes[0]}
+                topics={p.data.themes}
+              />
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="index-group" id="writing">
+        <h2>Writing</h2>
+        <div class="rows">
+          {
+            withYears(posts, (p) => String(p.data.date.getUTCFullYear())).map(({ it: p, year }) => (
+              <IndexRow id={`post-${p.id}`} href={`/blog/${p.id}/`} year={year} title={p.data.title} caption={p.data.description} />
+            ))
+          }
+        </div>
+        <p class="more-link"><a href="/blog/">All posts</a></p>
+      </section>
+
+      <section class="block" id="about">
+        <h2>About</h2>
+        <p class="bio">
+          I'm triple majoring in Computer Science, Data Science, and Statistics (minor in History) at
+          the University of Michigan, where I'm a research assistant in the Human Centered Computing
+          Lab. I previously studied Statistics &amp; Computer Science at UIUC with a minor in
+          Meteorology. Outside the lab I photograph for the Michigan Daily, practice kendo, and watch
+          the sky for severe weather.
+        </p>
+      </section>
 
       <section class="block" id="news">
         <h2>News</h2>

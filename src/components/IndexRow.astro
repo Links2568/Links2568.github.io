@@ -12,12 +12,13 @@ interface Props {
   thumb?: string; // inline thumbnail for narrow screens (no preview panel there)
   loop?: string;
   redacted?: boolean;
+  current?: boolean; // the row whose slide is on the stage
 }
-const { id, href, year, title, badges = [], caption, topic, topics = [], thumb, loop, redacted = false } = Astro.props;
+const { id, href, year, title, badges = [], caption, topic, topics = [], thumb, loop, redacted = false, current = false } = Astro.props;
 const isReview = (b: string) => /review/i.test(b);
 ---
 
-<a class="row" href={href} data-preview={id} data-topic={topic} data-topics={topics.join(" ")}>
+<a class:list={["row", { "is-current": current }]} href={href} data-preview={id} data-topic={topic} data-topics={topics.join(" ")}>
   <span class="row-year">{year}</span>
   <span class="row-main">
     <span class="row-title">{title}</span>
