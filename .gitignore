@@ -7,7 +7,7 @@ Gemfile.lock
 git-update.sh
 .claude/
 node_modules
-dist
+/dist
 .astro
 
 # local media packages — may contain under-review (double-blind) material
