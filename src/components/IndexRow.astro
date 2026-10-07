@@ -13,8 +13,9 @@ interface Props {
   loop?: string;
   redacted?: boolean;
   current?: boolean; // the row whose slide is on the stage
+  chip?: { label: string; review: boolean }; // one compact venue label instead of badges
 }
-const { id, href, year, title, badges = [], caption, topic, topics = [], thumb, loop, redacted = false, current = false } = Astro.props;
+const { id, href, year, title, badges = [], caption, topic, topics = [], thumb, loop, redacted = false, current = false, chip } = Astro.props;
 const isReview = (b: string) => /review/i.test(b);
 ---
 
@@ -23,7 +24,14 @@ const isReview = (b: string) => /review/i.test(b);
   <span class="row-main">
     <span class="row-title">{title}</span>
     {
-      badges.length > 0 && (
+      chip && (
+        <span class="row-badges">
+          <span class:list={["badge", "badge-sm", { "badge-review": chip.review }]}>{chip.label}</span>
+        </span>
+      )
+    }
+    {
+      !chip && badges.length > 0 && (
         <span class="row-badges">
           {badges.map((b) => (
             <span class:list={["badge", "badge-sm", { "badge-review": isReview(b) }]}>{b}</span>

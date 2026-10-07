@@ -435,8 +435,23 @@ a:hover {
   display: none;
 }
 
+/* one line per entry: title + one chip, equal row heights */
+.stage-list .row-main {
+  flex-wrap: nowrap;
+  align-items: center;
+  min-width: 0;
+}
+
 .stage-list .row-title {
   font-size: 1.18rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.stage-list .row-badges {
+  flex: none;
 }
 
 .stage-list .row.is-current {
@@ -1457,6 +1472,11 @@ a:hover {
   .stage-list .row-caption,
   .stage-list .row-thumb {
     display: block;
+  }
+
+  .stage-list .row-main {
+    flex-wrap: wrap;
+    align-items: baseline;
   }
 
   /* no screen to drive at this width, so no "current" row */

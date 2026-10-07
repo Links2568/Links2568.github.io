@@ -1,5 +1,6 @@
 ---
 title: A Mysterious AI Security & Privacy Project
+shortTitle: Mysterious AI Privacy
 tagline: What can today's AI models figure out about you from a single everyday photo — and how much of it can you take back?
 period: "2026"
 role: Co-first author

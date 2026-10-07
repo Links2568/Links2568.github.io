@@ -13,13 +13,13 @@ badges: ["CHI 2027 under review"]
 fullTitle: "RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics"
 venue: CHI 2027 · under review
 abstract: "RespiraFrame is an eyeglass frame that monitors respiration through two complementary channels: a bone-conduction microphone beside the nose that hears breathing through the face rather than the air, and electrical impedance tomography from eight soft dry electrodes on the nose pads and temples. A two-branch network fused with attention recognizes five abnormal respiratory events and distinguishes nasal vs. oral, deep vs. shallow breathing, and breath holding — 92.5% for abnormal events in a 19-participant lab study, under 3 points of change at 80 dB of noise, and 87.6% over 30 hours of in-the-wild wear."
-cover: /projects/respiraframe/chi-cover.webp
-thumb: /projects/respiraframe/chi-cover.webp
+cover: /projects/respiraframe/chi-glasses.webp
+thumb: /projects/respiraframe/chi-glasses.webp
 links:
   - { label: Interactive talk, url: /projects/respiraframe/talk/index.html }
 hero:
-  src: /projects/respiraframe/chi-loop.mp4
-  poster: /projects/respiraframe/chi-loop.webp
+  src: /projects/respiraframe/chi-loop-eit.mp4
+  poster: /projects/respiraframe/chi-loop-eit.webp
   width: 1280
   height: 720
 videos:
@@ -39,7 +39,7 @@ gallery:
   - { src: /projects/respiraframe/chi-lab-study.webp, alt: "Lab study: 19 participants, 10,480 samples.", width: 1600, height: 900 }
   - { src: /projects/respiraframe/chi-bystander.webp, alt: "Only 2.7% of a nearby person's events were attributed to the wearer.", width: 1600, height: 900 }
   - { src: /projects/respiraframe/chi-in-the-wild.webp, alt: "In the wild: 10 participants, 30 hours across office, cafeteria, and outdoors.", width: 1600, height: 900 }
-  - { src: /projects/respiraframe/chi-live-demo.webp, alt: "Real-time demo: nasal vs. oral breathing, even with a hair dryer blowing nearby.", width: 1600, height: 900 }
+  - { src: /projects/respiraframe/chi-placement.webp, alt: "Placement study: of four candidate positions, the sensor beside the nose pad gave the highest recognition accuracy, closest to the nasal airway.", width: 1600, height: 900 }
 ---
 
 Our breathing says a lot about our health. Coughs, sneezes and sniffs, and whether we breathe

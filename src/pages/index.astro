@@ -20,6 +20,13 @@ const yearOf = (period: string) => (period.match(/\d{4}/) ?? [""])[0];
 const withYears = <T,>(items: T[], year: (t: T) => string) =>
   items.map((it, i) => ({ it, year: i === 0 || year(items[i - 1]) !== year(it) ? year(it) : "" }));
 
+/* one compact venue label per row: "CHI 2027", "MobiCom 2026", or "In review" */
+const chipOf = (badges: string[]) => {
+  const review = badges.some((b) => /review/i.test(b));
+  const venue = badges.map((b) => b.match(/(CHI|MobiCom|UIST|CSCW|IMWUT|PoPETs|UbiComp)\s*\d{4}/)?.[0]).find(Boolean);
+  return { label: venue ?? (review ? "In review" : badges[0] ?? ""), review };
+};
+
 const subtitleOf = (title: string, full?: string) =>
   full?.startsWith(`${title}:`) ? full.slice(title.length + 1).trim() : full;
 
@@ -106,8 +113,8 @@ const sections = [
                 <IndexRow
                   id={p.id}
                   href={`/projects/${p.id}/`}
-                  title={p.data.title}
-                  badges={p.data.badges}
+                  title={p.data.shortTitle ?? p.data.title}
+                  chip={chipOf(p.data.badges)}
                   caption={p.data.tagline}
                   topic={p.data.themes[0]}
                   topics={p.data.themes}

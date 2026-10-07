@@ -14,13 +14,13 @@ fullTitle: "MoiréDeform: Towards Fine-Grained Deformation Sensing through Every
 venue: ACM MobiCom 2026 · Demo · Austin, TX
 authors: "Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun"
 cover: /projects/moiredeform/cover.webp
-thumb: /projects/moiredeform/fig.webp
+thumb: /projects/moiredeform/04_live-breathing.webp
 abstract: "Every time we sit, lean, or breathe, we gently deform the surfaces that hold us. MoiréDeform turns the mesh of an unmodified office chair into a sensor: a low-cost camera behind the backrest compares each frame with a reference of the empty chair, so the weave acts as virtual moiré layers that amplify subtle deformation into large, visible fringes. From them, a lightweight network reconstructs the breathing waveform live, and the moiré envelope's centroid becomes a continuous lean-to-steer joystick — no markers, no wearables, and the person is never in frame. In a preliminary study (5 users, 100 minutes), respiratory-rate error fell from 2.07 to 0.71 breaths/min relative to physical-marker tracking."
 links:
   - { label: Interactive talk, url: /projects/moiredeform/talk/index.html }
 hero:
-  src: /projects/moiredeform/loop.mp4
-  poster: /projects/moiredeform/loop.webp
+  src: /projects/moiredeform/loop-breathing.mp4
+  poster: /projects/moiredeform/loop-breathing.webp
   width: 1280
   height: 720
 videos:

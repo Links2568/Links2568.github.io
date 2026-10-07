@@ -18,6 +18,7 @@ const projects = defineCollection({
     // research-project fields
     kind: z.enum(["research", "project"]).default("project"),
     fullTitle: z.string().optional(), // paper title
+    shortTitle: z.string().optional(), // for tight one-line lists
     venue: z.string().optional(),
     authors: z.string().optional(), // "A*, B*, C" — the site owner is bolded automatically
     thumb: z.string().optional(), // figure-tile image, 16:9
