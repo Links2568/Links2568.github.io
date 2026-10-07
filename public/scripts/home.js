@@ -1,9 +1,8 @@
-/* Homepage: the research stage (a big screen driven by the list beside it),
-   statement keywords that light up related rows, and the scroll-spy nav. */
+/* Homepage: the research stage (a big screen driven by the list beside it)
+   and the scroll-spy nav. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var main = document.querySelector(".home-main");
   var screen = document.querySelector(".stage-screen");
   var slides = {};
   document.querySelectorAll(".stage-screen .slide[data-slide]").forEach(function (s) {
@@ -117,35 +116,6 @@
     } else playCurrent();
   });
   playCurrent();
-
-  /* ---------- statement keywords light up related rows ---------- */
-  document.querySelectorAll(".kw[data-match]").forEach(function (kw) {
-    var ids = kw.getAttribute("data-match").split(" ");
-    function on() {
-      if (!main) return;
-      main.classList.add("kw-active");
-      document.querySelectorAll(".row[data-preview]").forEach(function (row) {
-        row.classList.toggle("match", ids.indexOf(row.getAttribute("data-preview")) !== -1);
-      });
-      for (var i = 0; i < ids.length; i++) {
-        if (slides[ids[i]]) {
-          select(ids[i]);
-          break;
-        }
-      }
-    }
-    function off() {
-      if (!main) return;
-      main.classList.remove("kw-active");
-      document.querySelectorAll(".row.match").forEach(function (row) {
-        row.classList.remove("match");
-      });
-    }
-    kw.addEventListener("mouseenter", on);
-    kw.addEventListener("focus", on);
-    kw.addEventListener("mouseleave", off);
-    kw.addEventListener("blur", off);
-  });
 
   /* ---------- side nav follows the scroll ---------- */
   var links = {};

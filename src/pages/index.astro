@@ -31,10 +31,10 @@ const subtitleOf = (title: string, full?: string) =>
   full?.startsWith(`${title}:`) ? full.slice(title.length + 1).trim() : full;
 
 const sections = [
+  { id: "about", label: "About" },
   { id: "research", label: "Research" },
   { id: "projects", label: "Projects" },
   { id: "writing", label: "Writing" },
-  { id: "about", label: "About" },
   { id: "news", label: "News" },
   { id: "experience", label: "Experience" },
   { id: "honors", label: "Honors" },
@@ -64,17 +64,39 @@ const sections = [
     </aside>
 
     <div class="home-main">
-      <p class="lede">
-        I build and study systems where humans and AI meet: eyeglasses and office chairs that sense
-        <a class="kw" href="/projects/respiraframe/" data-topic="sensing" data-match="respiraframe moiredeform">breathing</a>
-        and <a class="kw" href="/projects/moiredeform/" data-topic="sensing" data-match="moiredeform">posture</a>,
-        AR guidance generated for
-        <a class="kw" href="/projects/generative-tutorial/" data-topic="context" data-match="generative-tutorial adaptive-skill-guidance">physical tasks</a>
-        in your own space,
-        <a class="kw" href="/projects/magicbaton/" data-topic="hai" data-match="magicbaton">music</a>
-        made together with generative models, and tools that reveal what AI can infer from your
-        <a class="kw" href="/projects/mystery-ai-privacy/" data-topic="hai" data-match="mystery-ai-privacy">photos</a>.
-      </p>
+      <section class="intro" id="about">
+        <p class="intro-text">
+          Hi, I'm Zuchen. I'm an undergraduate at the
+          <a href="https://umich.edu" rel="noopener">University of Michigan</a>, triple majoring in
+          Computer Science, Data Science, and Statistics with a minor in History, and a research
+          assistant in the
+          <a href="https://hcc.engin.umich.edu/" rel="noopener">Human Centered Computing Lab</a>. I
+          work on human–AI interaction and ubiquitous sensing. Before Michigan, I studied Statistics
+          &amp; Computer Science at UIUC. Outside the lab, I photograph for the Michigan Daily,
+          practice kendo, and watch the sky for severe weather.
+        </p>
+        <ul class="affiliations" aria-label="Affiliations">
+          <li>
+            <a href="https://cse.engin.umich.edu/" rel="noopener" title="Computer Science and Engineering, University of Michigan">
+              <img class="logo-light" src="/assets/img/logos/umich-cse-light.svg" alt="University of Michigan Computer Science and Engineering" width="239" height="36" />
+              <img class="logo-dark" src="/assets/img/logos/umich-cse-dark.svg" alt="" width="239" height="36" />
+            </a>
+          </li>
+          <li>
+            <a href="https://hcc.engin.umich.edu/" rel="noopener" title="Human Centered Computing Lab, University of Michigan">
+              <img class="logo-light" src="/assets/img/logos/hcc-lab-light.png" alt="Human Centered Computing Laboratory, University of Michigan" width="964" height="147" />
+              <img class="logo-dark" src="/assets/img/logos/hcc-lab-dark.png" alt="" width="964" height="147" />
+            </a>
+          </li>
+          <li>
+            <a class="logo-with-name" href="https://amilabumich.notion.site/" rel="noopener" title="Ambient Intelligence Lab, University of Michigan">
+              <img class="logo-light" src="/assets/img/logos/ami-lab-light.svg" alt="" width="369" height="293" />
+              <img class="logo-dark" src="/assets/img/logos/ami-lab-dark.svg" alt="" width="369" height="293" />
+              <span>Ambient Intelligence Lab<small>AmI Lab</small></span>
+            </a>
+          </li>
+        </ul>
+      </section>
 
       <section class="stage-section" id="research">
         <div class="stage-head">
@@ -158,17 +180,6 @@ const sections = [
           }
         </div>
         <p class="more-link"><a href="/blog/">All posts</a></p>
-      </section>
-
-      <section class="block" id="about">
-        <h2>About</h2>
-        <p class="bio">
-          I'm triple majoring in Computer Science, Data Science, and Statistics (minor in History) at
-          the University of Michigan, where I'm a research assistant in the Human Centered Computing
-          Lab. I previously studied Statistics &amp; Computer Science at UIUC with a minor in
-          Meteorology. Outside the lab I photograph for the Michigan Daily, practice kendo, and watch
-          the sky for severe weather.
-        </p>
       </section>
 
       <section class="block" id="news">
