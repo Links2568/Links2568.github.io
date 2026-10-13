@@ -11,9 +11,6 @@ const all = (await getCollection("projects", ({ data }) => !data.draft)).sort(
 );
 const research = all.filter((p) => p.data.kind === "research");
 const others = all.filter((p) => p.data.kind !== "research");
-const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
 
 const yearOf = (period: string) => (period.match(/\d{4}/) ?? [""])[0];
 /* show a year only on the first row of each year group */
@@ -24,7 +21,6 @@ const sections = [
   { id: "about", label: "About" },
   { id: "research", label: "Research" },
   { id: "projects", label: "Projects" },
-  { id: "writing", label: "Writing" },
   { id: "news", label: "News" },
   { id: "experience", label: "Experience" },
   { id: "honors", label: "Honors" },
@@ -113,18 +109,6 @@ const sections = [
             ))
           }
         </div>
-      </section>
-
-      <section class="index-group" id="writing">
-        <h2>Writing</h2>
-        <div class="rows">
-          {
-            withYears(posts, (p) => String(p.data.date.getUTCFullYear())).map(({ it: p, year }) => (
-              <IndexRow id={`post-${p.id}`} href={`/blog/${p.id}/`} year={year} title={p.data.title} caption={p.data.description} />
-            ))
-          }
-        </div>
-        <p class="more-link"><a href="/blog/">All posts</a></p>
       </section>
 
       <section class="block" id="news">
