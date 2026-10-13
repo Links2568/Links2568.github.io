@@ -444,6 +444,7 @@ a:hover {
   --cf-bezel: 7px;
   --cf-radius: 18px;
   --cf-glass: #0b0d10;
+  --cf-panel: #15181d;
   --cf-rim: #b4bac3;
   --cf-alu-1: #dfe2e7;
   --cf-alu-2: #8f97a2;
@@ -461,7 +462,7 @@ a:hover {
 .cf-stage {
   position: relative;
   overflow-x: clip;
-  aspect-ratio: 2.2;
+  aspect-ratio: 1.9;
   perspective: 1400px;
   perspective-origin: 50% 38%;
   touch-action: pan-y;
@@ -479,8 +480,10 @@ a:hover {
   position: absolute;
   top: 6%;
   left: 50%;
-  width: 56%;
+  width: 54%;
   border-radius: var(--cf-radius);
+  color: inherit;
+  text-decoration: none;
   transform-style: preserve-3d;
   will-change: transform;
   -webkit-user-drag: none;
@@ -529,8 +532,17 @@ a:hover {
   box-shadow:
     0 0 0 1px var(--cf-rim),
     inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  container-type: inline-size;
   /* the iPod reflection (WebKit/Blink; other engines simply omit it) */
   -webkit-box-reflect: below 3px linear-gradient(transparent 60%, rgba(255, 255, 255, 0.26));
+}
+
+/* the lit screen inside the bezel: the figure, then a dark now-playing band */
+.cf-display {
+  display: block;
+  overflow: hidden;
+  border-radius: calc(var(--cf-radius) - var(--cf-bezel));
+  background: var(--cf-panel);
 }
 
 .cf-media {
@@ -538,8 +550,77 @@ a:hover {
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: calc(var(--cf-radius) - var(--cf-bezel));
   background: var(--bg-soft);
+}
+
+.cf-label {
+  position: relative;
+  display: block;
+  padding: 2.2cqw 2.2cqw 2.3cqw;
+  color: #f3f5f8;
+}
+
+.cf-label-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2cqw;
+}
+
+.cf-label-title {
+  overflow: hidden;
+  font-family: var(--serif);
+  font-size: max(13px, 4.2cqw);
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cf-label-index {
+  flex: none;
+  font-size: max(10px, 1.8cqw);
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+/* two lines are always reserved so every screen is the same height */
+.cf-label-sub {
+  display: -webkit-box;
+  min-height: calc(2 * 1.35em);
+  margin-top: 0.8cqw;
+  overflow: hidden;
+  font-size: max(10.5px, 2.2cqw);
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.6);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* while the loop plays, a hairline progress bar runs along the band's top */
+.cf-progress {
+  position: absolute;
+  top: 0;
+  left: 2.2cqw;
+  right: 2.2cqw;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cf-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.78);
+  transition: width 0.26s linear;
+}
+
+.cf-media.is-looping ~ .cf-label .cf-progress {
+  opacity: 1;
 }
 
 .cf-media img,
@@ -579,6 +660,7 @@ a:hover {
 
 :root[data-theme="dark"] .coverflow {
   --cf-glass: #050608;
+  --cf-panel: #121419;
   --cf-rim: #4d535c;
   --cf-alu-1: #6a717b;
   --cf-alu-2: #23272d;
@@ -589,6 +671,7 @@ a:hover {
   position: absolute;
   inset: 0;
   z-index: 2;
+  border-radius: inherit;
   opacity: var(--shade, 0);
   background: linear-gradient(to right, rgba(10, 18, 30, 0.12), rgba(10, 18, 30, 0.55));
   pointer-events: none;
@@ -604,7 +687,7 @@ a:hover {
 
 .cf-arrow {
   position: absolute;
-  top: calc(6% + 28% * 9 / 16 * 2.2);
+  top: 43%;
   transform: translateY(-50%);
   z-index: 200;
   display: grid;
@@ -2059,7 +2142,7 @@ a:hover {
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
   .cf-stage {
-    aspect-ratio: 1.55;
+    aspect-ratio: 1.18;
   }
 
   .coverflow {

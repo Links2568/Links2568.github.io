@@ -232,7 +232,16 @@
         vid.addEventListener("canplay", function () {
           if (media.classList.contains("is-looping") && vid.paused) start(vid);
         });
-        media.insertBefore(vid, media.querySelector(".cf-shade"));
+        /* the hairline on the screen's now-playing band follows the loop */
+        var bar = card.querySelector(".cf-progress span");
+        var lastTime = 0;
+        vid.addEventListener("timeupdate", function () {
+          if (!bar || !vid.duration) return;
+          bar.style.transition = vid.currentTime < lastTime ? "none" : "";
+          bar.style.width = ((vid.currentTime / vid.duration) * 100).toFixed(2) + "%";
+          lastTime = vid.currentTime;
+        });
+        media.appendChild(vid);
       }
       media.classList.add("is-looping");
       start(vid);
