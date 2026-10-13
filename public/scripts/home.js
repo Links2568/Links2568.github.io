@@ -1,121 +1,150 @@
-/* Homepage: the research stage (a big screen driven by the list beside it)
-   and the scroll-spy nav. */
+/* Homepage: the research Cover Flow and the scroll-spy nav. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var screen = document.querySelector(".stage-screen");
-  var slides = {};
-  document.querySelectorAll(".stage-screen .slide[data-slide]").forEach(function (s) {
-    slides[s.getAttribute("data-slide")] = s;
-  });
-  var stageRows = document.querySelectorAll(".stage-list .row[data-preview]");
-  var current = null;
-  document.querySelectorAll(".stage-screen .slide:not([hidden])").forEach(function (s) {
-    current = s.getAttribute("data-slide");
-  });
-  var onScreen = true;
+  var canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-  function stageShown() {
-    return screen && getComputedStyle(screen).display !== "none";
-  }
+  /* ---------- Cover Flow ---------- */
+  var flow = document.querySelector(".coverflow");
+  if (flow) {
+    var cards = Array.prototype.slice.call(flow.querySelectorAll(".cf-card"));
+    var captions = Array.prototype.slice.call(flow.querySelectorAll(".cf-caption"));
+    var tabs = Array.prototype.slice.call(flow.querySelectorAll(".cf-tab"));
+    var n = cards.length;
+    var cur = 0;
 
-  /* ---------- stage video ---------- */
-  function videoFor(slide) {
-    var media = slide.querySelector(".slide-media");
-    var src = media && media.getAttribute("data-loop");
-    if (!src) return null;
-    var v = media.querySelector("video");
-    if (v) return v;
-    v = document.createElement("video");
-    v.className = "hover-loop";
-    v.muted = true;
-    v.loop = true;
-    v.playsInline = true;
-    v.setAttribute("playsinline", "");
-    v.setAttribute("aria-hidden", "true");
-    v.preload = "auto";
-    v.src = src;
-    v.addEventListener("playing", function () {
-      v.classList.add("ready");
-    });
-    /* Chrome may abort a play() issued before data has buffered; retry once ready */
-    v.addEventListener("canplay", function () {
-      if (current === slide.getAttribute("data-slide") && v.paused && v.dataset.want === "1") play(v);
-    });
-    media.appendChild(v);
-    media.classList.add("is-looping");
-    return v;
-  }
-
-  function play(v) {
-    v.dataset.want = "1";
-    var p = v.play();
-    if (p && p.catch) p.catch(function () {});
-  }
-
-  function stop(slide) {
-    var v = slide && slide.querySelector("video");
-    if (v) {
-      v.dataset.want = "0";
-      v.pause();
+    /* circular distance from the front: 0 = front, ±1 = neighbours, the rest sit behind */
+    function pos(i) {
+      var d = (((i - cur) % n) + n) % n;
+      if (d > n / 2) d -= n;
+      return d;
     }
-  }
 
-  function playCurrent() {
-    if (reduced || !onScreen || document.hidden || !stageShown() || !current) return;
-    var v = videoFor(slides[current]);
-    if (v) play(v);
-  }
-
-  function select(id) {
-    var next = slides[id];
-    if (!next) return;
-    if (current !== id) {
-      if (current) {
-        stop(slides[current]);
-        slides[current].hidden = true;
-      }
-      next.hidden = false;
-      current = id;
-      stageRows.forEach(function (r) {
-        r.classList.toggle("is-current", r.getAttribute("data-preview") === id);
+    function layout() {
+      cards.forEach(function (c, i) {
+        var d = pos(i);
+        c.setAttribute("data-pos", String(d));
+        c.tabIndex = d === 0 ? 0 : -1;
+        if (d === 0) c.removeAttribute("aria-hidden");
+        else c.setAttribute("aria-hidden", "true");
+      });
+      captions.forEach(function (cp, i) {
+        cp.hidden = i !== cur;
+      });
+      tabs.forEach(function (t, i) {
+        t.setAttribute("aria-selected", i === cur ? "true" : "false");
       });
     }
-    playCurrent();
-  }
 
-  /* hover intent: a short pause before switching, so sweeping across the
-     list on the way to the stage's buttons doesn't change the project */
-  var intent = null;
-  stageRows.forEach(function (row) {
-    var id = row.getAttribute("data-preview");
-    row.addEventListener("mouseenter", function () {
-      clearTimeout(intent);
-      intent = setTimeout(function () {
-        select(id);
-      }, 90);
-    });
-    row.addEventListener("mouseleave", function () {
-      clearTimeout(intent);
-    });
-    row.addEventListener("focus", function () {
-      select(id);
-    });
-  });
+    function stopLoop(card) {
+      var media = card.querySelector(".cf-media");
+      var v = media && media.querySelector("video");
+      media.classList.remove("is-looping");
+      if (v) v.pause();
+    }
 
-  if (screen && "IntersectionObserver" in window) {
-    new IntersectionObserver(function (entries) {
-      onScreen = entries[0].isIntersecting;
-      if (onScreen) playCurrent();
-      else if (current) stop(slides[current]);
-    }).observe(screen);
+    function playLoop(card) {
+      if (reduced) return;
+      var media = card.querySelector(".cf-media");
+      var src = media && media.getAttribute("data-loop");
+      if (!src) return;
+      var v = media.querySelector("video");
+      if (!v) {
+        v = document.createElement("video");
+        v.className = "hover-loop";
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.setAttribute("playsinline", "");
+        v.setAttribute("aria-hidden", "true");
+        v.preload = "auto";
+        v.src = src;
+        v.addEventListener("playing", function () {
+          v.classList.add("ready");
+        });
+        /* Chrome may abort a play() issued before data has buffered; retry once ready */
+        v.addEventListener("canplay", function () {
+          if (media.classList.contains("is-looping") && v.paused) start(v);
+        });
+        media.appendChild(v);
+      }
+      media.classList.add("is-looping");
+      start(v);
+    }
+
+    function start(v) {
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+
+    function go(i) {
+      if (cards[cur]) stopLoop(cards[cur]);
+      cur = ((i % n) + n) % n;
+      layout();
+    }
+
+    cards.forEach(function (card, i) {
+      /* a side cover turns the ring; the front cover opens the project */
+      card.addEventListener("click", function (e) {
+        if (pos(i) !== 0 || flow.dataset.swiped === "1") {
+          e.preventDefault();
+          if (pos(i) !== 0) go(i);
+        }
+      });
+      if (canHover) {
+        card.addEventListener("mouseenter", function () {
+          if (pos(i) === 0) playLoop(card);
+        });
+        card.addEventListener("mouseleave", function () {
+          stopLoop(card);
+        });
+      }
+    });
+
+    flow.querySelector(".cf-prev").addEventListener("click", function () {
+      go(cur - 1);
+    });
+    flow.querySelector(".cf-next").addEventListener("click", function () {
+      go(cur + 1);
+    });
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () {
+        go(i);
+      });
+    });
+
+    flow.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(cur - 1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(cur + 1);
+      }
+    });
+
+    /* swipe / drag */
+    var stage = flow.querySelector(".cf-stage");
+    var x0 = null;
+    stage.addEventListener("pointerdown", function (e) {
+      x0 = e.clientX;
+      flow.dataset.swiped = "0";
+    });
+    stage.addEventListener("pointerup", function (e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 40) {
+        flow.dataset.swiped = "1";
+        go(cur + (dx < 0 ? 1 : -1));
+        setTimeout(function () {
+          flow.dataset.swiped = "0";
+        }, 0);
+      }
+    });
+
+    layout();
   }
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-      if (current) stop(slides[current]);
-    } else playCurrent();
-  });
-  playCurrent();
 
   /* ---------- side nav follows the scroll ---------- */
   var links = {};

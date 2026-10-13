@@ -1,0 +1,133 @@
+---
+/* Research projects as an iPod-style Cover Flow: the current project faces
+   front, its neighbours lean in from the left and right, and the ring turns
+   on click, arrow keys, swipe, or the name tabs. Hovering the front cover
+   plays its loop; otherwise it shows the still. Driven by public/scripts/home.js. */
+import type { CollectionEntry } from "astro:content";
+import { SITE } from "../consts";
+import { themeLabel } from "../lib/themes";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+const { projects } = Astro.props;
+
+const authorsOf = (s?: string) =>
+  (s ?? "")
+    .split(",")
+    .map((a) => a.trim())
+    .filter(Boolean)
+    .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
+const subtitleOf = (title: string, full?: string) =>
+  full?.startsWith(`${title}:`) ? full.slice(title.length + 1).trim() : full;
+const isReview = (b: string) => /review/i.test(b);
+const n = projects.length;
+const posOf = (i: number) => {
+  let d = ((i % n) + n) % n;
+  if (d > n / 2) d -= n;
+  return d;
+};
+---
+
+<div class="coverflow" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Research projects">
+  <div class="cf-stage">
+    {
+      projects.map((p, i) => (
+        <a
+          class="cf-card"
+          href={`/projects/${p.id}/`}
+          data-index={i}
+          data-pos={posOf(i)}
+          data-topic={p.data.themes[0]}
+          tabindex={i === 0 ? 0 : -1}
+          aria-label={p.data.title}
+          draggable="false"
+        >
+          <span class="cf-media" data-loop={p.data.hero?.src}>
+            {p.data.thumb ? (
+              <img src={p.data.thumb} alt="" width="1100" height="619" draggable="false" loading={i < 2 || i === n - 1 ? "eager" : "lazy"} decoding="async" />
+            ) : (
+              <span class="redacted">
+                <span class="bar" />
+                <span class="bar short" />
+                <span class="bar mid" />
+              </span>
+            )}
+          </span>
+        </a>
+      ))
+    }
+    <button class="cf-arrow cf-prev" type="button" aria-label="Previous project">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    <button class="cf-arrow cf-next" type="button" aria-label="Next project">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+    </button>
+  </div>
+
+  <div class="cf-tabs" role="tablist" aria-label="Choose a project">
+    {
+      projects.map((p, i) => (
+        <button class="cf-tab" type="button" role="tab" data-index={i} data-topic={p.data.themes[0]} aria-selected={i === 0 ? "true" : "false"}>
+          {p.data.shortTitle ?? p.data.title}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="cf-captions" aria-live="polite">
+    {
+      projects.map((p, i) => {
+        const d = p.data;
+        const authors = authorsOf(d.authors);
+        const href = `/projects/${p.id}/`;
+        const subtitle = d.protected ? undefined : subtitleOf(d.title, d.fullTitle);
+        return (
+          <div class="cf-caption" data-index={i} hidden={i !== 0}>
+            <p class="cf-meta">
+              {d.badges.map((b) => (
+                <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>
+              ))}
+              {d.themes[0] && (
+                <span class="theme-tag" data-topic={d.themes[0]}>
+                  {themeLabel(d.themes[0])}
+                </span>
+              )}
+            </p>
+            <h3 class="cf-title">
+              <a href={href}>{subtitle ? `${d.title}: ${subtitle}` : d.title}</a>
+            </h3>
+            {authors.length > 0 ? (
+              <p class="cf-authors">
+                {authors.map((a, j) => (
+                  <>
+                    {a.me ? <strong>{a.name}</strong> : a.name}
+                    {j < authors.length - 1 && ", "}
+                  </>
+                ))}
+              </p>
+            ) : (
+              d.role && <p class="cf-authors">{d.role}</p>
+            )}
+            <p class="cf-text">{d.tagline}</p>
+            <p class="cf-links">
+              <a class="btn btn-solid" href={href}>
+                {d.protected ? "About this project" : "Project page"}
+              </a>
+              {d.links.map((l) => (
+                <a class="btn" href={l.url} rel="noopener">
+                  {l.label}
+                </a>
+              ))}
+              {d.videos.length > 0 && (
+                <a class="btn" href={`${href}#video`}>
+                  Video
+                </a>
+              )}
+            </p>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>

@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import IndexRow from "../components/IndexRow.astro";
-import PreviewSlide from "../components/PreviewSlide.astro";
+import CoverFlow from "../components/CoverFlow.astro";
 import { SITE } from "../consts";
 import { asset } from "../lib/asset";
 
@@ -19,16 +19,6 @@ const yearOf = (period: string) => (period.match(/\d{4}/) ?? [""])[0];
 /* show a year only on the first row of each year group */
 const withYears = <T,>(items: T[], year: (t: T) => string) =>
   items.map((it, i) => ({ it, year: i === 0 || year(items[i - 1]) !== year(it) ? year(it) : "" }));
-
-/* one compact venue label per row: "CHI 2027", "MobiCom 2026", or "In review" */
-const chipOf = (badges: string[]) => {
-  const review = badges.some((b) => /review/i.test(b));
-  const venue = badges.map((b) => b.match(/(CHI|MobiCom|UIST|CSCW|IMWUT|PoPETs|UbiComp)\s*\d{4}/)?.[0]).find(Boolean);
-  return { label: venue ?? (review ? "In review" : badges[0] ?? ""), review };
-};
-
-const subtitleOf = (title: string, full?: string) =>
-  full?.startsWith(`${title}:`) ? full.slice(title.length + 1).trim() : full;
 
 const sections = [
   { id: "about", label: "About" },
@@ -50,6 +40,27 @@ const sections = [
       <p class="side-role">
         Undergraduate researcher, University of Michigan. Applying to PhD programs in HCI / AI.
       </p>
+      <ul class="affiliations" aria-label="Affiliations">
+        <li>
+          <a href="https://cse.engin.umich.edu/" rel="noopener" title="Computer Science and Engineering, University of Michigan">
+            <img class="logo-light" src="/assets/img/logos/umich-cse-light.svg" alt="University of Michigan Computer Science and Engineering" width="239" height="36" />
+            <img class="logo-dark" src="/assets/img/logos/umich-cse-dark.svg" alt="" width="239" height="36" />
+          </a>
+        </li>
+        <li>
+          <a href="https://hcc.engin.umich.edu/" rel="noopener" title="Human Centered Computing Lab, University of Michigan">
+            <img class="logo-light" src="/assets/img/logos/hcc-lab-light.png" alt="Human Centered Computing Laboratory, University of Michigan" width="964" height="147" />
+            <img class="logo-dark" src="/assets/img/logos/hcc-lab-dark.png" alt="" width="964" height="147" />
+          </a>
+        </li>
+        <li>
+          <a class="logo-with-name" href="https://amilabumich.notion.site/" rel="noopener" title="Ambient Intelligence Lab, University of Michigan">
+            <img class="logo-light" src="/assets/img/logos/ami-lab-light.svg" alt="" width="369" height="293" />
+            <img class="logo-dark" src="/assets/img/logos/ami-lab-dark.svg" alt="" width="369" height="293" />
+            <span>Ambient Intelligence Lab<small>AmI Lab</small></span>
+          </a>
+        </li>
+      </ul>
       <nav class="side-nav" aria-label="On this page">
         {sections.map((sct) => <a href={`#${sct.id}`} data-spy={sct.id}>{sct.label}</a>)}
       </nav>
@@ -75,80 +86,14 @@ const sections = [
           &amp; Computer Science at UIUC. Outside the lab, I photograph for the Michigan Daily,
           practice kendo, and watch the sky for severe weather.
         </p>
-        <ul class="affiliations" aria-label="Affiliations">
-          <li>
-            <a href="https://cse.engin.umich.edu/" rel="noopener" title="Computer Science and Engineering, University of Michigan">
-              <img class="logo-light" src="/assets/img/logos/umich-cse-light.svg" alt="University of Michigan Computer Science and Engineering" width="239" height="36" />
-              <img class="logo-dark" src="/assets/img/logos/umich-cse-dark.svg" alt="" width="239" height="36" />
-            </a>
-          </li>
-          <li>
-            <a href="https://hcc.engin.umich.edu/" rel="noopener" title="Human Centered Computing Lab, University of Michigan">
-              <img class="logo-light" src="/assets/img/logos/hcc-lab-light.png" alt="Human Centered Computing Laboratory, University of Michigan" width="964" height="147" />
-              <img class="logo-dark" src="/assets/img/logos/hcc-lab-dark.png" alt="" width="964" height="147" />
-            </a>
-          </li>
-          <li>
-            <a class="logo-with-name" href="https://amilabumich.notion.site/" rel="noopener" title="Ambient Intelligence Lab, University of Michigan">
-              <img class="logo-light" src="/assets/img/logos/ami-lab-light.svg" alt="" width="369" height="293" />
-              <img class="logo-dark" src="/assets/img/logos/ami-lab-dark.svg" alt="" width="369" height="293" />
-              <span>Ambient Intelligence Lab<small>AmI Lab</small></span>
-            </a>
-          </li>
-        </ul>
       </section>
 
-      <section class="stage-section" id="research">
+      <section class="cf-section" id="research">
         <div class="stage-head">
           <h2>Research</h2>
           <p class="note">* equal contribution</p>
         </div>
-        <div class="stage">
-          <div class="stage-screen" aria-live="polite">
-            {
-              research.map((p, i) => (
-                <PreviewSlide
-                  id={p.id}
-                  kind="Research"
-                  title={p.data.title}
-                  subtitle={p.data.protected ? undefined : subtitleOf(p.data.title, p.data.fullTitle)}
-                  caption={p.data.tagline}
-                  authors={p.data.authors}
-                  role={p.data.role}
-                  badges={p.data.badges}
-                  topic={p.data.themes[0]}
-                  thumb={p.data.thumb}
-                  loop={p.data.hero?.src}
-                  redacted={p.data.protected && !p.data.thumb}
-                  active={i === 0}
-                  href={`/projects/${p.id}/`}
-                  links={p.data.links}
-                  hasVideo={p.data.videos.length > 0}
-                  protectedPage={p.data.protected}
-                />
-              ))
-            }
-          </div>
-          <div class="rows stage-list">
-            {
-              research.map((p, i) => (
-                <IndexRow
-                  id={p.id}
-                  href={`/projects/${p.id}/`}
-                  title={p.data.shortTitle ?? p.data.title}
-                  chip={chipOf(p.data.badges)}
-                  caption={p.data.tagline}
-                  topic={p.data.themes[0]}
-                  topics={p.data.themes}
-                  thumb={p.data.thumb}
-                  loop={p.data.hero?.src}
-                  redacted={p.data.protected && !p.data.thumb}
-                  current={i === 0}
-                />
-              ))
-            }
-          </div>
-        </div>
+        <CoverFlow projects={research} />
       </section>
 
       <section class="index-group" id="projects">
