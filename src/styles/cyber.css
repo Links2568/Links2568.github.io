@@ -441,7 +441,7 @@ a:hover {
   --cf-shade: 0.42;
   /* the display: body thickness, bezel, corner radius, metal */
   --cf-depth: 18px;
-  --cf-bezel: 7px;
+  --cf-bezel: 4px;
   --cf-radius: 18px;
   --cf-glass: #0b0d10;
   --cf-panel: #15181d;
@@ -462,7 +462,7 @@ a:hover {
 .cf-stage {
   position: relative;
   overflow-x: clip;
-  aspect-ratio: 1.9;
+  aspect-ratio: 2.05;
   perspective: 1400px;
   perspective-origin: 50% 38%;
   touch-action: pan-y;
@@ -556,7 +556,7 @@ a:hover {
 .cf-label {
   position: relative;
   display: block;
-  padding: 2.2cqw 2.2cqw 2.3cqw;
+  padding: 1.7cqw 2.2cqw 1.8cqw;
   color: #f3f5f8;
 }
 
@@ -582,19 +582,6 @@ a:hover {
   font-size: max(10px, 1.8cqw);
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.42);
-}
-
-/* two lines are always reserved so every screen is the same height */
-.cf-label-sub {
-  display: -webkit-box;
-  min-height: calc(2 * 1.35em);
-  margin-top: 0.8cqw;
-  overflow: hidden;
-  font-size: max(10.5px, 2.2cqw);
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.6);
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 /* while the loop plays, a hairline progress bar runs along the band's top */
@@ -687,7 +674,7 @@ a:hover {
 
 .cf-arrow {
   position: absolute;
-  top: 43%;
+  top: 42%;
   transform: translateY(-50%);
   z-index: 200;
   display: grid;
@@ -2142,14 +2129,14 @@ a:hover {
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
   .cf-stage {
-    aspect-ratio: 1.18;
+    aspect-ratio: 1.28;
   }
 
   .coverflow {
     --cf-x1: 0.66;
     --cf-rot: 58;
     --cf-depth: 9px;
-    --cf-bezel: 5px;
+    --cf-bezel: 3px;
     --cf-radius: 13px;
   }
 
