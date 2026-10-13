@@ -3,8 +3,9 @@
    front, its neighbours lean in from the left and right, and the ring turns
    on click, arrow keys, drag / swipe, trackpad scroll, or the segmented
    control. Hovering the front cover plays its loop; otherwise it shows the
-   still. Spring-driven by public/scripts/home.js; the data-pos styles are
-   the no-JS layout. */
+   still. Each cover is drawn as a display with a bezel and a metal body
+   that shows its thickness as it turns. Spring-driven by
+   public/scripts/home.js; the data-pos styles are the no-JS layout. */
 import type { CollectionEntry } from "astro:content";
 import { SITE } from "../consts";
 import { themeLabel } from "../lib/themes";
@@ -45,17 +46,23 @@ const posOf = (i: number) => {
           aria-label={p.data.title}
           draggable="false"
         >
-          <span class="cf-media" data-loop={p.data.hero?.src}>
-            {p.data.thumb ? (
-              <img src={p.data.thumb} alt="" width="1100" height="619" draggable="false" loading={i < 2 || i === n - 1 ? "eager" : "lazy"} decoding="async" />
-            ) : (
-              <span class="redacted">
-                <span class="bar" />
-                <span class="bar short" />
-                <span class="bar mid" />
-              </span>
-            )}
-            <span class="cf-shade" aria-hidden="true" />
+          {/* the device body: stacked plates give the screen its thickness */}
+          <span class="cf-body" aria-hidden="true">
+            {Array.from({ length: 10 }, (_, k) => <span class="cf-layer" style={`--i:${k + 1}`} />)}
+          </span>
+          <span class="cf-screen">
+            <span class="cf-media" data-loop={p.data.hero?.src}>
+              {p.data.thumb ? (
+                <img src={p.data.thumb} alt="" width="1100" height="619" draggable="false" loading={i < 2 || i === n - 1 ? "eager" : "lazy"} decoding="async" />
+              ) : (
+                <span class="redacted">
+                  <span class="bar" />
+                  <span class="bar short" />
+                  <span class="bar mid" />
+                </span>
+              )}
+              <span class="cf-shade" aria-hidden="true" />
+            </span>
           </span>
         </a>
       ))

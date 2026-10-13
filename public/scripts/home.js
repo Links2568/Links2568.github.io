@@ -26,8 +26,14 @@
     var raf = 0;
     var last = 0;
     var free = false; /* true while a finger / trackpad drives x directly */
+    var tiltX = 0; /* hover tilt of the front cover, degrees (eased toward tX/tY) */
+    var tiltY = 0;
+    var tX = 0;
+    var tY = 0;
     var K = 210; /* spring stiffness */
     var C = 2 * 0.86 * Math.sqrt(K); /* damping: just under critical, a hint of overshoot */
+    var TILT_X = 5; /* max hover tilt, degrees */
+    var TILT_Y = 8;
 
     var P = {}; /* geometry, read from CSS custom properties on .coverflow */
     var cw = 1; /* card width in px */
@@ -61,8 +67,10 @@
         var rot = -s * P.rot * Math.sin((t * Math.PI) / 2);
         var tz = -cw * P.z * (t + 0.6 * beyond);
         var op = 1 - Math.min(beyond / 0.55, 1);
+        var w = 1 - t; /* hover tilt fades out as a cover leaves the front */
         c.style.transform =
-          "translateX(" + (-50 + tx * 100).toFixed(3) + "%) translateZ(" + tz.toFixed(1) + "px) rotateY(" + rot.toFixed(2) + "deg)";
+          "translateX(" + (-50 + tx * 100).toFixed(3) + "%) translateZ(" + tz.toFixed(1) + "px) rotateY(" + rot.toFixed(2) + "deg)" +
+          (w > 0 && (tiltX || tiltY) ? " rotateX(" + (tiltX * w).toFixed(2) + "deg) rotateY(" + (tiltY * w).toFixed(2) + "deg)" : "");
         c.style.opacity = op.toFixed(3);
         c.style.visibility = op < 0.002 ? "hidden" : "";
         c.style.zIndex = String(100 - Math.round(a * 10));
@@ -115,23 +123,43 @@
       }
     }
 
+    function turning() {
+      return free || x !== target || v !== 0;
+    }
+
     function tick(now) {
       raf = 0;
       var dt = last ? Math.min((now - last) / 1000, 1 / 30) : 1 / 60;
       last = now;
-      if (!free) {
+      var more = false;
+      var arrived = false;
+      if (!free && (x !== target || v !== 0)) {
         v += (-K * (x - target) - C * v) * dt;
         x += v * dt;
         if (Math.abs(x - target) < 0.0004 && Math.abs(v) < 0.003) {
           x = target;
           v = 0;
-          render();
-          settled();
-          return;
-        }
+          arrived = true;
+        } else more = true;
+      }
+      var e = 1 - Math.exp(-dt * 9);
+      tiltX += (tX - tiltX) * e;
+      tiltY += (tY - tiltY) * e;
+      if (Math.abs(tX - tiltX) + Math.abs(tY - tiltY) > 0.02) more = true;
+      else {
+        tiltX = tX;
+        tiltY = tY;
       }
       render();
-      raf = requestAnimationFrame(tick);
+      if (arrived) settled();
+      if (more) raf = requestAnimationFrame(tick);
+    }
+
+    function kick() {
+      if (!raf && !document.hidden) {
+        last = 0;
+        raf = requestAnimationFrame(tick);
+      }
     }
 
     function animate() {
@@ -143,21 +171,23 @@
         settled();
         return;
       }
-      if (!raf) {
-        last = 0;
-        raf = requestAnimationFrame(tick);
-      }
+      kick();
     }
 
+    /* the cover that just arrived under the pointer starts playing */
     function settled() {
-      if (raf) cancelAnimationFrame(raf);
-      raf = 0;
-      /* the cover that just arrived under the pointer starts playing */
       if (canHover && cards[cur].matches(":hover")) playLoop(cards[cur]);
+    }
+
+    function setTilt(rx, ry) {
+      tX = rx;
+      tY = ry;
+      kick();
     }
 
     /* turn to project i along the shorter way round */
     function go(i) {
+      setTilt(0, 0);
       var d = mod(i - mod(target));
       if (d > n / 2) d -= n;
       target += d;
@@ -165,6 +195,7 @@
     }
 
     function step(dir) {
+      setTilt(0, 0);
       target = Math.round(target) + dir;
       animate();
     }
@@ -224,10 +255,19 @@
       });
       if (canHover) {
         card.addEventListener("mouseenter", function () {
-          if (i === cur && !raf) playLoop(card);
+          if (i === cur && !turning()) playLoop(card);
         });
         card.addEventListener("mouseleave", function () {
           stopLoop(card);
+          setTilt(0, 0);
+        });
+        /* the front display leans away from the pointer, showing its edge */
+        card.addEventListener("pointermove", function (e) {
+          if (i !== cur || reduced || turning() || e.pointerType !== "mouse") return;
+          var r = card.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          setTilt(-py * 2 * TILT_X, px * 2 * TILT_Y);
         });
       }
     });
@@ -259,6 +299,7 @@
     function beginFree() {
       free = true;
       v = 0;
+      tX = tY = tiltX = tiltY = 0;
       stopLoop(cards[cur]);
       flow.classList.add("is-dragging");
     }
