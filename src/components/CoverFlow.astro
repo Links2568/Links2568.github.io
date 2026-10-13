@@ -1,8 +1,10 @@
 ---
 /* Research projects as an iPod-style Cover Flow: the current project faces
    front, its neighbours lean in from the left and right, and the ring turns
-   on click, arrow keys, swipe, or the name tabs. Hovering the front cover
-   plays its loop; otherwise it shows the still. Driven by public/scripts/home.js. */
+   on click, arrow keys, drag / swipe, trackpad scroll, or the segmented
+   control. Hovering the front cover plays its loop; otherwise it shows the
+   still. Spring-driven by public/scripts/home.js; the data-pos styles are
+   the no-JS layout. */
 import type { CollectionEntry } from "astro:content";
 import { SITE } from "../consts";
 import { themeLabel } from "../lib/themes";
@@ -53,6 +55,7 @@ const posOf = (i: number) => {
                 <span class="bar mid" />
               </span>
             )}
+            <span class="cf-shade" aria-hidden="true" />
           </span>
         </a>
       ))
@@ -66,6 +69,7 @@ const posOf = (i: number) => {
   </div>
 
   <div class="cf-tabs" role="tablist" aria-label="Choose a project">
+    <span class="cf-pill" aria-hidden="true" />
     {
       projects.map((p, i) => (
         <button class="cf-tab" type="button" role="tab" data-index={i} data-topic={p.data.themes[0]} aria-selected={i === 0 ? "true" : "false"}>
@@ -73,6 +77,9 @@ const posOf = (i: number) => {
         </button>
       ))
     }
+  </div>
+  <div class="cf-dots" aria-hidden="true">
+    {projects.map((_, i) => <span class:list={["cf-dot", { "is-current": i === 0 }]} />)}
   </div>
 
   <div class="cf-captions" aria-live="polite">
@@ -83,7 +90,7 @@ const posOf = (i: number) => {
         const href = `/projects/${p.id}/`;
         const subtitle = d.protected ? undefined : subtitleOf(d.title, d.fullTitle);
         return (
-          <div class="cf-caption" data-index={i} hidden={i !== 0}>
+          <div class:list={["cf-caption", { "is-current": i === 0 }]} data-index={i} inert={i !== 0} aria-hidden={i !== 0 ? "true" : undefined}>
             <p class="cf-meta">
               {d.badges.map((b) => (
                 <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>

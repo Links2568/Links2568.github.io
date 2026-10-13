@@ -431,7 +431,15 @@ a:hover {
 }
 
 /* ---------- Cover Flow ---------- */
+/* geometry shared with home.js: side offset / stacking step (card widths),
+   side angle (deg), depth (card widths), max edge shading */
 .coverflow {
+  --cf-x1: 0.6;
+  --cf-xs: 0.16;
+  --cf-rot: 56;
+  --cf-z: 0.4;
+  --cf-shade: 0.42;
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
   position: relative;
   outline: none;
 }
@@ -446,11 +454,17 @@ a:hover {
   position: relative;
   overflow-x: clip;
   aspect-ratio: 2.2;
-  perspective: 1500px;
-  perspective-origin: 50% 35%;
+  perspective: 1400px;
+  perspective-origin: 50% 38%;
   touch-action: pan-y;
+  overscroll-behavior-x: contain;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.is-dragging .cf-stage,
+.is-dragging .cf-card {
+  cursor: grabbing;
 }
 
 .cf-card {
@@ -460,50 +474,41 @@ a:hover {
   width: 56%;
   aspect-ratio: 16 / 9;
   transform-style: preserve-3d;
-  transition:
-    transform 0.6s cubic-bezier(0.2, 0.75, 0.2, 1),
-    opacity 0.45s ease,
-    filter 0.45s ease;
+  will-change: transform, opacity;
   -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cf-card:hover {
   background-image: none;
 }
 
+/* static layout until home.js takes over with inline transforms */
 .cf-card[data-pos="0"] {
-  transform: translateX(-50%) translateZ(0) rotateY(0deg);
+  transform: translateX(-50%);
   z-index: 3;
 }
 
 .cf-card[data-pos="-1"] {
-  transform: translateX(-104%) translateZ(-190px) rotateY(50deg);
+  transform: translateX(-110%) translateZ(-200px) rotateY(56deg);
   z-index: 2;
-  filter: brightness(0.7) saturate(0.85);
-  cursor: pointer;
 }
 
 .cf-card[data-pos="1"] {
-  transform: translateX(4%) translateZ(-190px) rotateY(-50deg);
+  transform: translateX(10%) translateZ(-200px) rotateY(-56deg);
   z-index: 2;
-  filter: brightness(0.7) saturate(0.85);
-  cursor: pointer;
 }
 
-.cf-card[data-pos="-1"]:hover,
-.cf-card[data-pos="1"]:hover {
-  filter: brightness(0.85);
-}
-
-/* the rest of the ring turns away behind the front cover */
 .cf-card[data-pos="2"],
 .cf-card[data-pos="-2"],
 .cf-card[data-pos="3"],
 .cf-card[data-pos="-3"] {
-  transform: translateX(-50%) translateZ(-560px) scale(0.72);
   opacity: 0;
-  z-index: 1;
-  pointer-events: none;
+  visibility: hidden;
+}
+
+.cf-card:not([data-pos="0"]) {
+  cursor: pointer;
 }
 
 .cf-media {
@@ -512,10 +517,25 @@ a:hover {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--bg-soft);
   /* the iPod reflection (WebKit/Blink; other engines simply omit it) */
-  -webkit-box-reflect: below 4px linear-gradient(transparent 64%, rgba(255, 255, 255, 0.24));
+  -webkit-box-reflect: below 3px linear-gradient(transparent 60%, rgba(255, 255, 255, 0.26));
+}
+
+/* hairline edge, so white figures still read as cards on a white page */
+.cf-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(15, 25, 40, 0.08);
+  pointer-events: none;
+}
+
+:root[data-theme="dark"] .cf-media::after {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .cf-media img {
@@ -526,78 +546,193 @@ a:hover {
   -webkit-user-drag: none;
 }
 
+/* side covers darken toward the edge that turns away, like light falling off */
+.cf-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: var(--shade, 0);
+  background: linear-gradient(to right, rgba(10, 18, 30, 0.12), rgba(10, 18, 30, 0.55));
+  pointer-events: none;
+}
+
+.cf-card[data-side="right"] .cf-shade {
+  background: linear-gradient(to left, rgba(10, 18, 30, 0.12), rgba(10, 18, 30, 0.55));
+}
+
+.cf-card:not([data-pos="0"]):hover .cf-shade {
+  opacity: calc(var(--shade, 0) * 0.4);
+}
+
 .cf-arrow {
   position: absolute;
   top: calc(6% + 28% * 9 / 16 * 2.2);
   transform: translateY(-50%);
-  z-index: 4;
+  z-index: 200;
   display: grid;
   place-items: center;
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
   border-radius: 50%;
-  border: 1px solid var(--rule-strong);
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border: 0.5px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  backdrop-filter: blur(16px) saturate(1.8);
+  box-shadow: 0 2px 12px rgba(15, 25, 40, 0.1);
   color: var(--ink);
   cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s var(--ease-out),
+    background-color 0.2s ease;
+}
+
+.coverflow:hover .cf-arrow,
+.coverflow:focus-within .cf-arrow {
+  opacity: 1;
 }
 
 .cf-arrow:hover {
-  border-color: var(--navy);
-  color: var(--navy);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+}
+
+.cf-arrow:active {
+  transform: translateY(-50%) scale(0.9);
 }
 
 .cf-arrow svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.05rem;
+  height: 1.05rem;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .cf-prev {
-  left: 0;
+  left: 0.25rem;
 }
 
 .cf-next {
-  right: 0;
+  right: 0.25rem;
 }
 
+@media (hover: none) {
+  .cf-arrow {
+    opacity: 1;
+  }
+}
+
+/* segmented control: the white pill slides to the front project */
 .cf-tabs {
+  position: relative;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.3rem 1.6rem;
-  margin-top: 0.4rem;
+  width: max-content;
+  max-width: 100%;
+  margin: 0.5rem auto 0;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 6%, var(--bg));
+}
+
+.cf-pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: 0;
+  border-radius: 999px;
+  background: var(--bg);
+  box-shadow:
+    0 0 0 0.5px rgba(15, 25, 40, 0.06),
+    0 1px 2px rgba(15, 25, 40, 0.08),
+    0 3px 10px rgba(15, 25, 40, 0.07);
+  transition:
+    transform 0.5s var(--ease-out),
+    width 0.5s var(--ease-out);
+}
+
+:root[data-theme="dark"] .cf-pill {
+  background: color-mix(in srgb, var(--ink) 16%, var(--bg));
 }
 
 .cf-tab {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 600;
+  position: relative;
+  z-index: 1;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
   color: var(--ink-3);
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
-  padding: 0.2rem 0;
+  border-radius: 999px;
+  padding: 0.45rem 1.05rem;
   cursor: pointer;
+  transition: color 0.25s ease;
 }
 
 .cf-tab:hover {
-  color: var(--navy);
+  color: var(--ink);
 }
 
 .cf-tab[aria-selected="true"] {
-  color: var(--navy);
-  border-bottom-color: var(--tc, var(--maize));
+  color: var(--ink);
+}
+
+/* page dots replace the segmented control on phones */
+.cf-dots {
+  display: none;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 0.6rem;
+}
+
+.cf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  transition:
+    width 0.45s var(--ease-out),
+    background-color 0.3s ease;
+}
+
+.cf-dot.is-current {
+  width: 20px;
+  background: var(--ink);
 }
 
 .cf-captions {
+  display: grid;
   max-width: 44rem;
   margin: 1.4rem auto 0;
   text-align: center;
+}
+
+.cf-caption {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.4s var(--ease-out),
+    visibility 0s linear 0.25s;
+}
+
+.cf-caption.is-current {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.4s ease 0.06s,
+    transform 0.6s var(--ease-out) 0.03s,
+    visibility 0s;
 }
 
 .cf-caption p {
@@ -649,9 +784,17 @@ a:hover {
   margin-top: 1rem !important;
 }
 
+.cf-links .btn {
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .cf-card {
-    transition-duration: 0.01s;
+  .cf-caption,
+  .cf-caption.is-current,
+  .cf-pill,
+  .cf-dot {
+    transition: none;
   }
 }
 
@@ -1666,16 +1809,21 @@ a:hover {
     aspect-ratio: 1.55;
   }
 
+  .coverflow {
+    --cf-x1: 0.66;
+    --cf-rot: 58;
+  }
+
   .cf-card {
     width: 76%;
   }
 
   .cf-card[data-pos="-1"] {
-    transform: translateX(-118%) translateZ(-220px) rotateY(55deg);
+    transform: translateX(-116%) translateZ(-230px) rotateY(58deg);
   }
 
   .cf-card[data-pos="1"] {
-    transform: translateX(18%) translateZ(-220px) rotateY(-55deg);
+    transform: translateX(16%) translateZ(-230px) rotateY(-58deg);
   }
 
   .cf-arrow {
@@ -1683,11 +1831,11 @@ a:hover {
   }
 
   .cf-tabs {
-    gap: 0.2rem 1rem;
+    display: none;
   }
 
-  .cf-tab {
-    font-size: 0.95rem;
+  .cf-dots {
+    display: flex;
   }
 }
 
