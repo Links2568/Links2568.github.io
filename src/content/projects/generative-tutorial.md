@@ -23,9 +23,14 @@ bibtex: |
 fullTitle: "Generative Tutorial: Towards Live Contextualized Visual Instructions for Physical Tasks"
 venue: Preprint 2026 · CHI 2027 (under review)
 authors: "Muzhe Wu*, Zuchen Li*, Xu Wang, Anhong Guo"
-thumb: /projects/generative-tutorial/fig.webp
+thumb: /projects/generative-tutorial/paper-cover.webp
 abstract: "Visual instructions for physical tasks are typically authored in one context and followed in another, requiring users to translate demonstrated tools, materials, and spatial relationships into their own environment. We introduce Generative Tutorial, a conceptual framework for live visual instruction that depicts intended outcomes and actions within the user's environment and task flow. A formative evaluation of state-of-the-art image and video generation identifies failures and potential benefits across 15 physical tasks. Drawing on these findings, we build an augmented-reality prototype system that proactively generates goal images and demonstration videos using observed workspace context and predicted visual outcomes of preceding actions. A 24-participant lab study found higher task performance quality, greater perceived workspace correspondence, and shorter step-confirmation intervals with the system than with pre-authored guidance."
-cover: /projects/generative-tutorial/cover.webp
+cover: /projects/generative-tutorial/paper-cover.webp
+teaser:
+  src: /projects/generative-tutorial/paper-fig1.webp
+  width: 2400
+  height: 1024
+  caption: "Generative Tutorial reimagines tutorials as live, contextualized visual instructions adapted to a user's environment and evolving task progress. The prototype system continuously captures real-world context and grounds the task model in the user's environment. For each step, it generates a workspace-grounded goal image and demonstration video (e.g., showing how to press and twist a muddler to crush ice). By propagating real and speculative visual context forward, it proactively generates guidance for upcoming steps (e.g., squeezing juice and preparing a mint garnish), situated in each task's workspace so instructions stay available as the user switches between activities."
 links:
   - { label: arXiv, url: "https://arxiv.org/abs/2609.24955" }
   - { label: PDF, url: "https://arxiv.org/pdf/2609.24955" }
