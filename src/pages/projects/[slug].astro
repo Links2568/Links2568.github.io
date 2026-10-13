@@ -26,7 +26,7 @@ const authors = (d.authors ?? "")
 const equal = authors.some((a) => a.name.includes("*"));
 const org = d.org?.replace(/ · /g, ", ");
 const isReview = (b: string) => /review/i.test(b);
-const firstFig = d.hero ? 2 : 1;
+const firstFig = d.teaser || d.hero ? 2 : 1;
 ---
 
 <Base
@@ -127,7 +127,17 @@ const firstFig = d.hero ? 2 : 1;
         </>
       ) : (
         <>
-          {d.hero && (
+          {d.teaser && (
+            <figure class="teaser">
+              <a href={d.teaser.src} target="_blank" rel="noopener" class="teaser-img">
+                <img src={d.teaser.src} alt={d.teaser.caption} width={d.teaser.width} height={d.teaser.height} decoding="async" />
+              </a>
+              <figcaption>
+                <b>Figure 1.</b> {d.teaser.caption}
+              </figcaption>
+            </figure>
+          )}
+          {!d.teaser && d.hero && (
             <figure class="teaser">
               <video autoplay muted loop playsinline width={d.hero.width} height={d.hero.height} poster={d.hero.poster}>
                 <source src={d.hero.src} type="video/mp4" />

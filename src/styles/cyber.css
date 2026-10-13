@@ -1270,6 +1270,22 @@ a:hover {
   margin: 0 0 3rem;
 }
 
+.teaser-img {
+  display: block;
+}
+
+.teaser-img:hover {
+  background-image: none;
+}
+
+.teaser-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+}
+
 .teaser video,
 .paper-video video {
   display: block;

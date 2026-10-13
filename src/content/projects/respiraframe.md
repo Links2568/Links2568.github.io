@@ -13,8 +13,13 @@ badges: ["CHI 2027 under review"]
 fullTitle: "RespiraFrame: On-Frame Respiratory Monitoring via Electrical Impedance Tomography and Bone-Conduction Acoustics"
 venue: CHI 2027 · under review
 abstract: "RespiraFrame is an eyeglass frame that monitors respiration through two complementary channels: a bone-conduction microphone beside the nose that hears breathing through the face rather than the air, and electrical impedance tomography from eight soft dry electrodes on the nose pads and temples. A two-branch network fused with attention recognizes five abnormal respiratory events and distinguishes nasal vs. oral, deep vs. shallow breathing, and breath holding — 92.5% for abnormal events in a 19-participant lab study, under 3 points of change at 80 dB of noise, and 87.6% over 30 hours of in-the-wild wear."
-cover: /projects/respiraframe/chi-glasses.webp
-thumb: /projects/respiraframe/chi-glasses.webp
+cover: /projects/respiraframe/paper-fig1-cover.webp
+thumb: /projects/respiraframe/paper-fig1-cover.webp
+teaser:
+  src: /projects/respiraframe/paper-fig1.webp
+  width: 2400
+  height: 613
+  caption: "An overview of RespiraFrame: the system recognizes (a) discrete abnormal respiratory events and (b) continuous breathing behaviors, and (c) remains robust across diverse, challenging everyday conditions."
 links:
   - { label: Interactive talk, url: /projects/respiraframe/talk/index.html }
 hero:

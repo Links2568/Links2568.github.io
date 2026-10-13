@@ -28,6 +28,10 @@ const projects = defineCollection({
     abstract: z.string().optional(), // homepage card summary
     // password-protected: body/media live encrypted in public/protected/<slug>/
     protected: z.boolean().default(false),
+    // a static Figure 1 (e.g. the paper's teaser); shown instead of the hero loop on the project page
+    teaser: z
+      .object({ src: z.string(), width: z.number(), height: z.number(), caption: z.string() })
+      .optional(),
     hero: z
       .object({ src: z.string(), poster: z.string(), width: z.number(), height: z.number() })
       .optional(),
