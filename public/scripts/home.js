@@ -1,4 +1,4 @@
-/* Homepage: the research Cover Flow and the scroll-spy nav. */
+/* Homepage: the research Cover Flow, the projects shelf, and the scroll-spy nav. */
 (function () {
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -188,9 +188,10 @@
     /* turn to project i along the shorter way round */
     function go(i) {
       setTilt(0, 0);
-      var d = mod(i - mod(target));
+      var base = Math.round(target); /* the nudge may leave target between covers */
+      var d = mod(i - mod(base));
       if (d > n / 2) d -= n;
-      target += d;
+      target = base + d;
       animate();
     }
 
@@ -395,10 +396,270 @@
       });
     }
 
+    /* first time the ring scrolls into view it leans toward the next cover and
+       settles back, showing that it turns; skipped once the visitor has touched it */
+    var touched = false;
+    ["pointerdown", "wheel", "keydown"].forEach(function (type) {
+      flow.addEventListener(
+        type,
+        function () {
+          touched = true;
+        },
+        { passive: true }
+      );
+    });
+    function nudge() {
+      if (touched || reduced || document.hidden || turning()) return;
+      try {
+        sessionStorage.setItem("cf-nudged", "1");
+      } catch (e) {}
+      var base = Math.round(target);
+      target = base + 0.42;
+      animate();
+      setTimeout(function () {
+        if (target === base + 0.42) {
+          target = base;
+          animate();
+        }
+      }, 520);
+    }
+    var nudged = false;
+    try {
+      nudged = sessionStorage.getItem("cf-nudged") === "1";
+    } catch (e) {}
+    if (!nudged && !reduced && "IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(
+        function (entries) {
+          if (!entries[0].isIntersecting) return;
+          seen.disconnect();
+          setTimeout(nudge, 450);
+        },
+        { threshold: 0.6 }
+      );
+      seen.observe(stage);
+    }
+
     flow.classList.add("is-live");
     measure();
     render();
     sync();
+  }
+
+  /* ---------- Projects shelf ----------
+     iTunes 11-style: the selected cover opens a panel under its row. The first
+     time the shelf scrolls into view the first panel opens by itself, which is
+     the hint that covers open. Inside a panel, photos advance every few seconds
+     and videos when they end, so the "track list" shows it can be played;
+     hovering the panel pauses it. */
+  var shelf = document.querySelector(".shelf");
+  if (shelf) {
+    var grid = shelf.querySelector(".shelf-grid");
+    var covers = Array.prototype.slice.call(shelf.querySelectorAll(".shelf-cover"));
+    var items = Array.prototype.slice.call(shelf.querySelectorAll(".shelf-item"));
+    var panel = shelf.querySelector(".shelf-panel");
+    var notch = shelf.querySelector(".shelf-notch");
+    var count = covers.length;
+    var sel = 0;
+    var track = 0;
+    var elapsed = 0;
+    var lastT = 0;
+    var sraf = 0;
+    var hovering = false;
+    var inView = false;
+    var PHOTO_MS = 4500;
+
+    var wrap = function (i, len) {
+      return ((i % len) + len) % len;
+    };
+    var mediaOf = function (i) {
+      return Array.prototype.slice.call(items[i].querySelectorAll(".shelf-media"));
+    };
+    var playVid = function (vid) {
+      var p = vid.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    var isOpen = function () {
+      return shelf.classList.contains("is-open");
+    };
+    var playing = function () {
+      return isOpen() && inView && !hovering && !document.hidden && !reduced;
+    };
+
+    /* put the panel right after the selected cover's row and aim the notch at it */
+    var place = function () {
+      var cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length || 1;
+      var rowEnd = Math.min(count - 1, Math.floor(sel / cols) * cols + cols - 1);
+      panel.style.order = String(rowEnd * 2 + 1);
+      var cv = covers[sel];
+      notch.style.setProperty("--nx", Math.round(cv.offsetLeft + cv.offsetWidth / 2 - 8) + "px");
+    };
+
+    var setBar = function (f) {
+      var bar = items[sel].querySelector(".shelf-progress span");
+      if (bar) bar.style.width = (Math.min(Math.max(f, 0), 1) * 100).toFixed(2) + "%";
+    };
+
+    var pauseAll = function () {
+      shelf.querySelectorAll(".shelf-media video").forEach(function (vid) {
+        vid.pause();
+      });
+    };
+
+    /* play or hold whatever is current, depending on visibility and hover */
+    var refresh = function () {
+      var ms = mediaOf(sel);
+      var vid = ms[track] && ms[track].querySelector("video");
+      if (vid) {
+        if (playing()) playVid(vid);
+        else vid.pause();
+      }
+      if (ms.length > 1 && playing() && !sraf) {
+        lastT = 0;
+        sraf = requestAnimationFrame(shelfTick);
+      }
+    };
+
+    var showTrack = function (k) {
+      var ms = mediaOf(sel);
+      if (!ms.length) return;
+      pauseAll();
+      track = wrap(k, ms.length);
+      elapsed = 0;
+      ms.forEach(function (m, j) {
+        m.classList.toggle("is-current", j === track);
+      });
+      items[sel].querySelectorAll(".shelf-track").forEach(function (b, j) {
+        b.setAttribute("aria-current", j === track ? "true" : "false");
+      });
+      var vid = ms[track].querySelector("video");
+      if (vid) {
+        if (!vid.getAttribute("src")) {
+          vid.src = vid.getAttribute("data-src");
+          vid.addEventListener("ended", function () {
+            if (vid.closest(".shelf-media").classList.contains("is-current")) showTrack(track + 1);
+          });
+          /* Chrome may abort a play() issued before data has buffered; retry once ready */
+          vid.addEventListener("canplay", function () {
+            if (vid.closest(".shelf-media").classList.contains("is-current") && vid.paused && playing()) playVid(vid);
+          });
+        }
+        vid.loop = ms.length === 1;
+        vid.currentTime = 0;
+      }
+      setBar(0);
+      refresh();
+    };
+
+    function shelfTick(now) {
+      sraf = 0;
+      var ms = mediaOf(sel);
+      if (ms.length < 2 || !playing()) return;
+      var dt = lastT ? now - lastT : 0;
+      lastT = now;
+      var vid = ms[track].querySelector("video");
+      if (vid) {
+        setBar(vid.duration ? vid.currentTime / vid.duration : 0);
+      } else {
+        elapsed += dt;
+        setBar(elapsed / PHOTO_MS);
+        if (elapsed >= PHOTO_MS) {
+          showTrack(track + 1);
+          return;
+        }
+      }
+      sraf = requestAnimationFrame(shelfTick);
+    }
+
+    var open = function (on) {
+      shelf.classList.toggle("is-open", on);
+      covers.forEach(function (c, j) {
+        c.setAttribute("aria-expanded", on && j === sel ? "true" : "false");
+      });
+      if (on) refresh();
+      else pauseAll();
+    };
+
+    var select = function (i, focus) {
+      sel = wrap(i, count);
+      items.forEach(function (it, j) {
+        it.hidden = j !== sel;
+      });
+      panel.setAttribute("data-topic", covers[sel].getAttribute("data-topic"));
+      place();
+      open(true);
+      showTrack(0);
+      if (focus) covers[sel].focus();
+    };
+
+    covers.forEach(function (c, i) {
+      c.addEventListener("click", function () {
+        /* the open cover closes its panel again, like an album in iTunes */
+        if (i === sel && isOpen()) open(false);
+        else select(i);
+      });
+    });
+
+    shelf.addEventListener("keydown", function (e) {
+      if ((e.key === "ArrowLeft" || e.key === "ArrowRight") && e.target.closest(".shelf-cover")) {
+        e.preventDefault();
+        select(sel + (e.key === "ArrowLeft" ? -1 : 1), true);
+      }
+    });
+
+    items.forEach(function (it) {
+      it.querySelectorAll(".shelf-track").forEach(function (b) {
+        b.addEventListener("click", function () {
+          showTrack(Number(b.getAttribute("data-k")));
+        });
+      });
+      /* swipe the viewer to step through photos and videos */
+      var viewer = it.querySelector(".shelf-viewer");
+      var sx = null;
+      viewer.addEventListener("pointerdown", function (e) {
+        sx = e.clientX;
+      });
+      viewer.addEventListener("pointerup", function (e) {
+        if (sx === null) return;
+        var dx = e.clientX - sx;
+        sx = null;
+        if (Math.abs(dx) > 40) showTrack(track + (dx < 0 ? 1 : -1));
+      });
+    });
+
+    panel.addEventListener("mouseenter", function () {
+      hovering = true;
+      refresh();
+    });
+    panel.addEventListener("mouseleave", function () {
+      hovering = false;
+      refresh();
+    });
+    document.addEventListener("visibilitychange", refresh);
+    window.addEventListener("resize", place);
+
+    covers.forEach(function (c) {
+      c.setAttribute("aria-expanded", "false");
+    });
+    place();
+    if ("IntersectionObserver" in window) {
+      var firstLook = true;
+      new IntersectionObserver(
+        function (entries) {
+          inView = entries[0].isIntersecting;
+          if (inView && firstLook) {
+            firstLook = false;
+            setTimeout(function () {
+              if (!isOpen()) select(sel);
+            }, reduced ? 0 : 350);
+          }
+          refresh();
+        },
+        { threshold: 0.3 }
+      ).observe(grid);
+    } else {
+      inView = true;
+      select(0);
+    }
   }
 
   /* ---------- side nav follows the scroll ---------- */

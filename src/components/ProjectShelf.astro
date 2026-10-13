@@ -1,0 +1,151 @@
+---
+/* Projects as an iTunes 11-style album wall: one cover per project, and the
+   selected one opens a tinted panel underneath (a notch points back at its
+   cover) with a media viewer and a "track list" of the project's photos and
+   videos. Projects without media get a typographic cover in their research
+   colour. Driven by public/scripts/home.js; without JS the first panel is
+   simply shown open (the <noscript> rule). */
+import type { CollectionEntry } from "astro:content";
+import { themeLabel } from "../lib/themes";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+const { projects } = Astro.props;
+const n = projects.length;
+
+const yearOf = (period: string) => (period.match(/\d{4}/) ?? [""])[0];
+type Media = { kind: "video" | "photo"; src: string; poster?: string; label: string; note: string };
+const mediaOf = (p: CollectionEntry<"projects">): Media[] => [
+  ...(p.data.hero ? [{ kind: "video" as const, src: p.data.hero.src, poster: p.data.hero.poster, label: "Demo loop", note: "loop" }] : []),
+  ...p.data.videos.map((v) => ({ kind: "video" as const, src: v.src, poster: v.poster, label: v.label, note: v.duration })),
+  ...p.data.gallery.map((g) => ({ kind: "photo" as const, src: g.src, label: g.alt, note: "photo" })),
+];
+const all = projects.map((p) => ({ p, media: mediaOf(p), topic: p.data.themes[0] ?? "hai", year: yearOf(p.data.period) }));
+const clips = all.reduce((s, x) => s + x.media.length, 0);
+---
+
+<div class="shelf">
+  <noscript><style is:inline>.shelf-panel{grid-template-rows:1fr}</style></noscript>
+  <div class="stage-head shelf-head">
+    <h2>Projects</h2>
+    <p class="note">
+      <span>{n} projects{clips > 0 && ` · ${clips} clips`}</span>
+      <span class="shelf-keys" aria-hidden="true">← → to browse</span>
+    </p>
+  </div>
+
+  <div class="shelf-grid">
+    {
+      all.map(({ p, media, topic, year }, i) => (
+        <button
+          class="shelf-cover"
+          type="button"
+          data-index={i}
+          data-topic={topic}
+          aria-expanded={i === 0 ? "true" : "false"}
+          aria-controls="shelf-panel"
+          aria-label={`${p.data.title}, ${year}`}
+          style={`order:${i * 2}`}
+        >
+          {p.data.cover ? (
+            <img src={p.data.cover} alt="" loading="lazy" decoding="async" />
+          ) : (
+            <span class="shelf-text" aria-hidden="true">
+              <span class="shelf-theme">{themeLabel(topic)}</span>
+              <span>
+                <span class="shelf-title">{p.data.title}</span>
+                <span class="shelf-year">{year}</span>
+              </span>
+            </span>
+          )}
+          {media.length > 0 && (
+            <span class="shelf-count" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><path d="M3 2l7 4-7 4z" /></svg>
+              {media.length}
+            </span>
+          )}
+          <span class="shelf-peek" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
+          </span>
+        </button>
+      ))
+    }
+
+    <div class="shelf-panel" id="shelf-panel" data-topic={all[0]?.topic} style={`order:${n * 2}`}>
+      <div class="shelf-panel-inner">
+        <span class="shelf-notch" aria-hidden="true" />
+        <div class="shelf-box">
+          {
+            all.map(({ p, media, topic, year }, i) => (
+              <article class="shelf-item" data-index={i} data-topic={topic} hidden={i !== 0}>
+                <div class="shelf-viewer">
+                  {media.length > 0 ? (
+                    media.map((m, k) =>
+                      m.kind === "video" ? (
+                        <div class:list={["shelf-media", { "is-current": k === 0 }]}>
+                          <video data-src={m.src} poster={m.poster} muted playsinline preload="none" aria-label={m.label} />
+                        </div>
+                      ) : (
+                        <div class:list={["shelf-media", { "is-current": k === 0 }]}>
+                          <img src={m.src} alt={m.label} loading="lazy" decoding="async" />
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <div class="shelf-art" aria-hidden="true">
+                      <span class="shelf-theme">{themeLabel(topic)}</span>
+                      <span class="shelf-art-title">{p.data.title}</span>
+                    </div>
+                  )}
+                  {media.length > 1 && (
+                    <span class="shelf-progress" aria-hidden="true">
+                      <span />
+                    </span>
+                  )}
+                </div>
+                <div class="shelf-info">
+                  <p class="shelf-meta">
+                    {[themeLabel(topic), p.data.period, p.data.role].filter(Boolean).join(" · ")}
+                  </p>
+                  <h3 class="shelf-name">
+                    <a href={`/projects/${p.id}/`}>{p.data.title}</a>
+                  </h3>
+                  <p class="shelf-tagline">{p.data.tagline}</p>
+                  {media.length > 0 && (
+                    <ol class="shelf-tracks">
+                      {media.map((m, k) => (
+                        <li>
+                          <button class="shelf-track" type="button" data-k={k} aria-current={k === 0 ? "true" : "false"}>
+                            <span class="shelf-num">{k + 1}</span>
+                            <span class="shelf-eq" aria-hidden="true">
+                              <i />
+                              <i />
+                              <i />
+                            </span>
+                            <span class="shelf-track-label">{m.label}</span>
+                            <span class="shelf-track-note">{m.note}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                  <p class="shelf-links">
+                    <a class="btn btn-solid" href={`/projects/${p.id}/`}>
+                      Project page
+                    </a>
+                    {p.data.links.map((l) => (
+                      <a class="btn" href={l.url} rel="noopener">
+                        {l.label}
+                      </a>
+                    ))}
+                  </p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

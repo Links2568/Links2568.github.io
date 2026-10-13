@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
-import IndexRow from "../components/IndexRow.astro";
+import ProjectShelf from "../components/ProjectShelf.astro";
 import CoverFlow from "../components/CoverFlow.astro";
 import { SITE } from "../consts";
 import { asset } from "../lib/asset";
@@ -11,11 +11,6 @@ const all = (await getCollection("projects", ({ data }) => !data.draft)).sort(
 );
 const research = all.filter((p) => p.data.kind === "research");
 const others = all.filter((p) => p.data.kind !== "research");
-
-const yearOf = (period: string) => (period.match(/\d{4}/) ?? [""])[0];
-/* show a year only on the first row of each year group */
-const withYears = <T,>(items: T[], year: (t: T) => string) =>
-  items.map((it, i) => ({ it, year: i === 0 || year(items[i - 1]) !== year(it) ? year(it) : "" }));
 
 const sections = [
   { id: "about", label: "About" },
@@ -92,23 +87,8 @@ const sections = [
         <CoverFlow projects={research} />
       </section>
 
-      <section class="index-group" id="projects">
-        <h2>Projects</h2>
-        <div class="rows">
-          {
-            withYears(others, (p) => yearOf(p.data.period)).map(({ it: p, year }) => (
-              <IndexRow
-                id={p.id}
-                href={`/projects/${p.id}/`}
-                year={year}
-                title={p.data.title}
-                caption={p.data.tagline}
-                topic={p.data.themes[0]}
-                topics={p.data.themes}
-              />
-            ))
-          }
-        </div>
+      <section class="index-group shelf-section" id="projects">
+        <ProjectShelf projects={others} />
       </section>
 
       <section class="block" id="news">
