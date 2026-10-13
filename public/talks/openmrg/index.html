@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reader="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>OpenMRG · rain from microwave links</title>
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="dist/deck.css">
+</head>
+<body>
+<div id="stage">
+<canvas id="scene" aria-hidden="true"></canvas>
+<svg id="hud" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+
+<!-- OpenMRG (Andersson, Olsson, van de Beek, Hansryd; ESSD 14, 5411–5426,
+     2022), rebuilt from the paper, not by the authors (skill rule H9).
+     Numbers come only from ../gates/facts.md; the outline and the design are
+     ../gates/outline.md and ../gates/design.md. -->
+<main id="slides" data-slot="12">
+
+<!-- 1. Title -->
+<section class="slide" id="title" data-shots="hero" data-chrome="off" data-title="Title" data-duration="20">
+  <p class="block eyebrow r" style="left:120px; top:162px">Earth System Science Data · 2022</p>
+  <h1 class="block display r" style="left:112px; top:244px"><span class="grad">OpenMRG</span></h1>
+  <p class="block lead r" style="left:120px; top:430px; width:760px; color:var(--ink)">Open data from Microwave links, Radar, and Gauges for rainfall quantification in Gothenburg, Sweden</p>
+  <div class="block r" style="left:120px; top:640px; width:760px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650; line-height:1.35">Jafet C. M. Andersson · Jonas Olsson · Remco (C. Z.) van de Beek · Jonas Hansryd</p>
+    <p class="small" style="margin-top:10px">SMHI · Ericsson Research</p>
+  </div>
+  <p class="block capsule r" style="left:120px; top:808px">Slides rebuilt from the paper · not by the authors</p>
+  <aside class="notes">Hello everyone. This talk is about OpenMRG, an open data set from SMHI and Ericsson, published in Earth System Science Data in 2022. I rebuilt these slides from the paper; they are not the authors' own.</aside>
+</section>
+
+<!-- 2. The landscape: how often each sensor reports, by kind; the good
+     corner empty (A9). Built one column per click. -->
+<section class="slide" id="landscape" data-shots="land0 land1 land2 land3" data-title="Measuring rain" data-step-durations="9 13 13 10">
+  <p class="block eyebrow r" style="left:120px; top:112px">Measuring rain today</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:1500px">Measuring rain: where, and how often?</h2>
+  <svg class="block r" data-chart="landscape" data-col-step="1" style="left:100px; top:320px"></svg>
+  <div class="block gap-mark" data-on-picture data-step="3" style="left:838px; top:361px" aria-label="Nothing yet reports rain across the city, near the ground, every few seconds">?</div>
+  <aside class="notes">How is rain measured today? It depends on where, and how often. [Step 2] Rain gauges measure one point each: in Gothenburg, ten city gauges every minute, SMHI's gauge every 15 minutes, and nothing in between. [Step 3] Weather radar covers the whole area, in 2-kilometre boxes every 5 minutes, but from about 1.2 kilometres up, and with errors of its own. [Step 4] So this corner is empty: rain across the city, near the ground, every few seconds.</aside>
+</section>
+
+<!-- 3. Why it matters: the consequence (A13), a third-party clip. -->
+<section class="slide" id="consequence" data-shots="conseq conseq" data-title="Why it matters" data-step-durations="21 15" data-leave="0.9">
+  <p class="block eyebrow r" style="left:120px; top:112px">Why it matters</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:760px">Rain changes across the city.</h2>
+  <div class="block r" style="left:120px; top:388px; width:700px">
+    <p class="h2" style="font-size:76px">Dense</p>
+    <p class="small" style="margin-top:12px; color:var(--ink); font-size:28px; font-weight:650">Gothenburg, over two days: a few mm at some gauges, up to 50 mm at others</p>
+    <p class="cond" style="margin-top:8px">this data set · 1–2 June and 28–29 July 2015 · §4.3</p>
+  </div>
+  <div class="block" data-step="1" style="left:120px; top:648px; width:700px">
+    <p class="h2" style="font-size:76px">Fast</p>
+    <p class="small" style="margin-top:12px; color:var(--ink); font-size:28px; font-weight:650">small urban basins respond in under an hour</p>
+    <p class="cond" style="margin-top:8px">§5</p>
+  </div>
+  <figure class="block real borrowed r" style="left:900px; top:250px; width:900px; height:506px">
+    <iframe src="https://www.youtube-nocookie.com/embed/gUZHetmXt1c?rel=0&amp;playsinline=1" title="Malmö cloudburst, 2014 (YouTube, Sylejman Dushica)" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:block; width:100%; height:100%; border:0"></iframe>
+    <figcaption>Malmö cloudburst, 2014 · another city, not this data set</figcaption>
+    <p class="credit">Video: Sylejman Dushica · youtube.com/watch?v=gUZHetmXt1c</p>
+  </figure>
+  <aside class="notes">Why does that matter? This is Malmö in 2014, not this data set. Rain changes across a city: in Gothenburg, in this data set, over two days, some gauges caught a few millimetres and others up to 50. [Step 2] And it changes fast: small urban basins respond in under an hour. Flood forecasts and sewer control need rain seen densely and quickly.</aside>
+</section>
+
+<!-- 4. The landscape again, the links in the corner (A9: one slide later). -->
+<section class="slide" id="third" data-shots="third third" data-title="A third view" data-step-durations="26 19">
+  <p class="block eyebrow r" style="left:120px; top:112px">Phone networks</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:1100px">Microwave links: <span class="grad">a third view</span>.</h2>
+  <svg class="block r" data-chart="landscapeLinks" data-until="0" style="left:100px; top:320px"></svg>
+  <div class="block" data-step="1" style="left:120px; top:330px; width:760px">
+    <div class="stat">
+      <span class="value" style="font-size:96px">&gt; 20 000</span>
+      <span class="label">link hops in Sweden · over 400 000 in Europe</span>
+      <p class="cond" style="margin-top:8px">Ericsson (2018), cited in §5</p>
+    </div>
+    <div class="stat" style="margin-top:56px">
+      <span class="value" style="font-size:96px">≥ 10<small>per km²</small></span>
+      <span class="label">sub-links in the heart of Gothenburg</span>
+      <p class="cond" style="margin-top:8px">§2.1, Fig. 5b</p>
+    </div>
+  </div>
+  <aside class="notes">This is where phone networks come in. Operators connect their masts with microwave links that cross the whole city, about 30 metres up. In the pilot behind this paper, every node was polled every 10 seconds. The paper calls them a powerful complement to gauges and radar. [Step 2] And they already exist: more than 20 000 link hops in Sweden, over 400 000 in Europe, and downtown at least ten sub-links per square kilometre.</aside>
+</section>
+
+<!-- 5. The phenomenon in its everyday form (A12), a third-party clip; the
+     camera pushes in to the head of one mast. -->
+<section class="slide" id="phenomenon" data-shots="fade fade2" data-title="Rain fade" data-step-durations="21 24">
+  <p class="block eyebrow r" style="left:120px; top:112px">The phenomenon</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:820px">Why does rain dim a radio link?</h2>
+  <figure class="block real borrowed r" data-until="0" style="left:120px; top:364px; width:720px; height:405px">
+    <iframe src="https://www.youtube-nocookie.com/embed/lML7MXKDaX4?rel=0&amp;playsinline=1" title="Satellite signal quality in heavy rain (YouTube, PARABÓLICA E ALGO MAIS)" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:block; width:100%; height:100%; border:0"></iframe>
+    <figcaption>Rain: 4 GHz decodes (0:20), 12 GHz at 0 % (0:48)</figcaption>
+    <p class="credit">Video: PARABÓLICA E ALGO MAIS · youtu.be/lML7MXKDaX4</p>
+  </figure>
+  <div class="block" data-step="1" style="left:120px; top:400px; width:840px">
+    <p class="small" style="color:var(--ink); font-size:34px; font-weight:700; line-height:1.3">Above about 10 GHz, rain attenuates a radio signal, more at higher frequency</p>
+    <p class="cond" style="margin-top:12px">§1 · these links: 7–38 GHz, mostly above 25 GHz (§2.1)</p>
+  </div>
+  <aside class="notes">You may have seen this at home: in a downpour, satellite TV loses its picture. Here, in heavy rain, one dish receives two channels: at 4 gigahertz the picture still decodes, at 12 gigahertz its quality drops to zero. [Step 2] The same physics acts on these links, at 7 to 38 gigahertz. Above about 10 gigahertz, water drops attenuate a radio signal, and the higher the frequency, the more. The links are planned to keep working through rain, but their received signal drops.</aside>
+</section>
+
+<!-- 6. The insight: the one picture (P7). The model first (simulated, no
+     number of it shown), then the measured trace small in the corner, then
+     in the meter's place; the scene follows the measurement. -->
+<section class="slide" id="insight" data-shots="link linkReal linkMeasured linkHold" data-title="Rain dims the link" data-step-durations="22 12 20 11">
+  <p class="block eyebrow r" style="left:120px; top:112px">The idea</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:800px">Rain <span class="grad">dims the link</span>.</h2>
+  <p class="block body r" style="left:120px; top:276px; width:760px">Link 10227 at Torslanda, 1.8 km: one end sends, the other receives.</p>
+  <div class="block" data-step="0" data-until="1" data-delay="1.3" style="left:120px; top:400px"><svg data-widget="meter"></svg></div>
+  <div class="block panel-plot" data-step="1" data-until="1" style="left:1420px; top:116px"><svg data-widget="trace" data-size="corner"></svg></div>
+  <div class="block" data-step="2" style="left:120px; top:388px"><svg data-widget="trace" data-size="full"></svg></div>
+  <p class="block equiv capsule glow" data-step="3" style="left:540px; top:876px">≈ 1/500 of the power, still received</p>
+  <aside class="notes">Here is one of those links: link 10227 at Torslanda, 1.8 kilometres long. One end sends, the other receives. This is an illustration: when rain falls on the path, the received power drops. (Drag the rain across the link; scroll to make it rain harder.) [Step 2] And this is the real thing, measured on this link on 28 July 2015. [Step 3] As the storm passed, the received level fell about 27 dB, to minus 73.6 dBm, at 15:06, one minute after the gauge beside it recorded 1.1 millimetres in a single minute. [Step 4] That is about a five-hundredth of the power, and the signal was still received.</aside>
+</section>
+
+<!-- 7. The principle: the general approach of sect. 2.1, one concept per
+     step (A4), a tab bar (B18). The paper describes it; it does not apply it. -->
+<section class="slide" id="principle" data-shots="sigAtt sigDry sigLaw sigMany" data-title="From signal to rain" data-step-durations="16 16 24 22">
+  <nav class="block tabs r" data-tabs="Attenuation · Dry level · Power law · Many links" style="left:120px; top:28px"></nav>
+  <p class="block eyebrow r" style="left:120px; top:92px">How the data are used</p>
+  <h2 class="block h1 r" style="left:120px; top:150px; width:800px">From signal to rain.</h2>
+  <p class="block body" data-step="0" data-until="0" style="left:120px; top:262px; width:780px">Sent minus received: the attenuation, after erroneous values are filtered out.</p>
+  <p class="block body" data-step="1" data-until="1" style="left:120px; top:262px; width:780px">Each step is wet or dry; the dry level comes from the dry steps around it.</p>
+  <p class="block body" data-step="2" data-until="2" style="left:120px; top:262px; width:900px">The fade per km grows with rain by a power law (frequency, polarization); inverted, it gives the rain rate.</p>
+  <p class="block body" data-step="3" style="left:120px; top:262px; width:780px">Many crossing links, interpolated into a rain map.</p>
+  <div class="block" data-step="0" data-until="1" style="left:120px; top:380px"><svg data-widget="att"></svg></div>
+  <div class="block" data-step="2" data-until="2" style="left:120px; top:380px"><svg data-widget="law"></svg></div>
+  <dl class="block readouts" data-step="2" data-until="2" style="left:120px; top:804px">
+    <div><dt>Link frequency</dt><dd data-readout="freq">—</dd></div>
+    <div><dt>&nbsp;</dt><dd class="readout-note" data-readout="freqNote">—</dd></div>
+  </dl>
+  <div class="block" data-step="3" style="left:120px; top:380px; width:760px">
+    <p class="cond">The general approach, sect. 2.1: the paper describes it; it does not apply it.</p>
+    <p class="small" style="margin-top:22px; color:var(--ink); font-size:28px; font-weight:650">On the right: each link's measured fade at 15:06 on 28 July, as its brightness.</p>
+    <p class="cond" style="margin-top:8px">the fade against each link's own 24 h median: our baseline, not the paper's method</p>
+  </div>
+  <aside class="notes">How is the signal turned into rain? The paper describes the general approach most methods follow. Filter out erroneous values; the attenuation is what was sent minus what was received. [Step 2] Classify each step as wet or dry; the dry level comes from the dry steps around it, and only the fade above it, in wet steps, can be rain. [Step 3] That fade per kilometre grows with the rain rate by a power law that depends on frequency and polarization; inverted, with corrections for non-rain effects such as wet antennas, it gives the rain rate. (Scroll to change the frequency.) [Step 4] Finally, many crossing links are interpolated into a rain map. On the right, each link's measured fade at 15:06, against its own median: our simple baseline, not the paper's method. The paper describes this approach; it does not apply it.</aside>
+</section>
+
+<!-- 8. The obstacle: open link data (the paper's comparison, sect. 1, as a
+     short table: A9). -->
+<section class="slide" id="open" data-shots="open open open" data-title="Open link data" data-step-durations="11 12 13">
+  <p class="block eyebrow r" style="left:120px; top:112px">The obstacle</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:1100px">Open link data: few, or slow.</h2>
+  <p class="block lead r" style="left:120px; top:282px; width:800px">Link data usually stay with operators and the groups they work with.</p>
+  <table class="block matrix" data-step="1" style="left:104px; top:440px; width:880px">
+    <thead><tr><th>Open data set</th><th>Where</th><th class="num">Links</th><th>Sampling</th></tr></thead>
+    <tbody>
+      <tr><td>Špačková et al. 2021</td><td>Switzerland</td><td class="num">1</td><td>≈ 4 s</td></tr>
+      <tr><td>Fencl et al. 2020, 2021</td><td>Czechia</td><td class="num">6</td><td>≈ 10 s</td></tr>
+      <tr><td>Overeem 2019</td><td>Netherlands</td><td class="num">≈ 2500</td><td>15 min statistics</td></tr>
+      <tr><td>Habi 2020</td><td>Israel</td><td class="num">2</td><td>—</td></tr>
+      <tr><td>van Leth et al. 2018</td><td>Netherlands</td><td class="num">3</td><td>—</td></tr>
+      <tr class="ours" data-step="2"><td>OpenMRG</td><td>Sweden</td><td class="num">364</td><td>10 s · true coordinates</td></tr>
+    </tbody>
+  </table>
+  <p class="block cond" data-step="1" style="left:120px; top:394px">as the paper lists them (§1) · “—”: not stated there</p>
+  <aside class="notes">So why isn't everyone doing this? The data. Link data usually stay with the operators and the groups they work with. [Step 2] The few open sets have either a handful of links, or thousands of links but only 15-minute statistics. [Step 3] OpenMRG opens 364 links, every 10 seconds, with true coordinates, plus the gauges and the radar, for the same three months.</aside>
+</section>
+
+<!-- 9. The data set's network (P8, the scene); the terms on one node. -->
+<section class="slide" id="network" data-shots="net0 net1 net2" data-title="The network" data-step-durations="12 14 15">
+  <p class="block eyebrow r" style="left:120px; top:112px">The data set · links</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:820px">364 links around Gothenburg.</h2>
+  <div class="block r" data-until="0" style="left:120px; top:372px; display:grid; grid-template-columns:250px 250px 250px; gap:8px 26px">
+    <div class="stat"><span class="value" style="font-size:88px">364</span><span class="label">links</span></div>
+    <div class="stat"><span class="value" style="font-size:88px">728</span><span class="label">sub-links</span></div>
+    <div class="stat"><span class="value" style="font-size:88px">418</span><span class="label">nodes</span></div>
+  </div>
+  <div class="block r" data-until="0" style="left:120px; top:576px; width:780px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650">1041 km of paths, over about 2800 km²</p>
+    <p class="cond" style="margin-top:8px">Table 1 · the area as a convex hull · June–August 2015</p>
+  </div>
+  <p class="block small" data-step="1" data-until="1" style="left:120px; top:368px; width:780px; color:var(--ink); font-size:28px; font-weight:650">Short links run at high frequency</p>
+  <p class="block cond" data-step="1" data-until="1" style="left:120px; top:420px">brighter on the map: higher frequency</p>
+  <p class="block cond" data-step="1" data-until="1" style="left:120px; top:464px">728 sub-links, the data set's metadata · Figs. 4c, 5a</p>
+  <svg class="block" data-step="1" data-until="1" data-chart="lengthFreq" style="left:100px; top:510px"></svg>
+  <div class="callout left" data-step="2" data-anchor="mastB" data-side="left" data-x="1170"><b>Node</b><span>a mast with antennas</span></div>
+  <div class="callout left" data-step="2" data-anchor="beamNearB" data-side="left" data-x="1170" data-dy="140"><b>Sub-link</b><span>one direction, sender to receiver</span></div>
+  <div class="callout" data-step="2" data-anchor="dishB" data-side="right" data-x="1550"><b>Link</b><span>both directions</span></div>
+  <div class="callout" data-step="2" data-anchor="hopB" data-side="right" data-x="1550" data-dy="-100"><b>Hop</b><span>all links between two nodes</span></div>
+  <figure class="block real borrowed" data-step="2" style="left:1480px; top:650px; width:378px; height:252px">
+    <img src="assets/img/mast-dishes.webp" alt="">
+    <figcaption>A real mast · not this network</figcaption>
+    <p class="credit">Photo: Fabian Horst · CC BY-SA 4.0</p>
+  </figure>
+  <aside class="notes">Here is that network: 364 links, 728 sub-links, 418 nodes, 1041 kilometres of paths. [Step 2] Short links run at high frequency, mostly downtown; long ones at low frequency, outside. Higher frequencies are kept short so that links stay robust in rain. [Step 3] Four terms. A node is a mast. A sub-link is one direction, sender to receiver; a link is both directions; a hop is all links between two nodes.</aside>
+</section>
+
+<!-- 10. The collection (sect. 2.1, 4.1), on the scene: the nodes flash as
+     they are polled. -->
+<section class="slide" id="collection" data-shots="poll poll poll poll" data-title="Polled every 10 s" data-step-durations="19 16 11 9">
+  <p class="block eyebrow r" style="left:120px; top:112px">The data set · collection</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:820px">Polled every 10 s.</h2>
+  <ul class="block pipe r" data-dim-from="1" style="left:120px; top:282px; width:820px">
+    <li><b>Poll</b><span>standard SNMP, 150 nodes at a time, all within ± 1 s (likely)</span></li>
+    <li><b>Collect</b><span>inside the operator's network, no firmware changes</span></li>
+    <li><b>Deliver</b><span>to Ericsson every minute; forwarded to SMHI</span></li>
+  </ul>
+  <p class="block cond r" data-until="0" style="left:120px; top:568px">on the map: nodes flash as they are polled · the order is our guess</p>
+  <div class="block panel-plot" data-step="0" data-until="0" style="left:120px; top:624px"><svg data-widget="samples"></svg></div>
+  <div class="block stat" data-step="1" data-dim-from="2" style="left:120px; top:620px; width:420px">
+    <span class="value" style="font-size:80px">~ 1 min</span>
+    <span class="label">from rain to data</span>
+    <p class="cond" style="margin-top:8px">just over a minute, by design · §4.1</p>
+  </div>
+  <div class="block stat" data-step="2" style="left:580px; top:620px; width:400px">
+    <span class="value" style="font-size:80px">10<small>B/s</small></span>
+    <span class="label">per node · 4180 B/s for all 418</span>
+    <p class="cond" style="margin-top:8px">about, on average · §4.1</p>
+  </div>
+  <p class="block equiv capsule glow" data-step="3" style="left:580px; top:836px"><svg data-icon="sms"></svg>≈ a text message every 14 s</p>
+  <aside class="notes">How were the data collected? A package written for this pilot polled every node with standard SNMP: 150 at a time, all likely within a second, every 10 seconds, no firmware changes. (On the map, the polling order is our guess.) [Step 2] Each reading carries the start of its 10-second window. Every minute the data went to Ericsson's server; Ericsson forwarded them to SMHI. Just over a minute from rain to data. [Step 3] The load was tiny: about 10 bytes per second per node, 4180 for the whole network. [Step 4] One text message every 14 seconds; the network needed less than a 56k modem.</aside>
+</section>
+
+<!-- 11. The other two sensors in the scene: gauges on the ground, the radar
+     beam 1.2 km up, the composite's cells. -->
+<section class="slide" id="sensors" data-shots="gauge0 radar1 radar2 radar3" data-title="Gauges and radar" data-step-durations="11 12 7 10">
+  <p class="block eyebrow r" style="left:120px; top:112px">The data set · gauges and radar</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:820px">Gauges below, radar above.</h2>
+  <div class="block r" data-dim-from="1" style="left:120px; top:360px; width:420px">
+    <div class="stat"><span class="value" style="font-size:80px; color:var(--prior)">11</span><span class="label">gauges</span></div>
+    <p class="small" style="margin-top:14px; color:var(--ink); font-weight:650">10 city gauges · every minute</p>
+    <p class="small" style="margin-top:4px; color:var(--ink); font-weight:650">1 SMHI gauge · every 15 min</p>
+    <p class="cond" style="margin-top:8px">7 weighing, 3 tipping-bucket · §2.2</p>
+  </div>
+  <figure class="block real borrowed" data-step="0" data-until="0" data-delay="0.7" style="left:600px; top:360px; width:300px; height:345px">
+    <img src="assets/img/gauge-geonor.webp" alt="">
+    <figcaption>A Geonor weighing gauge · not GbgA</figcaption>
+    <p class="credit">Photo: Solas · CC BY-SA 3.0</p>
+  </figure>
+  <div class="block" data-step="1" style="left:120px; top:640px; width:600px">
+    <div class="stat"><span class="value" style="font-size:80px; color:var(--interf)">≈ 1.2<small>km up</small></span><span class="label">the radar's lowest beam, over the centre</span></div>
+    <p class="cond" style="margin-top:8px">composite, mostly Vara, 78 km away · Table 3</p>
+  </div>
+  <figure class="block real borrowed" data-step="1" data-until="1" data-delay="1.7" style="left:700px; top:380px; width:230px; height:332px">
+    <img src="assets/img/radar-tower.webp" alt="">
+    <figcaption>A weather radar</figcaption>
+    <p class="credit">Finland, not Vara · Photo: S. Viinamäki · CC BY-SA 4.0</p>
+  </figure>
+  <p class="block equiv capsule glow" data-step="2" data-until="2" style="left:120px; top:884px"><svg data-icon="eiffel"></svg>almost four Eiffel Towers up</p>
+  <div class="block" data-step="3" style="left:120px; top:884px; width:760px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650">2 km boxes, every 5 min · gauge-corrected</p>
+  </div>
+  <aside class="notes">OpenMRG also has the conventional sensors: eleven gauges, ten city gauges every minute and SMHI's gauge every 15 minutes. [Step 2] And the radar composite, here mostly from Vara, 78 kilometres away. Its lowest beam passes about 1.2 kilometres above the city centre. [Step 3] Almost four Eiffel Towers up. [Step 4] It reports 2-kilometre boxes every 5 minutes; this frame is from the storm we look at next.</aside>
+</section>
+
+<!-- 12. The case (P14 + measured data in the scene): 28 July 2015 at
+     Torslanda, the paper's Fig. 11 redrawn, the same moments in the scene. -->
+<section class="slide" id="case" data-shots="case0 case1 case2 case3" data-title="28 July 2015" data-step-durations="33 16 20 27">
+  <p class="block eyebrow r" style="left:120px; top:112px">Case · 28 July 2015 · Torslanda</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:1100px">One storm, three sensors.</h2>
+  <p class="block small moment" data-step="0" data-until="0" style="left:120px; top:266px; width:900px">First the link (14:57:20), then the gauge (14:58–59)</p>
+  <p class="block small moment" data-step="1" data-until="1" style="left:120px; top:266px; width:900px">1.1 mm in a minute (15:04–05); sub-link 115 ≈ 27 dB down (15:06)</p>
+  <p class="block small moment" data-step="2" data-until="2" style="left:120px; top:266px; width:900px">The radar: no rain over the gauge, heavier rain a few km north<span class="cond-inline">reason unknown; misalignment the most likely · §4.4</span></p>
+  <p class="block small moment" data-step="3" style="left:120px; top:266px; width:900px">After: the gauge at zero (15:22), the link still recovering<span class="cond-inline">likely wet antennas, its position or the whole-path view · §4.4</span></p>
+  <div class="block panel-plot r" data-hand style="left:104px; top:362px"><svg data-widget="fig11"></svg></div>
+  <aside class="notes">One storm, seen by all three sensors: 28 July 2015 at Torslanda. On top the gauge, in the middle link 10227, below the radar cell over the gauge. At 14:57:20 the link records its first decrease; the gauge's first record comes a minute or two later, a small difference, likely from where each sensor sits and how the storm moved. [Step 2] The peak: 1.1 millimetres in one minute at the gauge, and a minute later the deepest fade of sub-link 115, about 27 dB. [Step 3] And the radar? At the peak, the cell over the gauge showed no rain, but heavier rain a few kilometres north. The reason is unknown; misalignment is the most likely. [Step 4] Afterwards the gauge reads zero at 15:22 while the link is still recovering: likely wet antennas, its position, or because a link sees its whole path. At 16:22 the same 0.7 millimetres a minute as in the first peak fades it less; that could be alignment, or antennas wetter earlier. (Scroll to move through the storm.)</aside>
+</section>
+
+<!-- 13. Results: the collection (P13). The scene is the corner icon. -->
+<section class="slide" id="complete" data-shots="icon icon" data-title="Near-complete" data-step-durations="21 12">
+  <p class="block eyebrow r" style="left:120px; top:112px">Results · collection</p>
+  <h2 class="block h1 r" style="left:120px; top:168px; width:1100px"><span class="grad">Near-complete</span> records.</h2>
+  <div class="block r" style="left:120px; top:316px; display:grid; grid-template-columns:420px 380px 380px; gap:24px 32px">
+    <div class="stat"><span class="value" style="font-size:104px">99.99<small>%</small></span><span class="label">of 10 s steps had link data</span><p class="cond" style="margin-top:8px">from ≥ 1 sub-link · Table 4</p></div>
+    <div class="stat"><span class="value" style="font-size:104px; color:var(--prior)">100<small>%</small></span><span class="label">SMHI gauge, 15 min steps</span><p class="cond" style="margin-top:8px">Table 4</p></div>
+    <div class="stat"><span class="value" style="font-size:104px; color:var(--interf)">99.6<small>%</small></span><span class="label">radar, 5 min steps</span><p class="cond" style="margin-top:8px">Table 4</p></div>
+  </div>
+  <div class="block r" style="left:120px; top:604px; width:1000px">
+    <p class="small" style="color:var(--ink); font-size:30px; font-weight:650">93 % of sub-links delivered data ≥ 99 % of the time</p>
+    <p class="cond" style="margin-top:8px">Fig. 6a · eight links never gave both levels (§4.1)</p>
+  </div>
+  <div class="block" data-step="1" style="left:120px; top:752px; width:1000px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650">51 steps with no link data at all · Table 4</p>
+    <p class="equiv capsule glow" style="margin-top:18px; display:inline-flex"><svg data-icon="clock"></svg>≈ 8.5 minutes in three months</p>
+  </div>
+  <aside class="notes">The collection worked. 99.99 percent of the 10-second steps had data from at least one sub-link; the SMHI gauge 100 percent, the radar 99.6; and 93 percent of the sub-links delivered data at least 99 percent of the time. [Step 2] Only 51 steps had no link data at all: about eight and a half minutes in three months.</aside>
+</section>
+
+<!-- 14. Results: the summer's statistics, in the paper's words. -->
+<section class="slide" id="stats" data-shots="icon icon icon" data-title="One summer" data-step-durations="22 15 18" data-leave="0.9">
+  <nav class="block tabs r" data-tabs="Links · Radar · Gauges" style="left:120px; top:28px"></nav>
+  <p class="block eyebrow r" style="left:120px; top:92px">Results · the summer</p>
+  <h2 class="block h1 r" style="left:120px; top:150px; width:1100px">One summer, in numbers.</h2>
+  <div class="block" data-step="0" data-until="0" style="left:110px; top:300px"><svg data-widget="hist" data-hist="rsl"></svg></div>
+  <div class="block" data-step="0" data-until="0" style="left:1010px; top:400px; width:560px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650">Concentrated around the mean: “likely … dry stable conditions”</p>
+    <p class="small" style="margin-top:18px; color:var(--ink); font-size:28px; font-weight:650">The left tail: “where the information relevant for rainfall estimation lies”</p>
+    <div class="stat" style="margin-top:30px"><span class="value" style="font-size:72px">≈ 30<small>dB</small></span><span class="label">median minus minimum, per sub-link, on average</span><p class="cond" style="margin-top:8px">0 to 54.6 · §4.2</p></div>
+  </div>
+  <div class="block" data-step="1" data-until="1" style="left:110px; top:300px"><svg data-widget="hist" data-hist="dbz"></svg></div>
+  <div class="block" data-step="1" data-until="1" style="left:1010px; top:400px; width:560px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650">“Mostly stratiform precipitation”</p>
+    <p class="small" style="margin-top:18px; color:var(--ink); font-size:28px; font-weight:650">A few values above 40 dBZ, a common threshold for convective rain</p>
+    <p class="small" style="margin-top:18px; color:var(--ink); font-size:28px; font-weight:650">A small peak near −15 dBZ “might be caused by clutter”</p>
+    <p class="cond" style="margin-top:12px">−30 dBZ, the radar's floor, left out as in Fig. 8 · §4.2</p>
+  </div>
+  <div class="block" data-step="2" style="left:120px; top:296px"><svg data-widget="gaugeBars"></svg></div>
+  <div class="block" data-step="2" style="left:1050px; top:400px; width:520px">
+    <div class="stat"><span class="value" style="font-size:72px; color:var(--prior)">≈ 260<small>mm</small></span><span class="label">over the summer; rain in 6 % of 15 min intervals</span><p class="cond" style="margin-top:8px">Abstract · 6 %: city weighing gauges, mean, ≥ 0.1 mm · Table 6</p></div>
+    <p class="small" style="margin-top:22px; color:var(--ink); font-weight:650">Tipping buckets (soft): mean distinctly lower, 219 vs 263 mm</p>
+  </div>
+  <aside class="notes">The summer in numbers. Received levels concentrate around the mean, likely dry, stable conditions; the rain information lies in the left tail: each sub-link's lowest reading is on average about 30 dB below its median, and rain is a main cause. [Step 2] The radar shows mostly stratiform rain, a few values above the convective threshold of 40 dBZ, and a small peak that might be clutter. [Step 3] The gauges recorded about 260 millimetres over the summer; the city weighing gauges saw rain in about 6 percent of 15-minute intervals. The tipping buckets' mean is distinctly lower: 219 against 263 millimetres.</aside>
+</section>
+
+<!-- 15. Closing: four feature · proof pairs, the paper's positioning line,
+     the QR code to the paper. -->
+<section class="slide" id="closing" data-shots="outro" data-chrome="off" data-title="Takeaways" data-duration="22" data-leave="0.9">
+  <ul class="block steps-list takeaways r" style="left:120px; top:170px; width:1120px">
+    <li><b><span class="grad">Open</span></b> CC BY-SA 4.0, on Zenodo</li>
+    <li><b>Dense</b> ≥ 10 sub-links per km² downtown</li>
+    <li><b>Fast</b> a reading every 10 s, true coordinates</li>
+    <li><b>Complete</b> 93 % of sub-links ≥ 99 % of the time</li>
+  </ul>
+  <p class="block small r" style="left:120px; top:540px; width:1000px; color:var(--ink-2); font-size:28px; font-style:italic">“Unique, providing data for many operational [microwave links] at high temporal resolution and with precise coordinates, along with gauge and radar data.” — the paper, §1</p>
+  <p class="block display r" style="left:112px; top:690px; font-size:110px">Thank you.</p>
+  <figure class="block real r" style="left:1610px; top:120px; width:200px; height:200px">
+    <img src="assets/img/qr-doi.svg" alt="QR code: doi.org/10.5194/essd-14-5411-2022">
+  </figure>
+  <p class="block fine r" style="left:1510px; top:336px; width:400px; text-align:center">the paper<br>doi.org/10.5194/essd-14-5411-2022</p>
+  <p class="block capsule r" style="left:120px; top:858px">Slides rebuilt from the paper · not by the authors</p>
+  <aside class="notes">To sum up: OpenMRG is open, dense downtown, fast, with a reading every 10 seconds, and near complete. In the authors' words, it is unique: many operational links at high resolution, alongside gauges and radar. Thank you.</aside>
+</section>
+
+<!-- 16. The page that stays up for questions. -->
+<section class="slide" id="end" data-shots="outro" data-chrome="off" data-title="Questions" data-duration="0">
+  <p class="block eyebrow r" style="left:120px; top:162px">Earth System Science Data · 2022</p>
+  <h1 class="block display r" style="left:112px; top:244px; font-size:128px"><span class="grad">OpenMRG</span></h1>
+  <p class="block lead r" style="left:120px; top:404px; width:760px; color:var(--ink)">Open data from Microwave links, Radar, and Gauges for rainfall quantification in Gothenburg, Sweden</p>
+  <div class="block r" style="left:120px; top:600px; width:760px">
+    <p class="small" style="color:var(--ink); font-size:28px; font-weight:650; line-height:1.35">Jafet C. M. Andersson · Jonas Olsson · Remco (C. Z.) van de Beek · Jonas Hansryd</p>
+    <p class="small" style="margin-top:10px">SMHI · Ericsson Research</p>
+  </div>
+  <p class="block display r" style="left:112px; top:756px; font-size:96px">Thank you.</p>
+  <figure class="block real r" style="left:1610px; top:120px; width:200px; height:200px">
+    <img src="assets/img/qr-doi.svg" alt="QR code: doi.org/10.5194/essd-14-5411-2022">
+  </figure>
+  <p class="block fine r" style="left:1510px; top:336px; width:400px; text-align:center">the paper<br>doi.org/10.5194/essd-14-5411-2022</p>
+  <p class="block fine r" style="left:1090px; top:132px; width:490px; text-align:right">data: OpenMRG v1.1 · CC BY-SA 4.0<br>doi.org/10.5281/zenodo.7107689<br>map © OpenStreetMap contributors · ODbL</p>
+  <p class="block capsule r" style="left:120px; top:888px">Slides rebuilt from the paper · not by the authors</p>
+  <aside class="notes">(Stay on this page for questions.)</aside>
+</section>
+
+</main>
+
+<div class="block chip" id="hint" style="opacity:0"><span></span></div>
+<div id="caption" aria-live="polite"><p></p></div>
+<div id="start"><p>Click to start · → next · ← back · F full screen</p></div>
+
+<footer class="chrome" id="chrome">
+  <div class="logos"></div>
+  <span>OpenMRG · Andersson et al., ESSD 2022 · Slides rebuilt from the paper · not by the authors · Map © OpenStreetMap contributors</span>
+  <span class="num" id="counter">01 / 16</span>
+  <div class="progress"><span id="progress"></span></div>
+</footer>
+<div id="blackout"></div>
+</div>
+<script src="dist/deck.js"></script>
+</body>
+</html>
