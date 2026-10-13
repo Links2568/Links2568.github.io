@@ -23,8 +23,8 @@ teaser:
 links:
   - { label: Interactive talk, url: /projects/respiraframe/talk/index.html }
 hero:
-  src: /projects/respiraframe/loop-glasses-demo.mp4
-  poster: /projects/respiraframe/loop-glasses-demo.webp
+  src: /projects/respiraframe/loop-glasses-only.mp4
+  poster: /projects/respiraframe/loop-glasses-only.webp
   width: 1280
   height: 720
 videos:
