@@ -23,8 +23,8 @@ teaser:
 links:
   - { label: Interactive talk, url: /projects/respiraframe/talk/index.html }
 hero:
-  src: /projects/respiraframe/chi-loop-eit.mp4
-  poster: /projects/respiraframe/chi-loop-eit.webp
+  src: /projects/respiraframe/paper-fig1-pan.mp4
+  poster: /projects/respiraframe/paper-fig1-pan.webp
   width: 1280
   height: 720
 videos:
