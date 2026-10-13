@@ -2,13 +2,12 @@
 import { SITE } from "../consts";
 
 interface Props {
-  path: string; // "" | "/projects" | "/blog" | "/gallery"
+  path: string; // "" | "/projects" | "/gallery"
 }
 
 const { path } = Astro.props;
 const items = [
   { href: "/projects/", label: "Projects", match: "/projects" },
-  { href: "/blog/", label: "Blog", match: "/blog" },
   { href: "/gallery/", label: "Photos", match: "/gallery" },
 ];
 ---

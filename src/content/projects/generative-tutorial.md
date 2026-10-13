@@ -35,8 +35,8 @@ links:
   - { label: arXiv, url: "https://arxiv.org/abs/2609.24955" }
   - { label: PDF, url: "https://arxiv.org/pdf/2609.24955" }
 hero:
-  src: /projects/generative-tutorial/loop-headset-goal-appears.mp4
-  poster: /projects/generative-tutorial/loop-headset-goal-appears.webp
+  src: /projects/generative-tutorial/loop-generated-demo.mp4
+  poster: /projects/generative-tutorial/loop-generated-demo.webp
   width: 800
   height: 450
 videos:

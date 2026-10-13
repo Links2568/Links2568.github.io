@@ -54,7 +54,6 @@ EECS 545 Machine Learning · EECS 281 Data Structures and Algorithms · STATS 47
 ## Site map
 
 - Projects: https://lzclink.com/projects/
-- Blog: https://lzclink.com/blog/ (RSS: https://lzclink.com/rss.xml)
 - Photography: https://lzclink.com/gallery/
 - CV: https://lzclink.com/assets/files/CV_ZuchenLi_2026.pdf
 - GitHub: https://github.com/Links2568

@@ -24,8 +24,8 @@ abstract: "Every time we sit, lean, or breathe, we gently deform the surfaces th
 links:
   - { label: Interactive talk, url: /projects/moiredeform/talk/index.html }
 hero:
-  src: /projects/moiredeform/loop-breathing.mp4
-  poster: /projects/moiredeform/loop-breathing.webp
+  src: /projects/moiredeform/loop-lean-steer.mp4
+  poster: /projects/moiredeform/loop-lean-steer.webp
   width: 1280
   height: 720
 videos:
