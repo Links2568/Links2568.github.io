@@ -457,9 +457,9 @@
   /* ---------- Projects shelf ----------
      iTunes 11-style: the selected cover opens a panel under its row. The first
      time the shelf scrolls into view the first panel opens by itself, which is
-     the hint that covers open. Inside a panel, photos advance every few seconds
-     and videos when they end, so the "track list" shows it can be played;
-     hovering the panel pauses it. */
+     the hint that covers open. A panel holds still until the pointer is over
+     it (a tap toggles it on touch screens); then photos advance every few
+     seconds and videos play, moving on when they end. */
   var shelf = document.querySelector(".shelf");
   if (shelf) {
     var grid = shelf.querySelector(".shelf-grid");
@@ -474,6 +474,7 @@
     var lastT = 0;
     var sraf = 0;
     var hovering = false;
+    var tapped = false;
     var inView = false;
     var PHOTO_MS = 4500;
 
@@ -491,7 +492,7 @@
       return shelf.classList.contains("is-open");
     };
     var playing = function () {
-      return isOpen() && inView && !hovering && !document.hidden && !reduced;
+      return isOpen() && inView && (hovering || tapped) && !document.hidden && !reduced;
     };
 
     /* put the panel right after the selected cover's row and aim the notch at it */
@@ -516,6 +517,7 @@
 
     /* play or hold whatever is current, depending on visibility and hover */
     var refresh = function () {
+      shelf.classList.toggle("is-playing", playing());
       var ms = mediaOf(sel);
       var vid = ms[track] && ms[track].querySelector("video");
       if (vid) {
@@ -590,6 +592,7 @@
 
     var select = function (i, focus) {
       sel = wrap(i, count);
+      tapped = false;
       items.forEach(function (it, j) {
         it.hidden = j !== sel;
       });
@@ -632,6 +635,11 @@
         var dx = e.clientX - sx;
         sx = null;
         if (Math.abs(dx) > 40) showTrack(track + (dx < 0 ? 1 : -1));
+        else if (e.pointerType !== "mouse") {
+          /* no hover on touch screens: a tap starts or stops the viewer */
+          tapped = !tapped;
+          refresh();
+        }
       });
     });
 

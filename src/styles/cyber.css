@@ -1165,6 +1165,44 @@ a:hover {
   object-fit: cover;
 }
 
+/* charts and figures keep their whole frame on a light card */
+.shelf-media.is-fit {
+  background: #fff;
+}
+
+.shelf-media.is-fit img {
+  object-fit: contain;
+  padding: 3%;
+}
+
+/* still until hovered: a small play mark says the viewer can play */
+.shelf-hint {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.9rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.shelf-hint svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-left: 2px;
+  fill: #fff;
+}
+
+.shelf.is-playing .shelf-hint {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
 .shelf-art {
   position: absolute;
   inset: 0;
@@ -1285,6 +1323,11 @@ a:hover {
   border-radius: 1px;
   background: var(--tc);
   animation: shelf-eq 0.9s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.shelf.is-playing .shelf-eq i {
+  animation-play-state: running;
 }
 
 .shelf-eq i:nth-child(2) {
