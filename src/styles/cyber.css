@@ -1933,6 +1933,50 @@ a:hover {
   margin: 0.3rem 0 0;
 }
 
+/* an entry with a small logo or photo beside it */
+.timeline dd.tl-with-mark {
+  display: grid;
+  grid-template-columns: 3.3rem minmax(0, 1fr);
+  column-gap: 1.1rem;
+  align-items: start;
+}
+
+.tl-mark {
+  display: grid;
+  place-items: center;
+  width: 3.3rem;
+  height: 3.3rem;
+  margin-top: 0.1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent),
+    0 4px 12px -8px rgb(0 0 0 / 0.35);
+}
+
+.tl-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* logos sit on white in both themes, with room to breathe */
+.tl-mark-logo {
+  background: #fff;
+}
+
+.tl-mark-logo img {
+  object-fit: contain;
+  padding: 16%;
+}
+
+/* a round badge can fill nearly the whole tile */
+.tl-mark-round img {
+  padding: 6%;
+}
+
 .timeline .tl-title {
   font-family: var(--serif);
   font-size: 1.18rem;
