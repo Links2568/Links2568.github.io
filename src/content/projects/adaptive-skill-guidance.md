@@ -1,5 +1,6 @@
 ---
 title: Multimodal FSM for Adaptive Skill Guidance
+shortTitle: Adaptive Skill Guidance
 tagline: Real-time hand-washing guidance fusing VLM vision and audio classification with a 12-state machine.
 period: 2026 winter
 role: Builder

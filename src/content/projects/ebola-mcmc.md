@@ -1,5 +1,6 @@
 ---
 title: Bayesian MCMC for Ebola Outbreak Data
+shortTitle: Ebola Outbreak MCMC
 tagline: Data-augmentation MCMC for partially observed epidemic data with censoring.
 period: 2025 fall
 role: Author
