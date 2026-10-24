@@ -2,8 +2,18 @@
 title: MagicBaton
 tagline: Gesture-based human–AI music interaction — a dual-IMU smart conducting baton driving real-time generation.
 period: 2026 winter
-role: Builder
-org: "University of Michigan · EECS 498-010 & PAT 564"
+role: "Project lead · machine learning"
+org: "University of Michigan · EECS 498: Machine Learning for Computational Sensors in Mobile/IoT Systems · PAT 564"
+teamNote: "Hardware by Tiffany Cheung and Yi Rong, as credited in the EECS 498 final report."
+team: 
+  - { name: Zuchen Li, did: "Led the project; the gesture-recognition models; the real-time music system for PAT 564" }
+  - { name: Yi Rong, did: "ESP32 and IMU firmware and the Python receiver; wiring" }
+  - { name: Tiffany Cheung, did: "The physical baton: 3D model and wiring" }
+  - { name: Xiaolan Zhou, did: "Machine-learning planning, presentation graphics, debugging" }
+  - { name: Aryan Thomare, did: "Machine-learning planning, presentation and report graphics, debugging" }
+built: ["Dual-IMU baton", "Gesture ML", "Live music"]
+courseName: "Machine Learning for Computational Sensors in Mobile/IoT Systems"
+course: EECS 498
 tags: [HCI, music, gesture, embedded, generative-ai]
 status: active
 order: 1
@@ -45,8 +55,8 @@ A conducting baton that turns gestures into live musical control. Built with Yi 
 Cheung, Xiaolan Zhou and Aryan Thomare for EECS 498 (embedded systems and machine learning),
 then extended into a generative-music instrument for PAT 564.
 
-**The hardware.** The baton is a 39.78 cm body designed in Onshape and 3D-printed over several
-iterations, in sections that screw or snap together so the electronics stay reachable (Figure 2).
+**The hardware.** Tiffany Cheung modelled the baton and wired it with Yi Rong, who also wrote the
+ESP32 firmware. It is a 39.78 cm body designed in Onshape and 3D-printed over several iterations, in sections that screw or snap together so the electronics stay reachable (Figure 2).
 The grip widens to about 3.8 cm to hold an ESP32 DevKit v1; one MPU-6050 sits partway up the shaft
 and a second near the tip, 15 cm apart. Both share a single 400 kHz I²C bus — tying one AD0 pin to
 ground and the other to VCC gives them the addresses 0x68 and 0x69 (Figure 3). The ESP32 reads all

@@ -3,8 +3,11 @@ title: Multimodal FSM for Adaptive Skill Guidance
 shortTitle: Adaptive Skill Guidance
 tagline: Real-time hand-washing guidance fusing VLM vision and audio classification with a 12-state machine.
 period: 2026 winter
-role: Builder
-org: "University of Michigan · SURE Project #9"
+role: Solo project
+org: "University of Michigan · SURE Project 9: Seeing Skill with States"
+built: ["VLM + audio sensing", "State machine", "Voice guidance"]
+courseName: "Summer Undergraduate Research in Engineering, Project 9: Seeing Skill with States"
+course: "SURE #9"
 tags: [HCI, VLM, multimodal, context-aware]
 status: done
 order: 2

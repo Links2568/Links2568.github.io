@@ -3,7 +3,14 @@ title: Does Caregiving Cause Distress?
 tagline: A matched-pairs causal study of unpaid caregiving and emotional distress in older adults, with Rosenbaum sensitivity analysis.
 period: 2026 winter
 role: Co-author
-org: "University of Michigan · STATS 571 · with Devanshi Shah and Jiadong Zhu"
+org: "University of Michigan · STATS 571: Causal Inference"
+team: 
+  - { name: Devanshi Shah }
+  - { name: Jiadong Zhu }
+  - { name: Zuchen Li }
+built: ["Matching", "Sensitivity analysis"]
+courseName: "Causal Inference"
+course: STATS 571
 tags: [causal-inference, matching, statistics, public-health]
 status: done
 order: 4

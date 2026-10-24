@@ -152,6 +152,21 @@ const firstFig = d.teaser || d.hero ? 2 : 1;
             <Content />
           </div>
 
+          {d.team.length > 0 && (
+            <section class="paper-section" id="team">
+              <h2>Team</h2>
+              <dl class="team-list">
+                {d.team.map((m) => (
+                  <>
+                    <dt class:list={{ "is-me": m.name === SITE.title }}>{m.name}</dt>
+                    <dd>{m.did ?? ""}</dd>
+                  </>
+                ))}
+              </dl>
+              {d.teamNote && <p class="team-note">{d.teamNote}</p>}
+            </section>
+          )}
+
           {d.videos.length > 0 && (
             <section class="paper-section" id="video">
               <h2>Video</h2>

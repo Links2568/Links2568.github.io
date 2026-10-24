@@ -3,8 +3,11 @@ title: Bayesian MCMC for Ebola Outbreak Data
 shortTitle: Ebola Outbreak MCMC
 tagline: Data-augmentation MCMC for partially observed epidemic data with censoring.
 period: 2025 fall
-role: Author
-org: "University of Michigan · BIOSTAT 682"
+role: Solo project
+org: "University of Michigan · BIOSTAT 682: Applied Bayesian Inference"
+built: ["Bayesian MCMC", "SIR model"]
+courseName: "Applied Bayesian Inference"
+course: BIOSTAT 682
 tags: [Bayesian, MCMC, epidemiology, statistics]
 status: done
 order: 5

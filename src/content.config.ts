@@ -13,6 +13,12 @@ const projects = defineCollection({
     status: z.enum(["active", "done"]).default("active"),
     order: z.number().default(99),
     cover: z.string().optional(),
+    // course and side projects: the exact course is the project's tag
+    course: z.string().optional(), // e.g. "EECS 498"
+    courseName: z.string().optional(), // e.g. "Machine Learning for Computational Sensors in Mobile/IoT Systems"
+    built: z.array(z.string()).default([]), // what the project is made of, as short tags
+    team: z.array(z.object({ name: z.string(), did: z.string().optional() })).default([]),
+    teamNote: z.string().optional(),
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
     draft: z.boolean().default(false),
     // research-project fields

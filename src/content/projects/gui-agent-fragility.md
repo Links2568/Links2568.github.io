@@ -3,7 +3,17 @@ title: How Fragile Are GUI Agents?
 tagline: A controlled perturbation benchmark for interface evolution, built on the VisualWebArena harness.
 period: 2026 winter
 role: Project lead
-org: "University of Michigan · EECS 545"
+org: "University of Michigan · EECS 545: Machine Learning"
+teamNote: "Equal contribution; all five shared the ideation, the presentation and the writing."
+team: 
+  - { name: Zuchen Li, did: "Organized and led the project; ran the experiments; liaison with GSIs and faculty" }
+  - { name: Opeyemi Akinniyi, did: "Ran the experiments; co-organized the second half; data synthesis" }
+  - { name: Carol Kang, did: "Led data collection and website synthesis" }
+  - { name: Xiangnong Wu, did: "Led data collection and website synthesis" }
+  - { name: Hao Yin, did: "Led data collection and website synthesis" }
+built: ["Benchmark", "Web synthesis", "Agent evaluation"]
+courseName: Machine Learning
+course: EECS 545
 tags: [GUI-agents, benchmark, LLM, evaluation]
 status: done
 order: 3

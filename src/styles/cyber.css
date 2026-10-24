@@ -1063,6 +1063,17 @@ a:hover {
   background: var(--tc);
 }
 
+/* what the project is made of, under the course tag */
+.shelf-cap-built {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--ink-3);
+}
+
 .shelf.is-open .shelf-cover[aria-expanded="true"] .shelf-cap-title {
   color: color-mix(in srgb, var(--tc) 55%, var(--ink));
 }
@@ -1450,6 +1461,48 @@ a:hover {
   color: var(--ink-3);
 }
 
+/* who did what, in the panel */
+.shelf-team {
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0.7rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--tc) 22%, transparent);
+  display: grid;
+  gap: 0.28rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.shelf-team li {
+  display: grid;
+  grid-template-columns: 7.2rem minmax(0, 1fr);
+  gap: 0.6rem;
+}
+
+.shelf-team-name {
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.shelf-team-name.is-me {
+  color: color-mix(in srgb, var(--tc) 60%, var(--ink));
+}
+
+.shelf-team-did {
+  color: var(--ink-2);
+}
+
+/* a team listed without roles reads as one line of names */
+.shelf-team.is-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.9rem;
+}
+
+.shelf-team.is-names li {
+  display: inline;
+}
+
 .shelf-links {
   display: flex;
   flex-wrap: wrap;
@@ -1492,8 +1545,14 @@ a:hover {
   /* covers are thumbnail-sized here: the clip count would hide the artwork,
      and the caption keeps only a short title */
   .shelf-count,
-  .shelf-cap-meta {
+  .shelf-cap-meta,
+  .shelf-cap-built {
     display: none;
+  }
+
+  .shelf-team li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
   }
 
   .shelf-cap-title {
@@ -2180,6 +2239,35 @@ a:hover {
   margin: 0 0 2rem;
 }
 
+/* project page: who did what */
+.team-list {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 0.55rem 1.4rem;
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.team-list dt {
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.team-list dt.is-me {
+  color: var(--navy);
+}
+
+.team-list dd {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.team-note {
+  margin-top: 0.9rem !important;
+  font-size: 0.88rem;
+  color: var(--ink-3);
+}
+
 .paper-figures {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2433,6 +2521,15 @@ a:hover {
 }
 
 @media (max-width: 520px) {
+  .team-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .team-list dd {
+    margin-bottom: 0.7rem;
+  }
+
   .minis {
     grid-template-columns: minmax(0, 1fr);
   }
