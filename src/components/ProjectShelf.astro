@@ -38,7 +38,7 @@ const clips = all.reduce((s, x) => s + x.media.length, 0);
     </p>
   </div>
 
-  <div class="shelf-grid">
+  <div class="shelf-grid" style={`--shelf-n:${n}`}>
     {
       all.map(({ p, media, topic, year }, i) => (
         <button
