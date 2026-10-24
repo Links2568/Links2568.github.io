@@ -4,11 +4,9 @@ tagline: A matched-pairs causal study of unpaid caregiving and emotional distres
 period: 2026 winter
 role: Co-author
 org: "University of Michigan · STATS 571: Causal Inference"
-team: 
-  - { name: Devanshi Shah }
-  - { name: Jiadong Zhu }
-  - { name: Zuchen Li }
 built: ["Matching", "Sensitivity analysis"]
+work: ["Study design", "Data cleaning", "Matching", "Effect estimation", "Sensitivity analysis"]
+skills: ["Potential outcomes", "SUTVA and ignorability", "Propensity scores", "Pair matching", "McNemar test", "Rosenbaum bounds", "R"]
 courseName: "Causal Inference"
 course: STATS 571
 tags: [causal-inference, matching, statistics, public-health]
@@ -26,7 +24,8 @@ gallery:
 
 Older adults often take on unpaid care for a spouse, relative or friend, and caregivers report
 more emotional distress. But the people who become caregivers differ from those who don't, so
-is the caregiving itself to blame? Using the Wisconsin Longitudinal Study, we estimated the effect
+is the caregiving itself to blame? In a team project with Devanshi Shah and Jiadong Zhu, we used the
+Wisconsin Longitudinal Study to estimate the effect
 of current caregiving on recent emotional distress among caregivers (the ATT).
 
 **Design.** The study follows Wisconsin's high-school class of 1957 into their early 70s. We took

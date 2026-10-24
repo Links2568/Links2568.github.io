@@ -6,6 +6,8 @@ period: 2025 fall
 role: Solo project
 org: "University of Michigan · BIOSTAT 682: Applied Bayesian Inference"
 built: ["Bayesian MCMC", "SIR model"]
+work: ["Bayesian modelling", "MCMC sampling", "Epidemic reconstruction", "Time-series modelling"]
+skills: ["Survival models with censoring", "Data augmentation", "Metropolis–Hastings MCMC", "Discrete-time SIR", "Random-walk priors", "Bayesian logistic regression", "Convergence diagnostics", "R and Stan"]
 courseName: "Applied Bayesian Inference"
 course: BIOSTAT 682
 tags: [Bayesian, MCMC, epidemiology, statistics]

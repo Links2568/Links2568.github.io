@@ -152,18 +152,31 @@ const firstFig = d.teaser || d.hero ? 2 : 1;
             <Content />
           </div>
 
-          {d.team.length > 0 && (
-            <section class="paper-section" id="team">
-              <h2>Team</h2>
-              <dl class="team-list">
-                {d.team.map((m) => (
+          {(d.work.length > 0 || d.skills.length > 0) && (
+            <section class="paper-section" id="scope">
+              <h2>What it involved</h2>
+              <dl class="scope-list">
+                {d.work.length > 0 && (
                   <>
-                    <dt class:list={{ "is-me": m.name === SITE.title }}>{m.name}</dt>
-                    <dd>{m.did ?? ""}</dd>
+                    <dt>Work</dt>
+                    <dd>
+                      {d.work.map((w) => (
+                        <span class="chip">{w}</span>
+                      ))}
+                    </dd>
                   </>
-                ))}
+                )}
+                {d.skills.length > 0 && (
+                  <>
+                    <dt>Knowledge and tools</dt>
+                    <dd>
+                      {d.skills.map((s) => (
+                        <span class="chip chip-soft">{s}</span>
+                      ))}
+                    </dd>
+                  </>
+                )}
               </dl>
-              {d.teamNote && <p class="team-note">{d.teamNote}</p>}
             </section>
           )}
 

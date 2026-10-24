@@ -17,8 +17,8 @@ const projects = defineCollection({
     course: z.string().optional(), // e.g. "EECS 498"
     courseName: z.string().optional(), // e.g. "Machine Learning for Computational Sensors in Mobile/IoT Systems"
     built: z.array(z.string()).default([]), // what the project is made of, as short tags
-    team: z.array(z.object({ name: z.string(), did: z.string().optional() })).default([]),
-    teamNote: z.string().optional(),
+    work: z.array(z.string()).default([]), // the kinds of work it involved
+    skills: z.array(z.string()).default([]), // the knowledge, methods and tools it used
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
     draft: z.boolean().default(false),
     // research-project fields

@@ -6,6 +6,8 @@ period: 2026 winter
 role: Solo project
 org: "University of Michigan · SURE Project 9: Seeing Skill with States"
 built: ["VLM + audio sensing", "State machine", "Voice guidance"]
+work: ["Task and state-machine design", "Multimodal sensing", "Model serving on HPC", "Real-time GUI", "Voice feedback", "Scoring design"]
+skills: ["Finite-state machines", "Qwen3-VL on vLLM", "Gemini 2.5 Flash", "YAMNet audio classification", "TensorFlow Hub", "Round-robin GPU dispatch", "OpenCV", "Text-to-speech", "Python"]
 courseName: "Summer Undergraduate Research in Engineering, Project 9: Seeing Skill with States"
 course: "SURE #9"
 tags: [HCI, VLM, multimodal, context-aware]

@@ -1461,46 +1461,30 @@ a:hover {
   color: var(--ink-3);
 }
 
-/* who did what, in the panel */
-.shelf-team {
-  list-style: none;
+/* what the project involved and drew on, in the panel */
+.shelf-scope {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.35rem 0.7rem;
   margin: 0.85rem 0 0;
   padding: 0.7rem 0 0;
   border-top: 1px solid color-mix(in srgb, var(--tc) 22%, transparent);
-  display: grid;
-  gap: 0.28rem;
   font-size: 0.8rem;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
-.shelf-team li {
-  display: grid;
-  grid-template-columns: 7.2rem minmax(0, 1fr);
-  gap: 0.6rem;
-}
-
-.shelf-team-name {
+.shelf-scope dt {
+  font-size: 0.68rem;
   font-weight: 600;
-  color: var(--ink-2);
-}
-
-.shelf-team-name.is-me {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: color-mix(in srgb, var(--tc) 60%, var(--ink));
+  padding-top: 0.12rem;
 }
 
-.shelf-team-did {
+.shelf-scope dd {
+  margin: 0;
   color: var(--ink-2);
-}
-
-/* a team listed without roles reads as one line of names */
-.shelf-team.is-names {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem 0.9rem;
-}
-
-.shelf-team.is-names li {
-  display: inline;
 }
 
 .shelf-links {
@@ -1550,9 +1534,9 @@ a:hover {
     display: none;
   }
 
-  .shelf-team li {
+  .shelf-scope {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0;
+    gap: 0.1rem;
   }
 
   .shelf-cap-title {
@@ -2239,33 +2223,43 @@ a:hover {
   margin: 0 0 2rem;
 }
 
-/* project page: who did what */
-.team-list {
+/* project page: the work involved and what it drew on */
+.scope-list {
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
-  gap: 0.55rem 1.4rem;
+  gap: 0.9rem 1.4rem;
   margin: 0;
-  font-size: 0.98rem;
 }
 
-.team-list dt {
+.scope-list dt {
+  font-size: 0.8rem;
   font-weight: 600;
-  color: var(--ink-2);
-}
-
-.team-list dt.is-me {
-  color: var(--navy);
-}
-
-.team-list dd {
-  margin: 0;
-  color: var(--ink-2);
-}
-
-.team-note {
-  margin-top: 0.9rem !important;
-  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--ink-3);
+  padding-top: 0.3rem;
+}
+
+.scope-list dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  color: var(--navy);
+  background: color-mix(in srgb, var(--navy) 9%, var(--bg));
+}
+
+.chip-soft {
+  color: var(--ink-2);
+  background: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 16%, transparent);
 }
 
 .paper-figures {
@@ -2521,13 +2515,9 @@ a:hover {
 }
 
 @media (max-width: 520px) {
-  .team-list {
+  .scope-list {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-
-  .team-list dd {
-    margin-bottom: 0.7rem;
+    gap: 0.4rem;
   }
 
   .minis {

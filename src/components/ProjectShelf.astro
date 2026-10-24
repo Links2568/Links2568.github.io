@@ -8,7 +8,6 @@
    simply shown open (the <noscript> rule). */
 import type { CollectionEntry } from "astro:content";
 import { themeLabel } from "../lib/themes";
-import { SITE } from "../consts";
 
 /* short category names for the captions under the covers */
 const SHORT: Record<string, string> = { hai: "Human–AI", context: "Context-aware", sensing: "Sensing", ai4sci: "AI4Science" };
@@ -139,15 +138,21 @@ const clips = all.reduce((s, x) => s + x.media.length, 0);
                     <a href={`/projects/${p.id}/`}>{p.data.title}</a>
                   </h3>
                   <p class="shelf-tagline">{p.data.tagline}</p>
-                  {p.data.team.length > 0 && (
-                    <ul class:list={["shelf-team", { "is-names": p.data.team.every((m) => !m.did) }]}>
-                      {p.data.team.map((m) => (
-                        <li>
-                          <span class:list={["shelf-team-name", { "is-me": m.name === SITE.title }]}>{m.name}</span>
-                          {m.did && <span class="shelf-team-did">{m.did}</span>}
-                        </li>
-                      ))}
-                    </ul>
+                  {(p.data.work.length > 0 || p.data.skills.length > 0) && (
+                    <dl class="shelf-scope">
+                      {p.data.work.length > 0 && (
+                        <>
+                          <dt>Work</dt>
+                          <dd>{p.data.work.join(" · ")}</dd>
+                        </>
+                      )}
+                      {p.data.skills.length > 0 && (
+                        <>
+                          <dt>Used</dt>
+                          <dd>{p.data.skills.join(" · ")}</dd>
+                        </>
+                      )}
+                    </dl>
                   )}
                   {media.length > 0 && (
                     <ol class="shelf-tracks">
