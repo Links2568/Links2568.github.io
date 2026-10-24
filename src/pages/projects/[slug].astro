@@ -177,7 +177,7 @@ const firstFig = d.teaser || d.hero ? 2 : 1;
               <h2>Figures</h2>
               <div class="paper-figures">
                 {d.gallery.map((g, i) => (
-                  <figure>
+                  <figure class:list={[{ "is-wide": g.wide }]}>
                     <a href={g.src} target="_blank" rel="noopener">
                       <img src={g.src} alt={g.alt} width={g.width} height={g.height} loading="lazy" decoding="async" />
                     </a>

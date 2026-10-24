@@ -57,6 +57,7 @@ const projects = defineCollection({
           alt: z.string(),
           width: z.number(),
           height: z.number(),
+          wide: z.boolean().default(false), // spans the whole figure grid on the project page
         })
       )
       .default([]),
