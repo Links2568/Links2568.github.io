@@ -257,74 +257,52 @@ a:hover {
   top: 2rem;
 }
 
-/* two photo prints, one on top of the other: the back one peeks out,
-   fans out a little on hover, and a click shuffles them */
-.prints {
+/* the portrait: hovering it (a tap on touch screens) fades to a second photo */
+.portrait {
   position: relative;
   display: block;
-  width: 9rem;
-  height: 9rem;
+  width: 8.5rem;
+  height: 8.5rem;
   padding: 0;
   border: 0;
-  background: none;
-  cursor: pointer;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--bg-2, transparent);
+  cursor: default;
   -webkit-tap-highlight-color: transparent;
 }
 
-.prints:focus-visible {
-  outline: 2px solid var(--link);
-  outline-offset: 6px;
-  border-radius: 10px;
-}
-
-.print {
+.portrait img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
-  padding: 0.28rem;
   object-fit: cover;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 0.12),
-    0 10px 24px -12px rgb(0 0 0 / 0.45);
-  transition:
-    transform 0.55s cubic-bezier(0.32, 0.72, 0, 1),
-    filter 0.4s ease;
+  transition: opacity 0.6s ease;
 }
 
-.print.is-front {
-  z-index: 2;
-  transform: rotate(-1.5deg);
-}
-
-.print.is-back {
-  z-index: 1;
-  transform: translate(0.75rem, 0.25rem) rotate(5deg);
-  filter: brightness(0.94) saturate(0.9);
+.portrait .portrait-alt {
+  opacity: 0;
 }
 
 @media (hover: hover) {
-  .prints:hover .print.is-front {
-    transform: translate(-0.25rem, -0.1rem) rotate(-3deg);
-  }
-
-  .prints:hover .print.is-back {
-    transform: translate(1.6rem, 0.35rem) rotate(9deg);
-    filter: none;
+  .portrait:hover .portrait-alt {
+    opacity: 1;
   }
 }
 
-/* the top print slides off to the side before it goes to the back */
-.print.is-leaving {
-  z-index: 3;
-  transform: translate(68%, -6%) rotate(11deg);
+.portrait.is-alt .portrait-alt,
+.portrait:focus-visible .portrait-alt {
+  opacity: 1;
+}
+
+.portrait:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .print {
+  .portrait img {
     transition: none;
   }
 }

@@ -679,28 +679,13 @@
     }
   }
 
-  /* ---------- portrait prints ----------
-     Two photos stacked like prints; a click slides the top one off to the
-     side and tucks it underneath, so the other comes forward. */
-  var prints = document.querySelector(".prints");
-  if (prints) {
-    var shuffling = false;
-    prints.addEventListener("click", function () {
-      if (shuffling) return;
-      var front = prints.querySelector(".is-front");
-      var back = prints.querySelector(".is-back");
-      shuffling = true;
-      front.classList.add("is-leaving");
-      setTimeout(
-        function () {
-          front.classList.remove("is-front", "is-leaving");
-          front.classList.add("is-back");
-          back.classList.remove("is-back");
-          back.classList.add("is-front");
-          shuffling = false;
-        },
-        reduced ? 0 : 280
-      );
+  /* ---------- portrait ----------
+     Hover fades to the second photo (CSS); touch screens have no hover, so a
+     tap toggles it instead. */
+  var portrait = document.querySelector(".portrait");
+  if (portrait && !window.matchMedia("(hover: hover)").matches) {
+    portrait.addEventListener("click", function () {
+      portrait.classList.toggle("is-alt");
     });
   }
 
