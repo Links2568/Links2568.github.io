@@ -19,7 +19,7 @@ export const SITE = {
     "Ubiquitous Sensing",
     "AI4Science",
   ],
-  avatar: "/assets/img/icon/myself.png",
+  avatar: "/assets/img/portrait/mackinac.jpg", // also the social preview image
   favicon: "/assets/img/icon/favicon_L_48.png",
   links: {
     scholar: "https://scholar.google.com/",
