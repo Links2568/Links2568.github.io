@@ -121,6 +121,16 @@
         void pill.offsetWidth;
         pill.style.transition = "";
       }
+      /* when the tabs are wider than the column, the strip scrolls: keep the current one in view */
+      var strip = pill.parentElement;
+      var overflows = strip.scrollWidth > strip.clientWidth + 1;
+      strip.classList.toggle("is-overflowing", overflows);
+      if (overflows) {
+        strip.scrollTo({
+          left: t.offsetLeft - (strip.clientWidth - t.offsetWidth) / 2,
+          behavior: animate && !reduced ? "smooth" : "auto",
+        });
+      }
     }
 
     function turning() {
@@ -293,7 +303,6 @@
         go(i);
       });
     });
-
     flow.addEventListener("keydown", function (e) {
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
         e.preventDefault();

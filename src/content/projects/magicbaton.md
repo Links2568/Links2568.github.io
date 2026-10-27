@@ -76,4 +76,6 @@ different seeds and temperatures. The conductor can pace, ornament and recompose
 **Next.** More people and a short per-user calibration to close the cross-user gap. On the
 hardware side, the external wiring and power bank still make the prototype bulkier than a real
 baton; a self-contained enclosure with a small battery and the model quantised onto the ESP32 would
-make it a standalone instrument.
+make it a standalone instrument. Beyond that, the baton is to become the conductor's instrument for
+[SuperConductor](/projects/superconductor/), steering a real-time music model and deciding when it
+follows and when it improvises.

@@ -801,6 +801,20 @@ a:hover {
   padding: 3px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--ink) 6%, var(--bg));
+  /* more tabs than fit: the strip scrolls sideways on its own, without a bar */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.cf-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* faded ends say there is more to either side */
+.cf-tabs.is-overflowing {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
 }
 
 .cf-pill {
@@ -836,7 +850,7 @@ a:hover {
   background: none;
   border: none;
   border-radius: 999px;
-  padding: 0.45rem 1.05rem;
+  padding: 0.45rem 0.85rem;
   cursor: pointer;
   transition: color 0.25s ease;
 }
