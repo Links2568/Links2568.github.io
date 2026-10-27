@@ -77,9 +77,3 @@ breathing vs. breath holding. It runs in real time.
   abnormal events, with no systematic decline over a four-week follow-up.
 - Participants rated the glasses comfortable and socially acceptable — a more suitable everyday form
   factor than masks or earbuds.
-
-## My role
-
-I contributed to the experimental design and evaluation, designing evaluation protocols spanning
-respiratory behaviors, motion and environmental interference, a three-day semi-wild study, and
-repeated wear over a four-week longitudinal study.

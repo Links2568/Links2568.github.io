@@ -26,7 +26,6 @@ const authors = (d.authors ?? "")
 const equal = authors.some((a) => a.name.includes("*"));
 const org = d.org?.replace(/ · /g, ", ");
 const isReview = (b: string) => /review/i.test(b);
-const firstFig = d.teaser || d.hero ? 2 : 1;
 
 // the screening room opens on the first video; the list switches between them
 const first = d.videos[0];
@@ -139,9 +138,6 @@ const metaLine = (v: (typeof d.videos)[number]) =>
               <a href={d.teaser.src} target="_blank" rel="noopener" class="teaser-img">
                 <img src={d.teaser.src} alt={d.teaser.caption} width={d.teaser.width} height={d.teaser.height} decoding="async" />
               </a>
-              <figcaption>
-                <b>Figure 1.</b> {d.teaser.caption}
-              </figcaption>
             </figure>
           )}
           {!d.teaser && d.hero && (
@@ -149,9 +145,6 @@ const metaLine = (v: (typeof d.videos)[number]) =>
               <video autoplay muted loop playsinline width={d.hero.width} height={d.hero.height} poster={d.hero.poster}>
                 <source src={d.hero.src} type="video/mp4" />
               </video>
-              <figcaption>
-                <b>Figure 1.</b> {d.tagline}
-              </figcaption>
             </figure>
           )}
 
@@ -253,7 +246,7 @@ const metaLine = (v: (typeof d.videos)[number]) =>
                       <img src={g.src} alt={g.alt} width={g.width} height={g.height} loading="lazy" decoding="async" />
                     </a>
                     <figcaption>
-                      <b>Figure {firstFig + i}.</b> {g.alt}
+                      <b>Figure {i + 1}.</b> {g.alt}
                     </figcaption>
                   </figure>
                 ))}

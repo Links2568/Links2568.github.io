@@ -108,11 +108,3 @@ the guidance as a much closer match to their workspace (**6.2 vs. 4.7** on a 7-p
 time and workload were similar. Generated guidance can also be wrong — an extra bowl, five balls of
 dough where the text says four — and because everything else matched their table, participants had to
 decide what was an instruction and what was an artifact.
-
-## My role
-
-Co-first author. I co-developed the conceptual framework and AR system — grounding physical-task
-goals in users' workspaces and proactively generating workspace-specific goal images and
-demonstration videos by propagating observed and predicted visual states across task dependencies —
-and co-led a formative evaluation of **176 generated artifacts across 15 tasks** and the
-24-participant comparative study.

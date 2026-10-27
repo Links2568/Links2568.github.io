@@ -2209,7 +2209,6 @@ a:hover {
   margin: 0 0 2rem;
 }
 
-.teaser figcaption,
 .paper-body figcaption,
 .paper-figures figcaption,
 .paper-video figcaption {
@@ -2220,12 +2219,6 @@ a:hover {
   margin-top: 0.65rem;
 }
 
-.teaser figcaption {
-  max-width: 44rem;
-  margin-inline: auto;
-}
-
-.teaser figcaption b,
 .paper-figures figcaption b {
   color: var(--ink);
 }

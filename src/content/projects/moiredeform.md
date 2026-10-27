@@ -22,6 +22,8 @@ teaser:
   caption: "MoiréDeform: a clip-on camera observes an unmodified mesh chair back (the user is never in frame); subtracting an empty-chair reference yields the moiré pattern-difference view, which drives live respiratory-waveform reconstruction with breath-hold detection and body-lean joystick interaction."
 abstract: "Every time we sit, lean, or breathe, we gently deform the surfaces that hold us. MoiréDeform turns the mesh of an unmodified office chair into a sensor: a low-cost camera behind the backrest compares each frame with a reference of the empty chair, so the weave acts as virtual moiré layers that amplify subtle deformation into large, visible fringes. From them, a lightweight network reconstructs the breathing waveform live, and the moiré envelope's centroid becomes a continuous lean-to-steer joystick — no markers, no wearables, and the person is never in frame. In a preliminary study (5 users, 100 minutes), respiratory-rate error fell from 2.07 to 0.71 breaths/min relative to physical-marker tracking."
 links:
+  - { label: ACM DL, url: "https://dl.acm.org/doi/10.1145/3795866.3848426" }
+  - { label: PDF, url: /projects/moiredeform/paper.pdf }
   - { label: Interactive talk, url: /projects/moiredeform/talk/index.html }
 hero:
   src: /projects/moiredeform/loop-lean-steer.mp4
@@ -77,10 +79,3 @@ within **0.72 ± 0.45 breaths/min** of a chest belt. With the same camera, the m
 **3× more accurate** than tracking a physical marker (0.71 vs. 2.07 breaths/min error). The same
 channel could support stretch-break coaching, posture awareness, hands-free input, or games you play
 by leaning — all by watching fabric, not faces.
-
-## My role
-
-Co-first author. I developed the low-cost camera-based sensing approach that exploits naturally
-occurring woven textures as virtual moiré layers to amplify subtle surface deformation, enabling
-continuous body-lean interaction and respiratory waveform/rate sensing on an unmodified mesh chair —
-reducing respiratory-rate MAE from 2.07 to 0.71 breaths/min relative to physical-marker tracking.

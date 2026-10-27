@@ -50,16 +50,16 @@ A conducting baton that turns gestures into live musical control. A team project
 Tiffany Cheung, Xiaolan Zhou and Aryan Thomare for EECS 498 (Machine Learning for Computational
 Sensors in Mobile/IoT Systems), later extended into a generative-music instrument for PAT 564.
 
-**The hardware.** The baton is a 39.78 cm body designed in Onshape and 3D-printed over several iterations, in sections that screw or snap together so the electronics stay reachable (Figure 2).
+**The hardware.** The baton is a 39.78 cm body designed in Onshape and 3D-printed over several iterations, in sections that screw or snap together so the electronics stay reachable (Figure 1).
 The grip widens to about 3.8 cm to hold an ESP32 DevKit v1; one MPU-6050 sits partway up the shaft
 and a second near the tip, 15 cm apart. Both share a single 400 kHz I²C bus — tying one AD0 pin to
-ground and the other to VCC gives them the addresses 0x68 and 0x69 (Figure 3). The ESP32 reads all
+ground and the other to VCC gives them the addresses 0x68 and 0x69 (Figure 2). The ESP32 reads all
 12 axes at 50 Hz and streams them over BLE as the device "MagicBaton", with USB serial as a
-fallback; a USB power bank rides at the base. Everything heavier happens off the baton (Figure 5).
+fallback; a USB power bank rides at the base. Everything heavier happens off the baton (Figure 4).
 
 **Why two IMUs.** Because the two sensors are rigidly coupled, moving the arm pushes both the same
 way and their half-difference (A − B) / 2 cancels it, while turning the baton swings the far sensor
-more, so the difference keeps exactly the rotation a conductor's gesture is made of (Figure 4). Six
+more, so the difference keeps exactly the rotation a conductor's gesture is made of (Figure 3). Six
 differential channels replace twelve raw ones, with roughly half the cross-user variance.
 
 **Recognition.** We recorded 934 clips from four people across eight classes (beat, stab, spin,
