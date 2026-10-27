@@ -3,9 +3,10 @@
    selected one opens a tinted panel underneath (a notch points back at its
    cover) with a media viewer and a "track list" of the project's photos and
    videos. The viewer holds still until the pointer is over the panel (or it is
-   tapped on touch screens); then videos play and photos advance. Projects without media get a typographic cover in their research
-   colour. Driven by public/scripts/home.js; without JS the first panel is
-   simply shown open (the <noscript> rule). */
+   tapped on touch screens); then videos play and photos advance. Covers are
+   typographic, in the project's research colour; a project's artwork fades in
+   over its cover only while its panel is open. Driven by public/scripts/home.js;
+   without JS the first panel is simply shown open (the <noscript> rule). */
 import type { CollectionEntry } from "astro:content";
 import { themeLabel } from "../lib/themes";
 
@@ -55,17 +56,14 @@ const clips = all.reduce((s, x) => s + x.media.length, 0);
           style={`order:${i * 2}`}
         >
           <span class="shelf-sleeve">
-            {p.data.cover ? (
-              <img src={p.data.cover} alt="" loading="lazy" decoding="async" />
-            ) : (
-              <span class="shelf-text" aria-hidden="true">
-                <span class="shelf-theme">{themeLabel(topic)}</span>
-                <span>
-                  <span class="shelf-title">{p.data.title}</span>
-                  <span class="shelf-year">{year}</span>
-                </span>
+            <span class="shelf-text" aria-hidden="true">
+              <span class="shelf-theme">{themeLabel(topic)}</span>
+              <span>
+                <span class="shelf-title">{p.data.title}</span>
+                <span class="shelf-year">{year}</span>
               </span>
-            )}
+            </span>
+            {p.data.cover && <img src={p.data.cover} alt="" loading="lazy" decoding="async" />}
             {media.length > 0 && (
               <span class="shelf-count" aria-hidden="true">
                 <svg viewBox="0 0 12 12"><path d="M3 2l7 4-7 4z" /></svg>

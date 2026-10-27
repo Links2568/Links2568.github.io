@@ -1069,11 +1069,20 @@ a:hover {
     0 14px 26px -14px rgb(0 0 0 / 0.45);
 }
 
+/* the artwork waits behind the typographic cover until its project is open */
 .shelf-sleeve img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.shelf.is-open .shelf-cover[aria-expanded="true"] .shelf-sleeve img {
+  opacity: 1;
 }
 
 .shelf-cap {
@@ -1135,7 +1144,7 @@ a:hover {
   color: color-mix(in srgb, var(--tc) 55%, var(--ink));
 }
 
-/* typographic cover until a project has artwork */
+/* the typographic cover */
 .shelf-text {
   position: absolute;
   inset: 0;
@@ -1560,6 +1569,7 @@ a:hover {
   .shelf-panel,
   .shelf-cover,
   .shelf-sleeve,
+  .shelf-sleeve img,
   .shelf-notch {
     transition: none;
   }
@@ -1612,6 +1622,28 @@ a:hover {
 
   .shelf-text {
     padding-right: 0.9rem;
+  }
+}
+
+/* thumbnail-sized covers keep only the title */
+.shelf-sleeve {
+  container-type: inline-size;
+}
+
+@container (max-width: 120px) {
+  .shelf-text {
+    justify-content: flex-start;
+    padding: 0.4rem;
+  }
+
+  .shelf-theme,
+  .shelf-year {
+    display: none;
+  }
+
+  .shelf-title {
+    font-size: 0.58rem;
+    line-height: 1.12;
   }
 }
 
