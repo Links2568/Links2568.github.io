@@ -2216,7 +2216,8 @@ a:hover {
 }
 
 .teaser figcaption {
-  max-width: 48rem;
+  max-width: 44rem;
+  margin-inline: auto;
 }
 
 .teaser figcaption b,
