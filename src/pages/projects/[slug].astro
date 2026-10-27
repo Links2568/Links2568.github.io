@@ -27,6 +27,13 @@ const equal = authors.some((a) => a.name.includes("*"));
 const org = d.org?.replace(/ · /g, ", ");
 const isReview = (b: string) => /review/i.test(b);
 const firstFig = d.teaser || d.hero ? 2 : 1;
+
+// the screening room opens on the first video; the list switches between them
+const first = d.videos[0];
+const metaLine = (v: (typeof d.videos)[number]) =>
+  v.captions.length > 0
+    ? `${v.duration}, with ${v.captions.map((c) => c.label).join(" and ")} subtitles`
+    : v.duration;
 ---
 
 <Base
@@ -180,28 +187,64 @@ const firstFig = d.teaser || d.hero ? 2 : 1;
             </section>
           )}
 
-          {d.videos.length > 0 && (
-            <section class="paper-section" id="video">
-              <h2>Video</h2>
-              {d.videos.map((v) => (
-                <figure class="paper-video">
-                  <video controls playsinline preload="none" width={v.width} height={v.height} poster={v.poster}>
-                    <source src={v.src} type="video/mp4" />
-                    {v.captions.map((c) => (
+          {first && (
+            <section class="theater" id="video" aria-labelledby="video-title">
+              <h2 id="video-title">{d.videos.length > 1 ? "Videos" : "Video"}</h2>
+              <div class="vp" data-player>
+                <div class="vp-stage">
+                  <video controls playsinline preload="none" poster={first.poster}>
+                    <source src={first.src} type="video/mp4" />
+                    {first.captions.map((c) => (
                       <track kind="subtitles" srclang={c.lang} label={c.label} src={c.src} />
                     ))}
                   </video>
-                  <figcaption>
-                    {v.label}, {v.duration}
-                    {v.captions.length > 0 && <span class="dim"> — subtitles in {v.captions.map((c) => c.label).join(" and ")}</span>}
-                  </figcaption>
-                </figure>
-              ))}
+                  <button class="vp-cover" type="button" aria-label={`Play ${first.label}`}>
+                    <span class="vp-disc" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.8.8 0 0 0 1.2.7l10.6-6.8a.8.8 0 0 0 0-1.4L9.2 4.5a.8.8 0 0 0-1.2.7Z" /></svg>
+                    </span>
+                    <span class="vp-cover-text">
+                      <span class="vp-next" hidden>Up next</span>
+                      <span class="vp-cover-title">{first.label}</span>
+                      <span class="vp-cover-meta">{metaLine(first)}</span>
+                    </span>
+                  </button>
+                </div>
+                {d.videos.length > 1 && (
+                  <ol class="vp-list">
+                    {d.videos.map((v, i) => (
+                      <li>
+                        <a
+                          class="vp-item"
+                          href={v.src}
+                          aria-current={i === 0 ? "true" : undefined}
+                          data-src={v.src}
+                          data-poster={v.poster}
+                          data-label={v.label}
+                          data-meta={metaLine(v)}
+                          data-captions={JSON.stringify(v.captions)}
+                        >
+                          <span class="vp-thumb">
+                            <img src={v.poster} alt="" loading="lazy" decoding="async" />
+                            <span class="vp-thumb-progress" />
+                          </span>
+                          <span class="vp-item-text">
+                            <span class="vp-item-title">
+                              <span class="vp-eq" aria-hidden="true"><i /><i /><i /></span>
+                              {v.label}
+                            </span>
+                            <span class="vp-item-meta">{v.duration}</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
             </section>
           )}
 
           {d.gallery.length > 0 && (
-            <section class="paper-section">
+            <section class="paper-section paper-section-wide">
               <h2>Figures</h2>
               <div class="paper-figures">
                 {d.gallery.map((g, i) => (
@@ -233,4 +276,5 @@ const firstFig = d.teaser || d.hero ? 2 : 1;
       )
     }
   </article>
+  {!d.protected && <script is:inline src={asset("/scripts/project.js")} defer />}
 </Base>
