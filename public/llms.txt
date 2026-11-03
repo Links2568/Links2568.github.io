@@ -37,6 +37,7 @@ Human–AI Interaction · Context-Aware Intelligent Systems · Ubiquitous Sensin
 
 ## Honors
 
+- First Place (Undergraduate), ACM Student Research Competition at ACM MobiCom 2026, for MoiréDeform (2026)
 - UROP Summer Engineering Fellowship, University of Michigan (2026)
 - University Honors, University of Michigan (2024–2026)
 - Outstanding Research Paper Award, IMMC Greater China Round — top 1.875% of 800+ teams (2022)
