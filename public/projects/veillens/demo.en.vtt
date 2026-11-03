@@ -1,0 +1,145 @@
+WEBVTT
+
+00:01.350 --> 00:03.272
+This looks like an ordinary street.
+
+00:03.312 --> 00:07.556
+But ask a modern vision-language model
+where it was taken, and it answers:
+
+00:07.596 --> 00:11.824
+Aachen, Germany, about four
+hundred meters from the true spot.
+
+00:12.574 --> 00:15.838
+Faces and license plates
+are only the obvious part.
+
+00:16.301 --> 00:19.303
+Today's models combine weak, everyday clues:
+
+00:19.343 --> 00:25.787
+a work badge, a logo on a bag, a shop sign,
+even a street bollard, and the people you are with.
+
+00:26.041 --> 00:31.592
+Together, they can reveal who you are,
+where you are, and who you are with.
+
+00:32.142 --> 00:36.967
+Most existing tools blur fixed
+categories, or perturb the whole image.
+
+00:37.007 --> 00:43.080
+They rarely show what leaks, let you decide what
+to change, or check what still gets through.
+
+00:43.730 --> 00:48.294
+VeilLens turns these hidden inferences
+into evidence you can inspect and edit.
+
+00:48.641 --> 00:53.194
+A trusted vision-language model reasons
+about what could be inferred, and why.
+
+00:53.355 --> 00:56.189
+Each clue is grounded to an exact region.
+
+00:56.350 --> 01:01.093
+The clues you choose are removed with generative
+inpainting that keeps the rest of the scene.
+
+01:01.133 --> 01:07.114
+Then a verifier checks the result, and the
+loop repeats until the inference is suppressed.
+
+01:08.564 --> 01:10.621
+Here is the full workflow.
+
+01:10.874 --> 01:16.809
+We protect geolocation, hiding the street
+and the city, while keeping the country.
+
+01:17.259 --> 01:20.314
+VeilLens first shows what
+an attacker would infer:
+
+01:20.475 --> 01:26.108
+Aachen, only 0.4 kilometers off, along
+with the reasoning behind the guess.
+
+01:26.458 --> 01:29.448
+Next, it lists the clues behind that guess,
+
+01:29.488 --> 01:33.751
+each with its privacy level and a
+reason, and marks them on the image.
+
+01:34.213 --> 01:38.232
+Clues within the chosen level
+are selected for removal.
+
+01:38.695 --> 01:41.994
+Country-level clues are left as they are.
+
+01:42.544 --> 01:45.824
+After the first round of edits,
+the attacker still says Aachen.
+
+01:45.864 --> 01:49.040
+Its guess moves only 1.6 kilometers.
+
+01:49.080 --> 01:51.764
+Not enough, so we run another round.
+
+01:52.314 --> 01:56.577
+The second round finds residual evidence,
+like a street sign and the lane markings.
+
+01:56.830 --> 02:01.418
+We keep the lane markings, since they cover
+a third of the image and reveal little.
+
+02:01.672 --> 02:05.156
+VeilLens advises, but the user decides.
+
+02:05.706 --> 02:11.188
+Now the best guess jumps to Krefeld, about
+70 kilometers away, with low confidence.
+
+02:11.279 --> 02:14.647
+And only two percent of the pixels changed.
+
+02:16.097 --> 02:22.624
+We evaluated VeilLens on 1,454 images,
+with more than 20,000 model queries.
+
+02:22.784 --> 02:26.733
+It cut compositional privacy
+risk by 48.7 percent.
+
+02:27.080 --> 02:29.467
+Against the strongest attacker we tested,
+
+02:29.507 --> 02:37.814
+block-level geolocation success fell from 40.2 to
+14.6 percent, well below the strongest prior defense.
+
+02:37.854 --> 02:41.850
+And relationship inference
+dropped by more than 92 percent.
+
+02:42.500 --> 02:48.056
+In a study with 25 participants, 70.7 percent
+of choices preferred the protected image,
+
+02:48.096 --> 02:53.531
+with high ratings for understanding
+the risk and trusting the protection.
+
+02:54.381 --> 02:55.688
+VeilLens.
+
+02:55.728 --> 03:01.790
+Understand what leaks, control what changes,
+and verify what remains, before you share.

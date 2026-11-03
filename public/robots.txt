@@ -1,9 +1,6 @@
 # All crawlers welcome, including AI crawlers
-# (GPTBot, ClaudeBot, Google-Extended, CCBot, PerplexityBot, etc.),
-# except password-protected project material (encrypted anyway).
+# (GPTBot, ClaudeBot, Google-Extended, CCBot, PerplexityBot, etc.).
 User-agent: *
 Allow: /
-Disallow: /protected/
-Disallow: /projects/mystery-ai-privacy/
 
 Sitemap: https://lzclink.com/sitemap-index.xml
