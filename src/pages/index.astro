@@ -55,9 +55,6 @@ const sections = [
           </a>
         </li>
       </ul>
-      <nav class="side-nav" aria-label="On this page">
-        {sections.map((sct) => <a href={`#${sct.id}`} data-spy={sct.id}>{sct.label}</a>)}
-      </nav>
       <div class="profile-links">
         <a class="btn btn-solid" href={SITE.links.cv} rel="noopener">CV</a>
         <a class="btn" href={SITE.links.github} rel="noopener">GitHub</a>
@@ -66,6 +63,9 @@ const sections = [
           Copy email
         </button>
       </div>
+      <nav class="side-nav" aria-label="On this page">
+        {sections.map((sct) => <a href={`#${sct.id}`} data-spy={sct.id}>{sct.label}</a>)}
+      </nav>
     </aside>
 
     <div class="home-main">
@@ -77,7 +77,7 @@ const sections = [
           Computer Science, Data Science, and Statistics, with minors in History and Meteorology.
         </p>
         <p class="intro-text">
-          My research has had broad impact. I started in high-dimensional statistics for wearable
+          My research spans a broad range. I started in high-dimensional statistics for wearable
           sensor data, advised by Prof.
           <a href="https://lsa.umich.edu/stats/people/faculty/kshedden.html" rel="noopener">Kerby Shedden</a>,
           then joined the

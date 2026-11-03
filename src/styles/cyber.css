@@ -352,7 +352,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  margin-bottom: 1.8rem;
+  margin-top: 1.8rem;
 }
 
 .side-nav a {
@@ -400,12 +400,25 @@ a:hover {
   font-size: 1.08rem;
   line-height: 1.75;
   color: var(--ink);
-  max-width: 46rem;
   margin: 0;
 }
 
 .intro-text + .intro-text {
   margin-top: 0.9rem;
+}
+
+/* beside the portrait, the intro shares the photo's top and bottom edges: the
+   margin takes up the space above the first line's capitals, and the paragraphs
+   spread over the photo's height (22.5rem, plus that space and the room under
+   the last baseline) */
+@media (min-width: 901px) {
+  .intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 23.64rem;
+    margin-top: -0.6rem;
+  }
 }
 
 /* affiliation marks in the side column: compact stack, light/dark variants follow the theme */
