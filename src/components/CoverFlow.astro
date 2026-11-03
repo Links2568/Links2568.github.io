@@ -25,6 +25,7 @@ const authorsOf = (s?: string) =>
 const subtitleOf = (title: string, full?: string) =>
   full?.startsWith(`${title}:`) ? full.slice(title.length + 1).trim() : full;
 const isReview = (b: string) => /review/i.test(b);
+const isAward = (b: string) => /\b(award|place|winner)\b/i.test(b);
 const n = projects.length;
 const posOf = (i: number) => {
   let d = ((i % n) + n) % n;
@@ -115,7 +116,7 @@ const posOf = (i: number) => {
           <div class:list={["cf-caption", { "is-current": i === 0 }]} data-index={i} inert={i !== 0} aria-hidden={i !== 0 ? "true" : undefined}>
             <p class="cf-meta">
               {d.badges.map((b) => (
-                <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>
+                <span class:list={["badge", { "badge-review": isReview(b), "badge-award": isAward(b) }]}>{b}</span>
               ))}
               {d.themes[0] && (
                 <span class="theme-tag" data-topic={d.themes[0]}>

@@ -18,6 +18,7 @@ const authors = (d.authors ?? "")
   .filter(Boolean)
   .map((a) => ({ name: a, me: a.replace(/\*/g, "").trim() === SITE.title }));
 const isReview = (b: string) => /review/i.test(b);
+const isAward = (b: string) => /\b(award|place|winner)\b/i.test(b);
 ---
 
 <article class="fig" data-topics={d.themes.join(" ")}>
@@ -35,7 +36,7 @@ const isReview = (b: string) => /review/i.test(b);
     }
   </a>
   <div class="fig-meta">
-    {d.badges.map((b) => <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>)}
+    {d.badges.map((b) => <span class:list={["badge", { "badge-review": isReview(b), "badge-award": isAward(b) }]}>{b}</span>)}
     {
       d.themes[0] && (
         <span class="theme-tag" data-topic={d.themes[0]}>

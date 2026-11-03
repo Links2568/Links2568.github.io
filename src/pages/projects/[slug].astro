@@ -26,6 +26,7 @@ const authors = (d.authors ?? "")
 const equal = authors.some((a) => a.name.includes("*"));
 const org = d.org?.replace(/ · /g, ", ");
 const isReview = (b: string) => /review/i.test(b);
+const isAward = (b: string) => /\b(award|place|winner)\b/i.test(b);
 
 // the screening room opens on the first video; the list switches between them
 const first = d.videos[0];
@@ -47,7 +48,7 @@ const metaLine = (v: (typeof d.videos)[number]) =>
 
     <header class="paper-head">
       <p class="paper-badges">
-        {d.badges.map((b) => <span class:list={["badge", { "badge-review": isReview(b) }]}>{b}</span>)}
+        {d.badges.map((b) => <span class:list={["badge", { "badge-review": isReview(b), "badge-award": isAward(b) }]}>{b}</span>)}
         {
           d.themes.map((t) => (
             <span class="theme-tag" data-topic={t}>

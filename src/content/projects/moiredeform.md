@@ -9,7 +9,7 @@ status: done
 order: 2
 kind: research
 themes: [sensing]
-badges: ["MobiCom 2026 Demo"]
+badges: ["MobiCom 2026 Demo", "First Place, ACM SRC (Undergraduate)"]
 fullTitle: "MoiréDeform: Towards Fine-Grained Deformation Sensing through Naturally Occurring Moiré Patterns in Everyday Woven Surfaces"
 venue: ACM MobiCom 2026 · Demo · Austin, TX
 authors: "Linzhen Zhu*, Zuchen Li*, Weihao Jin, Hyunmin Park, Alanson Sample, Ke Sun"
