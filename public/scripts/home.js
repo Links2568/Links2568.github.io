@@ -698,6 +698,17 @@
     });
   }
 
+  /* ---------- side column height, for its sticky offset (see .home-side) ---------- */
+  var homeSide = document.querySelector(".home-side");
+  if (homeSide) {
+    var measureSide = function () {
+      homeSide.style.setProperty("--side-h", homeSide.offsetHeight + "px");
+    };
+    measureSide();
+    window.addEventListener("resize", measureSide);
+    if (window.ResizeObserver) new ResizeObserver(measureSide).observe(homeSide);
+  }
+
   /* ---------- side nav follows the scroll ---------- */
   var links = {};
   document.querySelectorAll(".side-nav a[data-spy]").forEach(function (a) {

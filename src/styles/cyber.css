@@ -252,19 +252,21 @@ a:hover {
   margin-top: 3.5rem;
 }
 
+/* taller than a short window, the column scrolls up only until its last links
+   are in view; home.js supplies its height */
 .home-side {
   position: sticky;
-  top: 2rem;
+  top: min(2rem, calc(100vh - var(--side-h, 0px) - 1rem));
 }
 
-/* the portrait, uncropped at its own 3:2 frame; hovering it (a tap on touch
-   screens) fades to a second, square photo shown whole in the same space */
+/* the portrait, uncropped at its own 2:3 frame; hovering it (a tap on touch
+   screens) fades to a second, landscape photo shown whole in the same space */
 .portrait {
   position: relative;
   display: block;
   width: 100%;
   max-width: 15rem;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 2 / 3;
   padding: 0;
   border: 0;
   background: none;
@@ -283,10 +285,10 @@ a:hover {
 }
 
 .portrait .portrait-alt {
-  left: 50%;
-  width: auto;
-  aspect-ratio: 1;
-  transform: translateX(-50%);
+  top: 50%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  transform: translateY(-50%);
   opacity: 0;
 }
 
@@ -400,6 +402,10 @@ a:hover {
   color: var(--ink);
   max-width: 46rem;
   margin: 0;
+}
+
+.intro-text + .intro-text {
+  margin-top: 0.9rem;
 }
 
 /* affiliation marks in the side column: compact stack, light/dark variants follow the theme */
