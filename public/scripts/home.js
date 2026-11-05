@@ -689,13 +689,25 @@
   }
 
   /* ---------- portrait ----------
-     Hover fades to the second photo (CSS); touch screens have no hover, so a
-     tap toggles it instead. */
+     Hover opens the frame onto the second photo (the motion is CSS); touch
+     screens have no hover, so a tap toggles it instead. The second photo is
+     decoded ahead so the first hover doesn't stall on it. */
   var portrait = document.querySelector(".portrait");
-  if (portrait && !window.matchMedia("(hover: hover)").matches) {
-    portrait.addEventListener("click", function () {
-      portrait.classList.toggle("is-alt");
-    });
+  if (portrait) {
+    if (window.matchMedia("(hover: hover)").matches) {
+      portrait.addEventListener("mouseenter", function () {
+        portrait.classList.add("is-alt");
+      });
+      portrait.addEventListener("mouseleave", function () {
+        portrait.classList.remove("is-alt");
+      });
+    } else {
+      portrait.addEventListener("click", function () {
+        portrait.classList.toggle("is-alt");
+      });
+    }
+    var portraitAlt = portrait.querySelector(".portrait-alt");
+    if (portraitAlt && portraitAlt.decode) portraitAlt.decode().catch(function () {});
   }
 
   /* ---------- side column height, for its sticky offset (see .home-side) ---------- */
