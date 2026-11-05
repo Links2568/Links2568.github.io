@@ -259,130 +259,13 @@ a:hover {
   top: min(2rem, calc(100vh - var(--side-h, 0px) - 1rem));
 }
 
-/* the portrait rests on the landscape photo, whole at 3:2. Hovering it (a tap on
-   touch screens) opens the frame downward to the second photo, whole at 2:3.
-   Width stays 15rem, so the frame grows from 10rem to 22.5rem tall */
-.home-side {
-  --portrait-grow: 12.5rem;
-  --portrait-move: 0.76s cubic-bezier(0.45, 0, 0.15, 1);
-}
-
+/* the portrait, uncropped at its own 3:2 frame */
 .portrait {
-  position: relative;
   display: block;
   width: 100%;
   max-width: 15rem;
-  aspect-ratio: 3 / 2;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: default;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* the open frame's full 2:3 box, clipped back to the 3:2 slot at rest */
-.portrait-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-  clip-path: inset(0 0 55.5556% 0 round 14px);
-  transition: clip-path var(--portrait-move);
-}
-
-.portrait img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   height: auto;
-  transform-origin: 0 0;
-  will-change: transform;
-  transition: transform var(--portrait-move);
-}
-
-/* the two transforms carry both photos' eyes along the same path, so the face
-   stays put while the pictures trade places: the landscape photo pushes in until
-   its eyes match the other photo's at rest, and the other photo starts zoomed so
-   its eyes sit where the landscape photo's rest. Each transform covers the frame
-   at every step, and the landscape photo stays opaque under the fade */
-.portrait .portrait-alt {
-  transform: translate(-0.25%, -38.15%) scale(1.41);
-  opacity: 0;
-  transition:
-    transform var(--portrait-move),
-    opacity 0.18s linear 0.07s;
-}
-
-.portrait.is-alt .portrait-frame,
-.portrait:focus-visible .portrait-frame {
-  clip-path: inset(0 round 14px);
-}
-
-.portrait.is-alt img:first-child,
-.portrait:focus-visible img:first-child {
-  transform: translate(-205.8%, -144.16%) scale(5.2);
-}
-
-.portrait.is-alt .portrait-alt,
-.portrait:focus-visible .portrait-alt {
-  transform: translate(0, 0) scale(1);
-  opacity: 1;
-  transition:
-    transform var(--portrait-move),
-    opacity 0.24s linear 0.27s;
-}
-
-/* everything below rides on the frame's bottom edge. In the sticky column that's
-   a transform, leaving its height (and the sticky offset) alone; stacked on a
-   small screen the page has to make room */
-@media (min-width: 901px) {
-  .portrait ~ * {
-    transition: transform var(--portrait-move);
-  }
-
-  .portrait.is-alt ~ *,
-  .portrait:focus-visible ~ * {
-    transform: translateY(var(--portrait-grow));
-  }
-}
-
-@media (max-width: 900px) {
-  .portrait ~ .name {
-    transition: margin-top var(--portrait-move);
-  }
-
-  .portrait.is-alt ~ .name,
-  .portrait:focus-visible ~ .name {
-    margin-top: calc(1.2rem + var(--portrait-grow));
-  }
-}
-
-/* inside the frame, since the clip would cut off an outline around it */
-.portrait:focus-visible {
-  outline: none;
-}
-
-.portrait:focus-visible .portrait-frame::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border-radius: 11px;
-  outline: 2px solid var(--maize);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portrait-frame,
-  .portrait img,
-  .portrait .portrait-alt,
-  .portrait.is-alt .portrait-alt,
-  .portrait:focus-visible .portrait-alt,
-  .portrait ~ *,
-  .portrait ~ .name {
-    transition: none;
-  }
+  border-radius: 14px;
 }
 
 .name {
@@ -468,16 +351,10 @@ a:hover {
   margin-top: 0.9rem;
 }
 
-/* beside the portrait, the intro shares the photo's top edge, and its bottom edge
-   once the portrait opens to 2:3: the margin takes up the space above the first
-   line's capitals, and the paragraphs spread over the open photo's height (22.5rem,
-   plus that space and the room under the last baseline) */
+/* beside the portrait, the intro shares the photo's top edge: the margin takes up
+   the space above the first line's capitals */
 @media (min-width: 901px) {
   .intro {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 23.64rem;
     margin-top: -0.6rem;
   }
 }
