@@ -1,0 +1,34 @@
+---
+/* The unofficial transcript, encrypted in public/protected/j4bf9ck3n3/ (plaintext in
+   the gitignored private-media/j4bf9ck3n3/). Shared by link only: nothing on the
+   site points here, and it stays out of the sitemap and search engines. */
+import Base from "../layouts/Base.astro";
+import { SITE } from "../consts";
+import { asset } from "../lib/asset";
+---
+
+<Base
+  title={`Unofficial transcript | ${SITE.title}`}
+  description="University of Michigan unofficial transcript, password-protected."
+  path="/j4bf9ck3n3"
+  noindex
+>
+  <header class="paper-head">
+    <h1 class="paper-title">Unofficial transcript</h1>
+    <p class="paper-subtitle">University of Michigan, as of September 22, 2026</p>
+  </header>
+  <div class="locked" id="locked" data-base="/protected/j4bf9ck3n3/">
+    <p class="locked-note">
+      Enter the password you were given. The transcript is decrypted in your browser. To ask for
+      access, email <span class="nowrap">{SITE.email}</span>.
+    </p>
+    <form class="unlock-form" id="unlock-form">
+      <label class="visually-hidden" for="unlock-pw">Password</label>
+      <input id="unlock-pw" type="password" autocomplete="current-password" placeholder="Password" required />
+      <button class="btn btn-solid" type="submit">Unlock</button>
+    </form>
+    <p class="unlock-status" id="unlock-status" aria-live="polite"></p>
+  </div>
+  <div class="transcript" id="unlocked" hidden></div>
+  <script is:inline src={asset("/scripts/unlock.js")} defer></script>
+</Base>

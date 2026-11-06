@@ -4,7 +4,8 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://lzclink.com",
-  integrations: [sitemap()],
+  // the password-protected transcript is shared by link only
+  integrations: [sitemap({ filter: (page) => !page.includes("/j4bf9ck3n3") })],
   redirects: {
     // the page's address while it was password-protected; it went out in emails
     "/projects/mystery-ai-privacy": "/projects/veillens/",

@@ -6,7 +6,7 @@
  *
  * Reads plaintext from  private-media/<slug>/   (gitignored — never committed):
  *   content.html   the page body; reference media files by filename via
- *                  data-asset="x.webp"        → <img>/<track> src, decrypted on unlock
+ *                  data-asset="x.webp"        → <img>/<track> src (<a> href), decrypted on unlock
  *                  data-poster-asset="x.webp" → <video> poster, decrypted on unlock
  *                  data-lazy-asset="x.mp4"    → <video> src, decrypted when "play" is pressed
  *   .password      the password (one line). Or set PROTECT_PASSWORD instead.
@@ -46,6 +46,7 @@ const MIME = {
   ".jpg": "image/jpeg",
   ".png": "image/png",
   ".vtt": "text/vtt",
+  ".pdf": "application/pdf",
 };
 
 const ITER = 600_000;

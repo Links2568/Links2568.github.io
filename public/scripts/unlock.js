@@ -89,7 +89,8 @@
   function wireAssets() {
     out.querySelectorAll("[data-asset]").forEach(function (el) {
       open(el.dataset.asset, el.dataset.typeAsset).then(function (url) {
-        el.src = url;
+        if (el.tagName === "A") el.href = url;
+        else el.src = url;
         if (el.tagName === "SOURCE" && el.parentElement.load) el.parentElement.load();
       });
     });
