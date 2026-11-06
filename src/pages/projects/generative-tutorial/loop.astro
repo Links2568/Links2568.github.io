@@ -1,0 +1,263 @@
+---
+import { getEntry } from "astro:content";
+import { SITE } from "../../../consts";
+import { asset } from "../../../lib/asset";
+
+/* A screen for a booth or a lab TV: the project's videos, full-bleed, on repeat.
+   No site chrome; a bar with the choices appears on movement and hides when idle. */
+const project = await getEntry("projects", "generative-tutorial");
+if (!project) throw new Error("generative-tutorial is missing from the projects collection");
+const d = project.data;
+
+const videos = d.videos.map((v) => ({
+  id: v.src.split("/").pop()!.replace(/\.\w+$/, ""),
+  label: v.label,
+  src: v.src,
+  poster: v.poster,
+  captions: v.captions,
+}));
+// open on the narrated video: browsers only autoplay muted, so its subtitles carry it
+const start = videos.find((v) => v.captions.length > 0) ?? videos[0];
+const languages = [...new Map(videos.flatMap((v) => v.captions).map((c) => [c.lang, c.label])).entries()];
+const page = new URL(`/projects/${project.id}/`, Astro.site);
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{d.title} videos | {SITE.title}</title>
+    <meta name="description" content={`The ${d.title} videos on repeat, for a display screen.`} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href={SITE.favicon} type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400&family=IBM+Plex+Sans:wght@400;500&display=swap"
+    />
+    <style>
+      :root {
+        --stage: #000;
+        --text: #fff;
+        --text-2: rgba(255, 255, 255, 0.7);
+        --maize: #ffcb05;
+        --serif: "Libertinus Serif", Georgia, serif;
+        --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        color-scheme: dark;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: var(--stage);
+        color: var(--text);
+        font-family: var(--sans);
+      }
+      body.idle {
+        cursor: none;
+      }
+      /* the whole frame, letterboxed by the page, never cropped; sized to the picture
+         so the subtitles sit on it rather than in the black band */
+      body {
+        display: grid;
+        place-items: center;
+      }
+      .screen {
+        display: block;
+        width: min(100vw, calc(100dvh * 16 / 9));
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+        background: var(--stage);
+      }
+      .screen::cue {
+        font-family: var(--sans);
+        background: rgba(0, 0, 0, 0.72);
+      }
+
+      .bar {
+        position: fixed;
+        inset: auto 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem 2.5rem;
+        padding: 5rem max(1.75rem, env(safe-area-inset-right)) max(1.4rem, env(safe-area-inset-bottom))
+          max(1.75rem, env(safe-area-inset-left));
+        /* a scrim so the bar reads over the demo's white slides */
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.72) 55%, rgba(0, 0, 0, 0));
+        transition: opacity 0.4s ease;
+      }
+      body.idle .bar {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .name {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: 1.6rem;
+        line-height: 1.15;
+      }
+      .where {
+        margin: 0.2rem 0 0;
+        font-size: 0.9rem;
+      }
+      .where a {
+        color: var(--text-2);
+        text-decoration: none;
+      }
+      .where a:hover {
+        color: var(--text);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.6rem 2rem;
+      }
+      .choice {
+        display: flex;
+        align-items: baseline;
+        gap: 0.9rem;
+      }
+      .choice-label {
+        color: var(--text-2);
+        font-size: 0.9rem;
+      }
+      button {
+        font: inherit;
+        font-size: 0.95rem;
+        color: var(--text-2);
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        padding: 0.3rem 0;
+        cursor: pointer;
+      }
+      button:hover {
+        color: var(--text);
+      }
+      /* the chosen option is underlined in maize, as the site's nav marks the current page */
+      button[aria-pressed="true"] {
+        color: var(--text);
+        border-bottom-color: var(--maize);
+      }
+      .act {
+        color: var(--text);
+        font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        padding: 0.35rem 1rem;
+      }
+      .act:hover {
+        border-color: var(--text);
+      }
+      button:focus-visible,
+      a:focus-visible {
+        outline: 2px solid var(--maize);
+        outline-offset: 3px;
+      }
+
+      /* shown only when the browser refuses to start the video on its own */
+      .start {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        width: max-content;
+        height: max-content;
+        color: var(--stage);
+        background: var(--maize);
+        font-size: 1.25rem;
+        font-weight: 500;
+        border: 0;
+        border-radius: 999px;
+        padding: 0.8rem 2rem;
+      }
+      .start:hover {
+        color: var(--stage);
+      }
+      [hidden] {
+        display: none !important;
+      }
+
+      @media (max-width: 640px) {
+        .bar {
+          padding-top: 3.5rem;
+        }
+        .name {
+          font-size: 1.3rem;
+        }
+        .controls {
+          gap: 0.6rem 1.4rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .bar {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <video
+      class="screen"
+      id="screen"
+      src={start.src}
+      poster={start.poster}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      data-start={start.id}
+      data-videos={JSON.stringify(videos)}
+    >
+      {start.captions.map((c) => <track kind="subtitles" srclang={c.lang} label={c.label} src={c.src} />)}
+    </video>
+
+    <button class="start" id="start" type="button" hidden>Play</button>
+
+    <div class="bar" id="bar">
+      <div>
+        <p class="name">{d.title}</p>
+        <p class="where"><a href={page.pathname}>{page.host}{page.pathname.replace(/\/$/, "")}</a></p>
+      </div>
+      <div class="controls">
+        {
+          videos.length > 1 && (
+            <div class="choice" role="group" aria-label="Video">
+              {videos.map((v) => (
+                <button type="button" data-video={v.id} aria-pressed={String(v.id === start.id)}>
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          )
+        }
+        {
+          languages.length > 0 && (
+            <div class="choice" role="group" aria-labelledby="cc-label" id="cc">
+              <span class="choice-label" id="cc-label">Subtitles</span>
+              {languages.map(([lang, label], i) => (
+                <button type="button" data-cc={lang} lang={lang} aria-pressed={String(i === 0)}>
+                  {label}
+                </button>
+              ))}
+              <button type="button" data-cc="off" aria-pressed="false">Off</button>
+            </div>
+          )
+        }
+        <button class="act" id="sound" type="button">Unmute</button>
+        <button class="act" id="fs" type="button">Full screen</button>
+      </div>
+    </div>
+
+    <script is:inline src={asset("/scripts/loop.js")}></script>
+  </body>
+</html>

@@ -4,8 +4,9 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://lzclink.com",
-  // the password-protected transcript is shared by link only
-  integrations: [sitemap({ filter: (page) => !page.includes("/j4bf9ck3n3") })],
+  // the password-protected transcript is shared by link only; the looping video
+  // screens are for a display, not for search
+  integrations: [sitemap({ filter: (page) => !page.includes("/j4bf9ck3n3") && !page.endsWith("/loop/") })],
   redirects: {
     // the page's address while it was password-protected; it went out in emails
     "/projects/mystery-ai-privacy": "/projects/veillens/",
